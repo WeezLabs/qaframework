@@ -35,7 +35,7 @@ public abstract class AbstractTestV2 {
     protected String testDescription;
     protected User user;
     //можно добавить несколько рабочих пользователей
-    protected DBDao dBDao;
+    protected static DBDao dBDao =new DBDao();
     //  порядок сортировки
     protected final String ASC = "asc";
     protected final String DESC = "desc";
@@ -46,8 +46,6 @@ public abstract class AbstractTestV2 {
     @BeforeTest
     public void beforeTest(@Optional String login, @Optional String password, @Optional String runId) throws IOException, SQLException {
         user = new User();
-
-        dBDao = new DBDao();
         if (runId != null) this.runId = Integer.parseInt(runId);
         if (login != null)
             user.setEmail(rbTest.getString(login));

@@ -26,6 +26,10 @@ import util.JdbcTemplateUtils;
  */
 public class DBDao extends JdbcTemplateUtils {
 
+    public void closeConnection() throws SQLException {
+        Connection con1 = DataSourceUtils.getConnection( jdbcTemplatePg.getDataSource());
+        con1.close();
+    }
 
 
 }
