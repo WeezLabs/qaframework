@@ -1,12 +1,6 @@
 package dao;
 
-import org.springframework.jdbc.support.rowset.SqlRowSet;
 import util.JdbcTemplateUtils;
-
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 
 /**

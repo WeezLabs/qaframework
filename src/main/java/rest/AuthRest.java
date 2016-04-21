@@ -1,12 +1,9 @@
 package rest;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.jayway.restassured.response.Response;
 import dto.AuthenticatedResponseModel;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * первонас=чальная идентификация пользователя - логин

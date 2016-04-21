@@ -2,9 +2,6 @@ package rest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * заполнение хедеров идентификационными данными, полученными после логина, для дальнейшего использования
  */

@@ -3,7 +3,6 @@ package stories.SomeStory;
 import com.fasterxml.jackson.core.type.TypeReference;
 import ddto.DdtDataProvider;
 import ddto.DdtoSet;
-import domain.User;
 import dto.SomeClass;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterMethod;
