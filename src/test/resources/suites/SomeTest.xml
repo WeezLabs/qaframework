@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="название теста" parallel="tests" thread-count="1">
+    <listeners>
+        <listener class-name="testRail.TestRailListener"/>
+    </listeners>
+
+    <test name="check login test">
+        <parameter name="runId" value="21"/>
+        <parameter name="jsonDdtFile" value="login.json"/>
+        <classes>
+            <class name="stories.SomeStory.SomeStoryTest"/>
+        </classes>
+    </test>
+
+</suite>
