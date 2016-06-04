@@ -1,7 +1,8 @@
 package ddto;
 
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.testng.ITestContext;
 
 import java.io.File;
@@ -10,12 +11,14 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
+import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
+
 /**
  * собственно чтение файла со входными данными и сонвертация его в дата провайдер
  */
 public class DdtDataProvider {
 
-    protected ObjectMapper mapper = new ObjectMapper().configure(org.codehaus.jackson.map.DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    protected ObjectMapper mapper = new ObjectMapper().configure(FAIL_ON_UNKNOWN_PROPERTIES, false);
 
     public Object[][] ddtProvider(ITestContext context, String jsonFileParameterName, String ddtDataPath) throws IOException {
         String jsonDdtFile = context.getCurrentXmlTest().getParameter(jsonFileParameterName);

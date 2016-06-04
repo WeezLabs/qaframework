@@ -17,16 +17,15 @@ import java.util.Map;
 /**
  * описание примитивов запросов. при необходимости добавлять что нужно
  */
-public abstract class AbstractService {
-
-    protected RestService rest;
-    protected String subPath;
+public abstract class AbstractEndpoint {
+    private RestService rest;
+    private String subPath;
 
     protected ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     protected ScriptEngineManager factory = new ScriptEngineManager();
     protected ScriptEngine engine = factory.getEngineByName("JavaScript");
 
-    public AbstractService(RestService rest, String subPath) {
+    public AbstractEndpoint(RestService rest, String subPath) {
         this.rest = rest;
         this.subPath = subPath;
     }

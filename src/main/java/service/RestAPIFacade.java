@@ -1,7 +1,7 @@
 package service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import rest.Module;
+import rest.RestService;
 
 /**
  * класс в который сведены все сервисы необходимые для работы системы
@@ -12,19 +12,21 @@ import rest.Module;
  return someService;
  }
  */
-public class Actions extends AbstractModule {
-    private AuthService authService;
+public class RestAPIFacade {
+    private RestService rest;
 
+    private AuthEndpoint authEndpoint;
 
-    public Actions(String tgt) throws JsonProcessingException {
-        super(Module.NONE,tgt);
+    public RestAPIFacade(String tgt)
+            throws JsonProcessingException {
+        this.rest = new RestService(tgt);
     }
 
-    public AuthService authService() {
-        if(null == authService) authService = new AuthService(rest);
-        return authService;
+    public AuthEndpoint getAuthEndpoint() {
+        if (null == authEndpoint){
+            authEndpoint = new AuthEndpoint(rest);
+        }
+        return authEndpoint;
     }
-
-
 }
 

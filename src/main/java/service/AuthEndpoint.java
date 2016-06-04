@@ -1,6 +1,5 @@
 package service;
 
-import dto.*;
 import rest.RestService;
 
 import java.io.IOException;
@@ -11,9 +10,9 @@ import java.io.IOException;
  * пример функции логина закоментирован
  * для каждой группы функций создается свой класс типа SomeService с описанием набора необходимых методов
  */
-public class AuthService extends AbstractService {
+public class AuthEndpoint extends AbstractEndpoint {
 
-    public AuthService(RestService rest) {
+    public AuthEndpoint(RestService rest) {
         super(rest, "/{main_path}");
     }
 

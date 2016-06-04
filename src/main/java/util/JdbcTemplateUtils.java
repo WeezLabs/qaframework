@@ -3,7 +3,6 @@ package util;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
-import rest.Module;
 
 import java.util.ResourceBundle;
 
@@ -24,14 +23,6 @@ public class JdbcTemplateUtils {
         SQL_USER = rbDB.getString("db.username");
         SQL_PASSWORD = rbDB.getString("db.password");
         jdbcTemplatePg  = jdbcTemplatePg();
-
-    }
-
-    protected JdbcTemplateUtils(Module module){
-        SQL_URL = rbDB.getString(module.getModuleName()+".url").replaceAll("(.+?)(\\$\\{"+module.getModuleName()+"-server})(.+)", "$1"+rbDB.getString(module.getModuleName()+".defaultServer")+"$3");
-        SQL_USER = rbDB.getString(module.getModuleName()+".username");
-        SQL_PASSWORD = rbDB.getString(module.getModuleName()+".password");
-        jdbcTemplatePg = jdbcTemplatePg();
     }
 
     public BasicDataSource dataSourcePg() {
@@ -42,6 +33,7 @@ public class JdbcTemplateUtils {
         dbcp.setPassword(SQL_PASSWORD);
         return dbcp;
     }
+
     private JdbcTemplate jdbcTemplatePg() {
         return new JdbcTemplate(dataSourcePg());
     }

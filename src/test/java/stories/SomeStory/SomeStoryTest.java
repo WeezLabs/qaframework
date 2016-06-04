@@ -1,5 +1,6 @@
 package stories.SomeStory;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import ddto.DdtDataProvider;
 import ddto.DdtoSet;
@@ -9,7 +10,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import service.Actions;
+import service.RestAPIFacade;
 import stories.AbstractTestV2;
 import util.SoftAssert;
 
@@ -22,7 +23,7 @@ import java.util.Map;
  */
 public class SomeStoryTest extends AbstractTestV2 {
     protected final String DDT_DATA_PATH = "/ddt/"; //путь к файлам с входными данными
-    private Actions actions;// переменная со всеми необходимыми методами
+    private RestAPIFacade restAPIFacade;// переменная со всеми необходимыми методами
 
 
     //обработка конкретного входного файла
@@ -32,15 +33,16 @@ public class SomeStoryTest extends AbstractTestV2 {
         return ddtDataProvider.ddtProvider(context, "jsonDdtFile", DDT_DATA_PATH);
     }
 
-    //получение и логин тестовым пользователем actions = new Actions(user.getTgt().обращение_к_функции_получения_токена);
+    //получение и логин тестовым пользователем restAPIFacade = new RestAPIFacade(user.getTgt().обращение_к_функции_получения_токена);
     // токен сохраняется в AuthenticatedResponseModel
-    //если логин не нужен оставляем actions = new Actions(null);
+    //если логин не нужен оставляем restAPIFacade = new RestAPIFacade(null);
 
     @BeforeClass(dependsOnMethods = "setTestDescription")
-    public void precondition()  {
+    public void precondition()
+            throws JsonProcessingException {
         // если пользователя надо создавать в самом тесте то в параметрах xml сьюта убираем входные параметры логин\пароль и создаем пользователя
         //user = new User(userName, userPassword);
-        actions = new Actions(null);
+        restAPIFacade = new RestAPIFacade(null);
     }
 
     @AfterMethod
@@ -52,7 +54,7 @@ public class SomeStoryTest extends AbstractTestV2 {
             dataProvider = "ddtManager")
     public void createCharacterTest(Map ddtSetMap) throws IOException, SQLException, InterruptedException {
         //{SomeClass} - меняется на тот что необходим в дата провайдере для конкретного теста
-        DdtoSet<{SomeClass}> ddtSet = mapper.convertValue(ddtSetMap, new TypeReference<DdtoSet<SomeClass>>() {
+        DdtoSet<SomeClass> ddtSet = mapper.convertValue(ddtSetMap, new TypeReference<DdtoSet<SomeClass>>() {
         });
         caseId = ddtSet.getTestCaseId();
         String cd = testDescription + "\nedit profile test\nsetId:" + ddtSet.getSetId() + "\n" + ddtSet.getDescription() + "\n(caseId:" + caseId + ")\n[ERROR] ";

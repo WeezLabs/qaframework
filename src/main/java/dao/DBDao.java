@@ -1,6 +1,10 @@
 package dao;
 
+import org.springframework.jdbc.datasource.DataSourceUtils;
 import util.JdbcTemplateUtils;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 
 
 /**
@@ -25,11 +29,9 @@ import util.JdbcTemplateUtils;
  }
  */
 public class DBDao extends JdbcTemplateUtils {
-
-    public void closeConnection() throws SQLException {
-        Connection con1 = DataSourceUtils.getConnection( jdbcTemplatePg.getDataSource());
-        con1.close();
+    public void closeConnection()
+            throws SQLException {
+        Connection con = DataSourceUtils.getConnection(jdbcTemplatePg.getDataSource());
+        con.close();
     }
-
-
 }
