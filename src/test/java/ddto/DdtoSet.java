@@ -30,8 +30,14 @@ public class DdtoSet<T> extends AbstractDdtoSet {
     }
 
     public Object valueOf(Object o){
-        if(o instanceof String && ((String) o).trim().equals("null")) return null;
-        if(o instanceof BigDecimal && o.equals(BigDecimal.ZERO)) return null;
+        if(o instanceof String && ((String) o).trim().equals("null")) {
+            return null;
+        }
+
+        if(o instanceof BigDecimal && o.equals(BigDecimal.ZERO) ){
+            return null;
+        }
+
         return o;
     }
 

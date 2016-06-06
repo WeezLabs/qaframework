@@ -7,10 +7,9 @@ import org.testng.collections.Maps;
 import java.util.Map;
 
 /**
- * обработчик ошибок
+ * "Soft" assert class. All asserts will fire after assertAll call.
  */
 public class SoftAssert extends Assertion {
-
     private Map<AssertionError, IAssert> m_errors = Maps.newLinkedHashMap();
 
     private StringBuilder description;
@@ -19,7 +18,7 @@ public class SoftAssert extends Assertion {
     }
 
     public SoftAssert(String description) {
-        if(description!=null) {
+        if (description != null) {
             this.description = new StringBuilder(description);
         }
     }
@@ -34,15 +33,23 @@ public class SoftAssert extends Assertion {
         }
     }
 
+    /**
+     * Fire all asserts.
+     */
     public void assertAll() {
-        if (! m_errors.isEmpty()) {
-//            StringBuilder sb = new StringBuilder("The following asserts failed:\n");
-            StringBuilder sb = null;
-            if(description==null){
-                sb = new StringBuilder("\nFail count: ").append(m_errors.size()).append("\nThe following asserts failed:\n");
+        if (!m_errors.isEmpty()) {
+            StringBuilder sb;
+            if (description == null) {
+                sb = new StringBuilder("\nFail count: ")
+                        .append(m_errors.size())
+                        .append("\nThe following asserts failed:\n");
             } else {
-                sb = new StringBuilder(description.append("\nFail count: ").append(m_errors.size()).append("\nThe following asserts failed:\n"));
+                sb = new StringBuilder(description
+                                               .append("\nFail count: ")
+                                               .append(m_errors.size())
+                                               .append("\nThe following asserts failed:\n"));
             }
+
             boolean first = true;
             int cnt = 1;
             for (Map.Entry<AssertionError, IAssert> ae : m_errors.entrySet()) {
@@ -54,16 +61,26 @@ public class SoftAssert extends Assertion {
                 sb.append("\n[FAIL #").append(cnt).append("]\n").append(ae.getValue().getMessage());
                 cnt++;
             }
+
             sb.append("\n\n");
             throw new AssertionError(sb.toString());
         }
-
     }
 
+    /**
+     * Set {@link SoftAssert} description.
+     *
+     * @param description description.
+     */
     public void setDescription(String description) {
         this.description = new StringBuilder(description);
     }
 
+    /**
+     * Append {@link SoftAssert} description.
+     *
+     * @param description description.
+     */
     public void appendDescription(String description){
         this.description.append(description);
     }

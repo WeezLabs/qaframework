@@ -1,12 +1,12 @@
 [
-  //задаем входные данные
+  // Input data
   {
     "setId": 1,
     "description": "описание",
     "testCaseId": 0,
     "statusCode": 0,
     "dto": {
-      входные поля
+      // Input object
     }
   }
 ]

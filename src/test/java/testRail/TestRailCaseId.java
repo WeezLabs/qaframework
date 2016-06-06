@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Created by Kichkaylo on 07.11.14.
+ * Annotation for TestRail case id.
  */
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target(value = {ElementType.FIELD,ElementType.METHOD})

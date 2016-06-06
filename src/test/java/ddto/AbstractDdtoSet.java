@@ -1,15 +1,15 @@
 package ddto;
 
 /**
- * класс с постоянными и необходимыми полями в дата провайдере
- * сюда входят те поля что присутствуют в любом тесте
+ * Class with permanent and necessary fields in the data provider.
+ * These include the fields that are present in any test.
  */
 public abstract class AbstractDdtoSet {
     private Integer setId;
     private Integer testCaseId;
     private String description;
 
-// true - not removed in precondition
+    // true - not removed in precondition
     private boolean notRemoved;
 
     public Integer getSetId() {

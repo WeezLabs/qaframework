@@ -2,6 +2,9 @@ package stories.SomeStory;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import ddto.DdtDataProvider;
 import ddto.DdtoSet;
 import dto.SomeClass;
@@ -11,7 +14,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import service.RestAPIFacade;
-import stories.AbstractTestV2;
+import stories.BaseTest;
 import util.SoftAssert;
 
 import java.io.IOException;
@@ -21,9 +24,12 @@ import java.util.Map;
 /**
  * Created by Maria on 24.03.2016.
  */
-public class SomeStoryTest extends AbstractTestV2 {
-    protected final String DDT_DATA_PATH = "/ddt/"; //путь к файлам с входными данными
+public class SomeStoryTest extends BaseTest {
+    private static final String DDT_DATA_PATH = "/ddt/"; //путь к файлам с входными данными
     private RestAPIFacade restAPIFacade;// переменная со всеми необходимыми методами
+    private ObjectMapper mapper = new ObjectMapper().
+            configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false).
+            enable(SerializationFeature.INDENT_OUTPUT);
 
 
     //обработка конкретного входного файла

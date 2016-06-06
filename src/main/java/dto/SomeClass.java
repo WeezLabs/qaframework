@@ -1,7 +1,7 @@
 package dto;
 
 /**
- * папка предназначена для входных и выходных моделей данных для апи методов
+ * Example of DTO object.
  */
 public class SomeClass {
 }

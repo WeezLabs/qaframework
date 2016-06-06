@@ -17,10 +17,10 @@ import java.util.ResourceBundle;
  * To change this template use File | Settings | File Templates.
  */
 public class TestRailRest {
-    protected static ResourceBundle rb = ResourceBundle.getBundle("testrail");
-    protected final static String TestRail_LOGIN = rb.getString("TestRail_LOGIN");
-    protected final static String TestRail_PASSWORD = rb.getString("TestRail_PASSWORD");
-    protected final static String TestRail_API_KEY = rb.getString("TestRail_API_KEY");
+    private static ResourceBundle rb = ResourceBundle.getBundle("testrail");
+    private final static String TestRail_LOGIN = rb.getString("TestRail_LOGIN");
+    private final static String TestRail_PASSWORD = rb.getString("TestRail_PASSWORD");
+    private final static String TestRail_API_KEY = rb.getString("TestRail_API_KEY");
     private final static String TestRail_URI = rb.getString("TestRail_URI");
 
     private static RequestSpecBuilder requestTestRailSpecBuilder = new RequestSpecBuilder();
@@ -28,8 +28,6 @@ public class TestRailRest {
 
     private static ResponseSpecBuilder responseTestRailSpecBuilder = new ResponseSpecBuilder();
     private static ResponseSpecification responseTestRailSpec = responseTestRailSpecBuilder.build();
-
-//    private static Map<String,String> cookies = null;
 
     public static void postTestResult(int runId, int caseId, int testResult, String comment){
         HashMap params = new HashMap();

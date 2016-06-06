@@ -6,9 +6,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation for TestRail run id.
+ * Annotation for TestRail defects.
  */
 @Retention(value = RetentionPolicy.RUNTIME)
-@Target(value = {ElementType.FIELD})
-public @interface TestRailRunId {
+@Target(value = {ElementType.FIELD,ElementType.METHOD})
+public @interface TestRailDefects {
+    String defects() default "";
 }
