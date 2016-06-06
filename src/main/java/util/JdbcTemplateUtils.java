@@ -14,7 +14,7 @@ public class JdbcTemplateUtils {
     private String SQL_URL;
     private String SQL_USER;
     private String SQL_PASSWORD;
-    private JdbcTemplate jdbcTemplatePg;
+    protected JdbcTemplate jdbcTemplatePg;
 
     protected ObjectMapper mapper = new ObjectMapper();
 

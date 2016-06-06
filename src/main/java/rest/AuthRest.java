@@ -11,20 +11,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * первонас=чальная идентификация пользователя - логин
- * необходимо заменить путь и параметры в пост запросе в соотвествии с особенностями проекта
+ * User authentication.
  */
 public class AuthRest {
-    private static final ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper();
 
-    private AuthRest() {}
+    public AuthRest() {}
 
-    public static AuthenticatedResponseModel postTickets(String userName, String password)
+    public AuthenticatedResponseModel postTickets(String userName, String password)
             throws IOException {
-        /* здесь надо для каждого проекта индивидуально написать функцию создания пользователя если его не существует
-           и логина только что созданным пользователем  при необходимости создание пользователя можно
-           в конструктор класса domain.User, а в данном классе только вызывать логин пользователя
-           по полученным логин\пароль.
+        /*
+        Here we need to write authentication procedure for our project.
+
         Response response;
 
         Map<String, String> parameters = new HashMap<>();

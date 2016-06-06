@@ -1,13 +1,12 @@
 package ddto;
 
-/*
-*класс для формирования дата провайдера
-* необходим для того чтобв не писать свой класс для каждого отдельного теста
-* в переменной dto может быть любой класс и src/main/java/dto или при необходимости любой другой написанный специально для конкретного теста,
-* если существующие классы не удовлетворяют необходимым условиям
-*/
+
 import java.math.BigDecimal;
 
+/**
+ * Class for creating data provider (ddto).
+ * Inside dto variable you can use any class from src/main/java/dto or write another class specific to your test.
+ */
 public class DdtoSet<T> extends AbstractDdtoSet {
     private T dto;
     private int statusCode;
@@ -30,11 +29,11 @@ public class DdtoSet<T> extends AbstractDdtoSet {
     }
 
     public Object valueOf(Object o){
-        if(o instanceof String && ((String) o).trim().equals("null")) {
+        if (o instanceof String && ((String) o).trim().equals("null")) {
             return null;
         }
 
-        if(o instanceof BigDecimal && o.equals(BigDecimal.ZERO) ){
+        if (o instanceof BigDecimal && o.equals(BigDecimal.ZERO) ){
             return null;
         }
 

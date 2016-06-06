@@ -1,7 +1,7 @@
 package dto;
 
 /**
- * класс используется для получения первичной идентификации пользователя. по простому результат логина. необходимо заполнить соотвествующими для каждого проекта полями
+ * Class for user authentication data (login, access token etc.).
  */
 public class AuthenticatedResponseModel {
 }

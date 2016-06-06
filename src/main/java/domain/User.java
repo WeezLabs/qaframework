@@ -13,32 +13,35 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 /**
- * класс для сохранения данных залогиненого пользователя
- * поля дополняются при необходимости
+ * Class that hides the details of user creation.
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class User {
     @JsonIgnore
-    protected Integer id;
-    protected String email;
-    protected String password;
-    @JsonIgnore
-    protected AuthenticatedResponseModel tgt;
-    @JsonIgnore
-    protected DBDao dbDao = new DBDao();
-
+    private Integer id;
+    private String login;
+    private String password;
 
     @JsonIgnore
-    public User(String email, String password) throws IOException, SQLException {
-        this.email = email;
+    private AuthenticatedResponseModel tgt;
+
+    @JsonIgnore
+    private DBDao dbDao = new DBDao();
+
+    @JsonIgnore
+    public User(String login, String password, boolean needToLogin)
+            throws IOException, SQLException {
+        this.login = login;
         this.password = password;
-        AuthRest authRest=new AuthRest();
-        //при необходимости можно вынести блок создания пользователя из функции authRest.postTickets в данный конструктор
-        // блок создания пользователя при его отсутсвии должен создаваться под каждый проект индивидуально.
-        this.tgt = authRest.postTickets(email, password);
 
+        // Here we need to write user creation procedure for our project.
+
+        if (needToLogin) {
+            AuthRest authRest = new AuthRest();
+            this.tgt = authRest.postTickets(login, password);
+        }
     }
 
     public User() {
@@ -54,12 +57,12 @@ public class User {
         this.tgt = tgt;
     }
 
-    public String getEmail() {
-        return email;
+    public String getLogin() {
+        return login;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getPassword() {
