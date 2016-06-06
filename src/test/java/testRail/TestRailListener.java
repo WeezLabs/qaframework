@@ -16,7 +16,6 @@ import static testRail.TestRailRest.postTestResult;
  * To change this template use File | Settings | File Templates.
  */
 public class TestRailListener extends TestListenerAdapter {
-
     private static final int PASSED = 1;
     private static final int FAILED = 5;
     private static final int BLOCKED = 2;
@@ -44,29 +43,44 @@ public class TestRailListener extends TestListenerAdapter {
         int mtdCaseId = 0;
         int runId = 0;
         int caseId = 0;
-        String comment = tr.getThrowable()==null ? "" : tr.getThrowable().toString();
-        if(tr.getMethod().getMethod().isAnnotationPresent(TestRail.class)){
+
+        String comment = tr.getThrowable() == null
+                ? ""
+                : tr.getThrowable().toString();
+
+        if (tr.getMethod().getMethod().isAnnotationPresent(TestRail.class)) {
             mtdRunId = tr.getMethod().getMethod().getAnnotation(TestRail.class).runId();
             mtdCaseId = tr.getMethod().getMethod().getAnnotation(TestRail.class).caseId();
-            if(mtdCaseId > 0 && mtdRunId>0){
+
+            if (mtdCaseId > 0 && mtdRunId>0){
                 postTestResult(mtdRunId,mtdCaseId,result,comment);
                 return;
             }
-        } else if(tr.getMethod().getMethod().isAnnotationPresent(TestRailCaseId.class)){
+        } else if (tr.getMethod().getMethod().isAnnotationPresent(TestRailCaseId.class)) {
             caseId = tr.getMethod().getMethod().getAnnotation(TestRailCaseId.class).caseId();
         }
 
-        if(tr.getInstance()!=null){
-            Field[] fields1 = ArrayUtils.addAll(tr.getInstance().getClass().getDeclaredFields(),
-                    tr.getInstance().getClass().getSuperclass().getDeclaredFields());
-            Field[] fields = null;
-            if(tr.getInstance().getClass().getSuperclass().getSuperclass()!=null){
-                fields = ArrayUtils.addAll(fields1, tr.getInstance().getClass().getSuperclass().getSuperclass().getDeclaredFields());
+        if (tr.getInstance() != null) {
+            Field[] fields1 =
+                    ArrayUtils.addAll(
+                            tr.getInstance().getClass().getDeclaredFields(),
+                            tr.getInstance().getClass().getSuperclass().getDeclaredFields());
+
+            Field[] fields;
+            if (tr.getInstance().getClass().getSuperclass().getSuperclass() != null) {
+                fields =
+                        ArrayUtils.addAll(
+                                fields1,
+                                tr.getInstance().getClass().getSuperclass().getSuperclass().getDeclaredFields());
             } else {
                 fields = fields1;
             }
-            for (Field fld : fields){
-                if(fld.isAnnotationPresent(TestRail.class) && (fld.getType().equals(Integer.class) || fld.getType().equals(int.class))){
+
+            for (Field fld : fields) {
+                if (fld.isAnnotationPresent(TestRail.class) &&
+                    (fld.getType().equals(Integer.class) ||
+                     fld.getType().equals(int.class))) {
+
                     fldRunId = fld.getAnnotation(TestRail.class).runId();
                     try {
                         fld.setAccessible(true);
@@ -74,30 +88,44 @@ public class TestRailListener extends TestListenerAdapter {
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     }
-//                    System.out.println("from listener field: runId="+fldRunId+" caseId="+fldCaseId+" testResult="+tr.getStatus());
-//                    if(fldCaseId > 0 && fldRunId>0){postTestResult(fldRunId,fldCaseId,result,comment);}
-                } else if (fld.isAnnotationPresent(TestRailRunId.class) && (fld.getType().equals(Integer.class) || fld.getType().equals(int.class))){
+                    /*
+                    System.out.println("from listener field: runId=" + fldRunId
+                                       + " caseId=" + fldCaseId +
+                                       " testResult=" + tr.getStatus());
+                    if (fldCaseId > 0 && fldRunId > 0) {
+                        postTestResult(fldRunId, fldCaseId, result, comment);
+                    }
+                    */
+                } else if (fld.isAnnotationPresent(TestRailRunId.class) &&
+                           (fld.getType().equals(Integer.class)
+                            || fld.getType().equals(int.class))) {
+
                     try {
                         fld.setAccessible(true);
                         runId = (Integer) fld.get(tr.getInstance());
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     }
-                } else if(fld.isAnnotationPresent(TestRailCaseId.class) && (fld.getType().equals(Integer.class) || fld.getType().equals(int.class))){
+                } else if (fld.isAnnotationPresent(TestRailCaseId.class) &&
+                           (fld.getType().equals(Integer.class) ||
+                            fld.getType().equals(int.class))){
+
                     try {
                         fld.setAccessible(true);
                         int cId = (Integer) fld.get(tr.getInstance());
-                        if(cId > 0) caseId = cId;
+                        if(cId > 0) {
+                            caseId = cId;
+                        }
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     }
                 }
             }
         }
-        if(runId > 0 && caseId > 0) {
+
+        if (runId > 0 && caseId > 0) {
             postTestResult(runId, caseId, result, comment);
-            return;
-        } else if(fldRunId > 0 && fldCaseId > 0){
+        } else if (fldRunId > 0 && fldCaseId > 0){
             postTestResult(fldRunId, fldCaseId, result, comment);
         }
     }

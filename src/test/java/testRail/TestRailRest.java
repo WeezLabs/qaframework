@@ -33,9 +33,11 @@ public class TestRailRest {
         HashMap params = new HashMap();
         params.put("status_id", testResult);
         params.put("comment",comment);
+
         APIClient client = new APIClient(TestRail_URI);
         client.setUser(TestRail_LOGIN);
         client.setPassword(TestRail_PASSWORD);
+
         try{
 //            if(cookies==null){
 //                cookies = RestAssured.given().
@@ -62,11 +64,13 @@ public class TestRailRest {
             //assert response.getBody().jsonPath().getBoolean("result") : "\nTestRail: sending results failed"+
               //      "\nactual statusCode:"+response.getStatusCode()+
                 //    "\nactual response body:\n"+response.getBody().asString();
-        }catch (Throwable t){
-//todo нужна ли обработка?
-            System.out.println("TestRail send:"+runId+"/"+caseId+" - "+testResult+" >"+comment+" FAILED");
+        } catch (Throwable t){
+            // TODO Do we need processing?
+            System.out.println("TestRail send:" + runId +
+                               "/" + caseId +
+                               " - " + testResult +
+                               " >" + comment + " FAILED");
             System.out.println(t);
         }
     }
-
 }

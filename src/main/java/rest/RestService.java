@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
- * All necessary preparations for RestFul API calls.
+ * Class that will perform HTTP requests.
  */
 public class RestService implements Rest {
     private static final String GET_CONTENT_TYPE = "application/json;charset=UTF-8";
