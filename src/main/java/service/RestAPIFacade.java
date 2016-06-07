@@ -17,7 +17,7 @@ public class RestAPIFacade {
     }
 
     public AuthEndpoint getAuthEndpoint() {
-        if (null == authEndpoint){
+        if (null == authEndpoint) {
             authEndpoint = new AuthEndpoint(rest);
         }
         return authEndpoint;

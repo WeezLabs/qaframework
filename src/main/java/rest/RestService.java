@@ -13,6 +13,7 @@ import com.jayway.restassured.response.Headers;
 import com.jayway.restassured.response.Response;
 import com.jayway.restassured.specification.RequestSpecification;
 import com.jayway.restassured.specification.ResponseSpecification;
+import dto.AuthenticatedResponseModel;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -62,35 +63,9 @@ public class RestService implements Rest {
     private ScriptEngineManager factory = new ScriptEngineManager();
     private ScriptEngine engine = factory.getEngineByName("JavaScript");
 
-    private String st;
-
-    private void setSt(String st) {
-        /*if ((st != null) && (!st.isEmpty())) {
-            this.st = st;
-            STANDARD_HEADERS.put("Authorization", "AccessToken "+st);
-            Map<String,String> xTokenHeader = new HashMap<>();
-            xTokenHeader.put("Authorization", "AccessToken "+st);
-
-            getRequestSpecBuilder.addHeaders(xTokenHeader);
-            getSpecification = getRequestSpecBuilder.build();
-
-            postRequestSpecBuilder.addHeaders(xTokenHeader);
-            postSpecification = postRequestSpecBuilder.build();
-
-            postRequestUnContentSpecBuilder.addHeaders(xTokenHeader);
-            postSpecificationUnContent = postRequestUnContentSpecBuilder.build();
-        }*/
-    }
-
-    public String getSt() {
-        return st;
-    }
+    private String tgt;
 
     public RestService(String tgt) throws JsonProcessingException {
-        if (tgt != null) {
-            setSt(tgt);
-        }
-
         basePath = rb.getString( "_BASE_PATH");
 
         String sslStr = rb.getString("SSL").toLowerCase();
@@ -184,6 +159,55 @@ public class RestService implements Rest {
 
         responseSpecification = responseSpecBuilder.build();
         RestAssured.urlEncodingEnabled = false;
+
+        // Must be called last.
+        if (tgt != null) {
+            setTgt(tgt);
+        }
+    }
+
+    // It should be fixed for a specific project.
+    private void setTgt(String tgt) {
+        /*
+        if ((tgt != null) && (!tgt.isEmpty())) {
+            this.tgt = tgt;
+            STANDARD_HEADERS.put("Authorization", "AccessToken " + tgt);
+            Map<String, String> xTokenHeader = new HashMap<>();
+            xTokenHeader.put("Authorization", "AccessToken " + tgt);
+
+            getRequestSpecBuilder.addHeaders(xTokenHeader);
+            getSpecification = getRequestSpecBuilder.build();
+
+            postRequestSpecBuilder.addHeaders(xTokenHeader);
+            postSpecification = postRequestSpecBuilder.build();
+
+            postRequestUnContentSpecBuilder.addHeaders(xTokenHeader);
+            postSpecificationUnContent = postRequestUnContentSpecBuilder.build();
+        }
+        */
+    }
+
+    public String getTgt() {
+        return tgt;
+    }
+
+    public AuthenticatedResponseModel postTickets(String userName, String password)
+            throws IOException {
+        /*
+        Here we need to write authentication procedure for our project.
+
+        Response response;
+
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("grant_type","password");
+        parameters.put("username",userName);
+        parameters.put("password",password);
+
+        response = RestAssured.post("/account/signin", null, parameters, 200, "sign in");
+        return mapper.readValue(response.asString(), new TypeReference<AuthenticatedResponseModel>() {});
+        */
+
+        return null;
     }
 
     protected void checkStatusCode(Response response, int expectedStatusCode) {

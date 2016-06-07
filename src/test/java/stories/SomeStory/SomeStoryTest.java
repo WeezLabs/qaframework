@@ -1,6 +1,5 @@
 package stories.SomeStory;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,7 +42,7 @@ public class SomeStoryTest extends BaseRestFulTest {
 
     @BeforeClass(dependsOnMethods = "setTestDescription")
     public void precondition()
-            throws JsonProcessingException {
+            throws IOException {
         // If you want to perform REST API calls with user credentials:
         //      restAPIFacade = new RestAPIFacade(user.getTgt().method_to_get_token);
         // Token is stored inside the AuthenticatedResponseModel.
@@ -54,15 +53,17 @@ public class SomeStoryTest extends BaseRestFulTest {
     }
 
     @BeforeMethod
-    public void beforeMethod() throws IOException, InterruptedException {
+    public void beforeMethod()
+            throws IOException, InterruptedException, SQLException {
         // Pre processing before each method call if needed.
 
         // For example you can create test user.
-        testUser = new User();
+        testUser = new User("login", "password", false);
     }
 
     @AfterMethod
-    public void afterMethod() throws IOException, InterruptedException {
+    public void afterMethod()
+            throws IOException, InterruptedException {
         // Post processing after each method call if needed.
     }
 

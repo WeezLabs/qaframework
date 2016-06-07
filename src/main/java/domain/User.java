@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import dao.DBDao;
 import dto.AuthenticatedResponseModel;
-import rest.AuthRest;
+import rest.RestService;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -37,10 +37,9 @@ public class User {
         this.password = password;
 
         // Here we need to write user creation procedure for our project.
-
         if (needToLogin) {
-            AuthRest authRest = new AuthRest();
-            this.tgt = authRest.postTickets(login, password);
+            RestService rest = new RestService(null);
+            this.tgt = rest.postTickets(login, password);
         }
     }
 
