@@ -1,8 +1,6 @@
-package dto;
+package model.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -14,17 +12,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 @JsonInclude(JsonInclude.Include.ALWAYS)
-public class SomeClass {
+public class GeoPoint {
 /*  private Number latitude;
     private Number longitude;
 
     @JsonIgnore
-    public SomeClass(Number latitude, Number longitude) {
+    public GeoPoint(Number latitude, Number longitude) {
         this.latitude = (double)(int)(latitude.doubleValue() * 1000000) / 1000000;
         this.longitude = (double)(int)(longitude.doubleValue() * 1000000) / 1000000;
     }
 
-    public SomeClass() {
+    public GeoPoint() {
     }
 
     public Number getLatitude() {

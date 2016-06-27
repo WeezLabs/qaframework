@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import ddto.DdtDataProvider;
 import ddto.DdtoSet;
 import domain.User;
-import dto.SomeClass;
+import model.dto.GeoPoint;
 import org.testng.ITestContext;
 import org.testng.annotations.*;
 import service.RestAPIFacade;
@@ -71,9 +71,9 @@ public class SomeStoryTest extends BaseRestFulTest {
           dataProvider = "ddtManager")
     public void createCharacterTest(Map ddtSetMap)
             throws IOException, SQLException, InterruptedException {
-        // {SomeClass} - DTO class from data provider.
-        DdtoSet<SomeClass> ddtSet =
-                mapper.convertValue(ddtSetMap, new TypeReference<DdtoSet<SomeClass>>() {});
+        // {GeoPoint} - DTO class from data provider.
+        DdtoSet<GeoPoint> ddtSet =
+                mapper.convertValue(ddtSetMap, new TypeReference<DdtoSet<GeoPoint>>() {});
         caseId = ddtSet.getTestCaseId();
         String cd = testDescription + "\nedit profile test\nsetId:" + ddtSet.getSetId() +
                     "\n" + ddtSet.getDescription() +

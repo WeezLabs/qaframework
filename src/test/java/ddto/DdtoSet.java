@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 
 /**
  * Class for creating data provider (ddto).
- * Inside dto variable you can use any class from src/main/java/dto or write another class specific to your test.
+ * Inside dto variable you can use any class from src/main/java/model or write another class specific to your test.
  */
 public class DdtoSet<T> extends AbstractDdtoSet {
     private T dto;

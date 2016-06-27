@@ -3,7 +3,7 @@ package domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import dao.DBDao;
-import dto.AuthenticatedResponseModel;
+import model.dto.AuthenticatedResponseModel;
 import rest.RestService;
 
 import javax.xml.bind.annotation.XmlAccessType;

@@ -13,7 +13,7 @@ import com.jayway.restassured.response.Headers;
 import com.jayway.restassured.response.Response;
 import com.jayway.restassured.specification.RequestSpecification;
 import com.jayway.restassured.specification.ResponseSpecification;
-import dto.AuthenticatedResponseModel;
+import model.dto.AuthenticatedResponseModel;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;

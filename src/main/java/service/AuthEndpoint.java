@@ -2,7 +2,7 @@ package service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.jayway.restassured.response.Response;
-import dto.AuthenticatedResponseModel;
+import model.dto.AuthenticatedResponseModel;
 import rest.RestService;
 
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package dto;
+package model.dto;
 
 /**
  * Class for user authentication data (login, access token etc.).
