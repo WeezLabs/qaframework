@@ -1,4 +1,4 @@
-package stories;
+package test;
 
 /**
  * Base class for RestFul services tests.

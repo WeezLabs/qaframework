@@ -1,4 +1,4 @@
-package service;
+package rest.endpoint;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.jayway.restassured.response.Response;
@@ -8,7 +8,7 @@ import rest.RestService;
 import java.io.IOException;
 
 /**
- * Example of the RestFul endpoint class.
+ * Example of the RestFul rest.endpoint class.
  */
 public class AuthEndpoint extends AbstractEndpoint {
     public AuthEndpoint(RestService rest) {

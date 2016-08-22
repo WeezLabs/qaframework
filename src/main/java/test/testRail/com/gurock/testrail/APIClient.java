@@ -9,7 +9,7 @@
  * Copyright Gurock Software GmbH. See license.md for details.
  */
  
-package testRail.com.gurock.testrail;
+package test.testRail.com.gurock.testrail;
 
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -82,7 +82,7 @@ public class APIClient
 	 * is basically the same as java.util.Map.
 	 */
 	public Object sendGet(String uri)
-		throws MalformedURLException, IOException, testRail.com.gurock.testrail.APIException
+		throws MalformedURLException, IOException, test.testRail.com.gurock.testrail.APIException
 	{
 		return this.sendRequest("GET", uri, null);
 	}

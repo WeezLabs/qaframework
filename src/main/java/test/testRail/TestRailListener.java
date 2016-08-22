@@ -1,4 +1,4 @@
-package testRail;
+package test.testRail;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.testng.ITestResult;
@@ -6,7 +6,7 @@ import org.testng.TestListenerAdapter;
 
 import java.lang.reflect.Field;
 
-import static testRail.TestRailRest.postTestResult;
+import static test.testRail.TestRailRest.postTestResult;
 
 /**
  * Created with IntelliJ IDEA.

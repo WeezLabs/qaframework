@@ -1,4 +1,4 @@
-package dao;
+package db;
 
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import util.JdbcTemplateUtils;

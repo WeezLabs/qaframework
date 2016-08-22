@@ -1,8 +1,11 @@
-package stories;
+package test;
 
 import org.testng.ITestContext;
 import org.testng.annotations.*;
-import testRail.*;
+import test.testRail.TestRailCaseId;
+import test.testRail.TestRailDefects;
+import test.testRail.TestRailDescription;
+import test.testRail.TestRailRunId;
 
 import java.util.Map;
 

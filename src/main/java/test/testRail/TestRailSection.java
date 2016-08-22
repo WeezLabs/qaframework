@@ -1,4 +1,4 @@
-package testRail;
+package test.testRail;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

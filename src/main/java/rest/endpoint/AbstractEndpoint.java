@@ -1,4 +1,4 @@
-package service;
+package rest.endpoint;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Base class for RestFul endpoint calls.
+ * Base class for RestFul rest.endpoint calls.
  */
 public abstract class AbstractEndpoint {
     private RestService rest;

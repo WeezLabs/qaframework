@@ -6,7 +6,7 @@ import com.jayway.restassured.response.Response;
 import java.util.Map;
 
 /**
- * Interface that Rest service classes must implement.
+ * Interface that Rest rest.endpoint classes must implement.
  */
 public interface Rest {
     Response get(String methodPath, Map headers, int expectedStatusCode, String description)

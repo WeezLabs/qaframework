@@ -1,7 +1,7 @@
-package service;
+package rest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import rest.RestService;
+import rest.endpoint.AuthEndpoint;
 
 /**
  * Class for access to all RestFul endpoints.

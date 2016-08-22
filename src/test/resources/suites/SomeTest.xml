@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suite name="Test name" parallel="tests" thread-count="1">
     <listeners>
-        <listener class-name="testRail.TestRailListener"/>
+        <listener class-name="test.testRail.TestRailListener"/>
     </listeners>
 
     <test name="check login test">

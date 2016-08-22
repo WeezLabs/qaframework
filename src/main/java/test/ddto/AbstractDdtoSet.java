@@ -1,4 +1,4 @@
-package ddto;
+package test.ddto;
 
 /**
  * Class with permanent and necessary fields in the data provider.

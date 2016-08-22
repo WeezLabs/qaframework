@@ -1,10 +1,10 @@
-package testRail;
+package test.testRail;
 
 import com.jayway.restassured.builder.RequestSpecBuilder;
 import com.jayway.restassured.builder.ResponseSpecBuilder;
 import com.jayway.restassured.specification.RequestSpecification;
 import com.jayway.restassured.specification.ResponseSpecification;
-import testRail.com.gurock.testrail.APIClient;
+import test.testRail.com.gurock.testrail.APIClient;
 
 import java.util.HashMap;
 import java.util.ResourceBundle;
