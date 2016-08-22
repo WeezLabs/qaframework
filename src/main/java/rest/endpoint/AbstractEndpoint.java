@@ -43,23 +43,20 @@ public abstract class AbstractEndpoint {
         return subPath;
     }
 
-    public Response get(String method,  String description)
-            throws IOException, InterruptedException {
+    public Response get(String method,  String description) throws IOException {
         return get(method, 200, description);
     }
 
-    public Response get(String method, Map<String,String> headers, String description)
-            throws IOException, InterruptedException {
+    public Response get(String method, Map<String,String> headers, String description) throws IOException {
         return get(method, headers, 200, description);
     }
 
     public Response get(String method, Map<String,String> headers, int expectedStatusCode, String description)
-            throws IOException, InterruptedException {
+            throws IOException {
         return rest.get(subPath + method, headers, expectedStatusCode, description);
     }
 
-    public Response get(String method, int expectedStatusCode, String description)
-            throws IOException, InterruptedException {
+    public Response get(String method, int expectedStatusCode, String description) throws IOException {
         Map<String,String> headers = new HashMap<>();
         return rest.get(subPath + method, headers, expectedStatusCode, description);
     }

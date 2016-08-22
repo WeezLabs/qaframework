@@ -9,8 +9,7 @@ import java.util.Map;
  * Interface that Rest rest.endpoint classes must implement.
  */
 public interface Rest {
-    Response get(String methodPath, Map headers, int expectedStatusCode, String description)
-            throws InterruptedException;
+    Response get(String methodPath, Map headers, int expectedStatusCode, String description);
 
     Response get(String methodPath, Map headers, Map parameters, int expStatusCode, String description);
 

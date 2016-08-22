@@ -337,10 +337,8 @@ public class RestService implements Rest {
     // =================================================
 
     @Override
-    public Response get(String methodPath, Map headers, int expStatusCode, String description)
-            throws InterruptedException {
+    public Response get(String methodPath, Map headers, int expStatusCode, String description) {
         // headers.putAll(ADDITIONAL_HEADERS);
-
         Response response;
         try {
             if (null == headers) {

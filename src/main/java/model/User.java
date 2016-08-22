@@ -10,7 +10,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.IOException;
-import java.sql.SQLException;
 
 /**
  * Class that hides the details of user creation.
@@ -32,7 +31,7 @@ public class User {
 
     @JsonIgnore
     public User(String login, String password, boolean needToLogin)
-            throws IOException, SQLException {
+            throws IOException {
         this.login = login;
         this.password = password;
 

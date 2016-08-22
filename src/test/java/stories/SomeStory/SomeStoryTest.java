@@ -15,7 +15,6 @@ import util.ddto.DdtDataProvider;
 import util.ddto.DdtoSet;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Map;
 
 /**
@@ -53,8 +52,7 @@ public class SomeStoryTest extends BaseRestFulTest {
     }
 
     @BeforeMethod
-    public void beforeMethod()
-            throws IOException, InterruptedException, SQLException {
+    public void beforeMethod() throws IOException{
         // Pre processing before each method call if needed.
 
         // For example you can create test user.
@@ -62,15 +60,13 @@ public class SomeStoryTest extends BaseRestFulTest {
     }
 
     @AfterMethod
-    public void afterMethod()
-            throws IOException, InterruptedException {
+    public void afterMethod() throws IOException {
         // Post processing after each method call if needed.
     }
 
     @Test(description = "Test description",
           dataProvider = "ddtManager")
-    public void createCharacterTest(Map ddtSetMap)
-            throws IOException, SQLException, InterruptedException {
+    public void createCharacterTest(Map ddtSetMap) throws IOException {
         // {GeoPoint} - DTO class from data provider.
         DdtoSet<GeoPoint> ddtSet =
                 mapper.convertValue(ddtSetMap, new TypeReference<DdtoSet<GeoPoint>>() {});
