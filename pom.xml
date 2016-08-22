@@ -12,7 +12,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <org.springframework.version>4.2.6.RELEASE</org.springframework.version>
 
-
         <!-- путь к тестовым классам -->
         <testClassesDir>${basedir}/target/test-classes</testClassesDir>
         <suiteDir>${testClassesDir}/suites</suiteDir>
@@ -110,12 +109,6 @@
             <groupId>org.hornetq</groupId>
             <artifactId>hornetq-jms-client</artifactId>
             <version>2.4.7.Final</version>
-        </dependency>
-
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-            <version>2.9.4</version>
         </dependency>
 
         <dependency>

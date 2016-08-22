@@ -1,6 +1,8 @@
 package model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -13,7 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 @JsonInclude(JsonInclude.Include.ALWAYS)
 public class GeoPoint {
-/*  private Number latitude;
+  private Number latitude;
     private Number longitude;
 
     @JsonIgnore
@@ -42,5 +44,4 @@ public class GeoPoint {
     public void setLongitude(Number longitude) {
         this.longitude = longitude;
     }
-*/
 }
