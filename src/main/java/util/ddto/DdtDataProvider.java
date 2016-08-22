@@ -1,4 +1,4 @@
-package test.ddto;
+package util.ddto;
 
 
 import com.fasterxml.jackson.core.type.TypeReference;

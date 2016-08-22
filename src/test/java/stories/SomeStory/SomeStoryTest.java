@@ -10,9 +10,9 @@ import org.testng.ITestContext;
 import org.testng.annotations.*;
 import rest.RestAPIFacade;
 import test.BaseRestFulTest;
-import test.ddto.DdtDataProvider;
-import test.ddto.DdtoSet;
 import util.SoftAssert;
+import util.ddto.DdtDataProvider;
+import util.ddto.DdtoSet;
 
 import java.io.IOException;
 import java.sql.SQLException;
