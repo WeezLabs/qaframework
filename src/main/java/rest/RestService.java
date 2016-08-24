@@ -538,8 +538,9 @@ public class RestService implements Rest {
                     when().
                     post(methodPath);
         } catch (Exception e) {
-            throw new RuntimeException(description +
-                            requestDescription("POST " + basePath + methodPath, null, null, null, 3) + "\n" + e);
+            throw new RuntimeException(
+                    description +
+                    requestDescription("POST " + basePath + methodPath, null, null, null, 3) + "\n" + e);
         }
 
         checkStatusCode("POST " + basePath + methodPath, response, expStatusCode, null, null, null, description);
@@ -641,13 +642,15 @@ public class RestService implements Rest {
                        value instanceof Double ||
                        value instanceof BigDecimal) {
                 valueStr = value.toString();
-            } else
+            } else {
                 try {
                     valueStr = mapper.writeValueAsString(value);
                 } catch (JsonProcessingException e) {
                     valueStr = "!!! unknown object !!!";
                     e.printStackTrace();
                 }
+            }
+
             if (valueStr.contains("{")) {
                 valueStr = jsonStringPretty(value.toString()).replaceAll("\r\n", "\r\n\t");
             }
