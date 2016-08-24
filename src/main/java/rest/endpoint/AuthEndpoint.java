@@ -21,7 +21,7 @@ public class AuthEndpoint extends AbstractEndpoint {
      * @param email email of the user.
      * @param password password of the user.
      * @return authentication data of the user.
-     * @throws IOException
+     * @throws IOException in case of problems with sign in.
      */
 
     public AuthenticatedResponseModel signIn(String email, String password)
@@ -39,7 +39,7 @@ public class AuthEndpoint extends AbstractEndpoint {
      * @param StatusCode expected status code.
      * @param description description of your request.
      * @return authentication data of the user.
-     * @throws IOException
+     * @throws IOException in case of problems with sign in.
      */
     public Response signIn(String email, String password, Integer StatusCode, String description)
             throws IOException {

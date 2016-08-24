@@ -19,7 +19,7 @@ public class EmailUtil {
         private Flags.Flag flag;
         private boolean value;
 
-        private Scope(Flags.Flag f, boolean v) {
+        Scope(Flags.Flag f, boolean v) {
             flag = f;
             value = v;
         }
@@ -59,8 +59,6 @@ public class EmailUtil {
             store = session.getStore();
             store.connect(host, emailAddress, password);
             storeMap.put(emailAddress, store);
-        } catch (NoSuchProviderException e) {
-            e.printStackTrace();
         } catch (MessagingException e) {
             e.printStackTrace();
         }
@@ -77,8 +75,6 @@ public class EmailUtil {
             folder.open(Folder.READ_WRITE);
             folderMap.put(fullEmail, folder);
         } catch (MessagingException e) {
-            e.printStackTrace();
-        } catch (IllegalStateException e) {
             e.printStackTrace();
         }
 
@@ -212,8 +208,6 @@ public class EmailUtil {
 
             inbox.close(true);
             store.close();
-        } catch (NoSuchProviderException e) {
-            e.printStackTrace();
         } catch (MessagingException e) {
             e.printStackTrace();
         }
@@ -240,8 +234,6 @@ public class EmailUtil {
 
             inbox.close(true);
             store.close();
-        } catch (NoSuchProviderException e) {
-            e.printStackTrace();
         } catch (MessagingException e) {
             e.printStackTrace();
         }
@@ -290,7 +282,7 @@ public class EmailUtil {
         props.setProperty("mail.store.protocol", "imaps");
         props.put("mail.imaps.ssl.trust", "*");
         Session session = Session.getDefaultInstance(props, null);
-        Store store = null;
+        Store store;
 //        try {
         store = session.getStore();
         store.connect(host, emailAddress, password);
@@ -383,10 +375,12 @@ public class EmailUtil {
 
     public static String getActivationInitiator(String activationEmail) {
         return activationEmail == null ? "" :
-                activationEmail.replaceAll("(?s)(?:\\n*.*\\n{2}.+:\\s*)([^\\n<]*)(?:<br>\\n.*(\\d{2,4}\\.?){3}\\n*.*)", "$1");
+                activationEmail.replaceAll(
+                        "(?s)(?:\\n*.*\\n{2}.+:\\s*)([^\\n<]*)(?:<br>\\n.*(\\d{2,4}\\.?){3}\\n*.*)", "$1");
     }
 
-    public static void checkActivationEmail(Folder folder, String managerEmail, String baseUri, SoftAssert sa) throws IOException, MessagingException, InterruptedException {
+    public static void checkActivationEmail(Folder folder, String managerEmail, String baseUri, SoftAssert sa)
+            throws IOException, MessagingException, InterruptedException {
         String activationMsg = "укажите пароль для успешной активации вашей учетной записи";
         String sd = "(step: check activation email)\n";
 

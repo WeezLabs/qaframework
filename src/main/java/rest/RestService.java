@@ -1,6 +1,5 @@
 package rest;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -40,8 +39,8 @@ public class RestService implements Rest {
 
     private static ResourceBundle rb = ResourceBundle.getBundle("server");
 
-    private Map<String, String> STANDARD_HEADERS = new HashMap<String, String>();
-    private Map<String, String> ADDITIONAL_HEADERS = new HashMap<String, String>();
+    private Map<String, String> STANDARD_HEADERS = new HashMap<>();
+    private Map<String, String> ADDITIONAL_HEADERS = new HashMap<>();
 
     private RequestSpecification postSpecification;
     private RequestSpecification postSpecificationUnContent;
@@ -93,14 +92,14 @@ public class RestService implements Rest {
                 RestAssuredConfig
                         .newConfig()
                         .getHttpClientConfig()
-                        .setParam("http.connection.timeout", new Integer(25000))
-                        .setParam("http.socket.timeout", new Integer(25000));
+                        .setParam("http.connection.timeout", 25000)
+                        .setParam("http.socket.timeout", 25000);
         HttpClientConfig postHttpConfig =
                 RestAssuredConfig
                         .newConfig()
                         .getHttpClientConfig()
-                        .setParam("http.connection.timeout", new Integer(40000))
-                        .setParam("http.socket.timeout", new Integer(40000));
+                        .setParam("http.connection.timeout", 40000)
+                        .setParam("http.socket.timeout", 40000);
 
         // Initialization of standard headers that used in each request.
         STANDARD_HEADERS.put("Host", xHost);
@@ -210,135 +209,37 @@ public class RestService implements Rest {
         return null;
     }
 
-    protected void checkStatusCode(Response response, int expectedStatusCode) {
-        if (response.getStatusCode() == expectedStatusCode)  {
-            return;
-        }
+    @Override
+    public Map<String, String> getStandardHeaders() {
+        return STANDARD_HEADERS;
+    }
 
-        String respBodyPretty = response.asString();
-        if (response.getContentType().contains("json")) {
+    @Override
+    public String getBaseUri() {
+        return baseUri;
+    }
+
+    @Override
+    public String getBasePath() {
+        return basePath;
+    }
+
+    private String jsonStringPretty(String jsonString) {
+        String retPretty = jsonString;
+        if (jsonString != null && !jsonString.equals("")) {
             try {
-                Object json = mapper.readValue(response.asString(), Object.class);
-                respBodyPretty = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
+                Object json = mapper.readValue(jsonString, Object.class);
+                retPretty = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
-        assert response.getStatusCode() == expectedStatusCode :
-                "\nClass: " + Thread.currentThread().getStackTrace()[2].getClassName() +
-                "\nMethod: " + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                "\nExpected StatusCode:" + expectedStatusCode + ", but actual:" + response.getStatusCode() +
-                "\nActual Response:\n" + respBodyPretty;
+        return retPretty;
     }
-
-    protected void checkStatusCode(String restMethodFullPath,
-                                   Response response,
-                                   int expectedStatusCode,
-                                   Map reqHeaders,
-                                   Map reqParameters,
-                                   String reqBody) {
-        checkStatusCode(restMethodFullPath, response, expectedStatusCode, reqHeaders, reqParameters, reqBody, "");
-    }
-
-    protected void checkStatusCode(String restMethodFullPath,
-                                   Response response,
-                                   int expectedStatusCode,
-                                   Map reqHeaders,
-                                   Map reqParameters,
-                                   String reqBody,
-                                   String description) {
-        if (response.getStatusCode() == expectedStatusCode || expectedStatusCode < 0) {
-            return;
-        }
-
-        // String reqBodyPretty = jsonStringPretty(reqBody);
-
-        String respBodyPretty = response.getContentType().contains("json")
-                ? jsonStringPretty(response.asString())
-                : response.prettyPrint();
-
-        assert response.getStatusCode() == expectedStatusCode :
-                description + requestDescription(restMethodFullPath, reqHeaders, reqParameters, reqBody, 4) +
-                "\nExpected StatusCode:" + expectedStatusCode + ", but actual:" + response.getStatusCode() +
-                (respBodyPretty.equals("")
-                        ? "\nActual response body is empty"
-                        : "\nActual response:\n" + respBodyPretty) + "\n";
-    }
-
-    protected String requestDescription(String restMethodFullPath,
-                                        Map reqHeaders,
-                                        Map reqParameters,
-                                        String reqBody,
-                                        int stackTraceDepth) {
-        return "\nClass: " + Thread.currentThread().getStackTrace()[stackTraceDepth].getClassName() +
-               "\nMethod: " + Thread.currentThread().getStackTrace()[stackTraceDepth].getMethodName() +
-               "\nBASE_URI: " + baseUri +
-               "\nREST method: " + restMethodFullPath +
-               ((reqHeaders != null)
-                       ? "\nRequest headers:\n" + mapToString(reqHeaders)
-                       : "") +
-               ((reqParameters != null) ?
-                       "\nRequest parameters:\n" + mapToString(reqParameters)
-                       : "") +
-               ((reqBody != null && !reqBody.equals(""))
-                       ? "\nRequest body:\n" + jsonStringPretty(reqBody)
-                       : "");
-    }
-
-    @Deprecated
-    public Response post(String methodPath, Map headers, String bodyStr, int expStatusCode) {
-        headers.putAll(STANDARD_HEADERS);
-
-        Response response =
-                RestAssured.given().
-                        spec(postSpecification).
-                        headers(headers).
-                        body(bodyStr).
-                        post(methodPath);
-
-        checkStatusCode("POST " + basePath + methodPath, response, expStatusCode, headers, null, bodyStr);
-
-        return response;
-    }
-
-    @Deprecated
-    public Response get(String methodPath, Map headers, int expStatusCode) {
-        headers.putAll(STANDARD_HEADERS);
-
-        Response response =
-                RestAssured.given().
-                        spec(getSpecification).
-                        headers(headers).
-                        get(methodPath);
-
-        checkStatusCode("GET " + basePath + methodPath, response, expStatusCode, headers, null, "");
-
-        return response;
-    }
-
-    @Deprecated
-    public Response delete(String methodPath, Map headers, String bodyStr, int expStatusCode) {
-        headers.putAll(STANDARD_HEADERS);
-
-        Response response =
-                RestAssured.given().
-                        spec(postSpecification).
-                        headers(headers).
-                        body(bodyStr).
-                        delete(methodPath);
-        checkStatusCode("DELETE " + basePath + methodPath, response, expStatusCode, headers, null, bodyStr);
-
-        return response;
-    }
-
-    // =================================================
 
     @Override
-    public Response get(String methodPath, Map headers, int expStatusCode, String description) {
-        // headers.putAll(ADDITIONAL_HEADERS);
+    public Response get(String methodPath, Map<String, String> headers, int expStatusCode, String description) {
         Response response;
         try {
             if (null == headers) {
@@ -352,9 +253,9 @@ public class RestService implements Rest {
                         get(methodPath);
             }
         } catch (Exception e) {
-            // throw new Error(description + "\nGET "+ basePath + methodPath + "\n" + e);
-            throw new Error(description +
-                            requestDescription("GET " + basePath + methodPath, headers, null, "", 3) + "\n" + e);
+            throw new RuntimeException(
+                    description +
+                    requestDescription("GET " + basePath + methodPath, headers, null, "", 3) + "\n" + e);
         }
 
         checkStatusCode("GET " + basePath + methodPath, response, expStatusCode, headers, null, "", description);
@@ -363,9 +264,11 @@ public class RestService implements Rest {
     }
 
     @Override
-    public Response get(String methodPath, Map headers, Map parameters, int expStatusCode, String description) {
-        //  headers.putAll(ADDITIONAL_HEADERS);
-
+    public Response get(String methodPath,
+                        Map<String, String> headers,
+                        Map<String, ?> parameters,
+                        int expStatusCode,
+                        String description) {
         Response response;
         try {
             if (headers != null) {
@@ -394,9 +297,9 @@ public class RestService implements Rest {
                 }
             }
         } catch (Exception e) {
-            // throw new Error(description + "\nGET "+ basePath + methodPath + "\n" + e);
-            throw new Error(description +
-                            requestDescription("GET " + basePath + methodPath, headers, null, "", 3) + "\n" + e);
+            throw new RuntimeException(
+                    description +
+                    requestDescription("GET " + basePath + methodPath, headers, null, "", 3) + "\n" + e);
         }
 
         checkStatusCode("GET " + basePath + methodPath, response, expStatusCode, headers, null, "", description);
@@ -405,9 +308,12 @@ public class RestService implements Rest {
     }
 
     @Override
-    public Response post(String methodPath, Map headers, Object object, int expStatusCode, String description)
+    public Response post(String methodPath,
+                         Map<String, String> headers,
+                         Object object,
+                         int expStatusCode,
+                         String description)
             throws JsonProcessingException {
-        //  headers.putAll(ADDITIONAL_HEADERS);
         Response response;
         String bodyStr = object != null
                 ? (object instanceof String ? (String) object : mapper.writeValueAsString(object))
@@ -439,9 +345,9 @@ public class RestService implements Rest {
                 }
             }
         } catch (Exception e) {
-            // throw new Error(description + "\nPOST "+ basePath + methodPath + "\n" + e);
-            throw new Error(description +
-                            requestDescription("POST " + basePath + methodPath, headers, null, bodyStr, 3) + "\n" + e);
+            throw new RuntimeException(
+                    description +
+                    requestDescription("POST " + basePath + methodPath, headers, null, bodyStr, 3) + "\n" + e);
         }
 
         checkStatusCode("POST " + basePath + methodPath, response, expStatusCode, headers, null, bodyStr, description);
@@ -450,11 +356,12 @@ public class RestService implements Rest {
     }
 
     @Override
-    public Response post(String methodPath, Map headers, Map parameters, int expStatusCode, String description)
+    public Response post(String methodPath,
+                         Map<String, String> headers,
+                         Map<String, ?> parameters,
+                         int expStatusCode,
+                         String description)
             throws JsonProcessingException {
-        // headers.putAll(ADDITIONAL_HEADERS);
-        // String bodyStr = mapper.writeValueAsString(object);
-
         Response response;
         try {
             if (headers != null && headers.size() != 0) {
@@ -483,9 +390,9 @@ public class RestService implements Rest {
                 }
             }
         } catch (Exception e) {
-            // throw new Error(description + "\nPOST "+ basePath + methodPath + "\n" + e);
-            throw new Error(description +
-                            requestDescription("POST " + basePath + methodPath, headers, parameters, "", 3) + "\n" + e);
+            throw new RuntimeException(
+                    description +
+                    requestDescription("POST " + basePath + methodPath, headers, parameters, "", 3) + "\n" + e);
         }
 
         checkStatusCode("POST " + basePath + methodPath, response, expStatusCode, headers, parameters, "", description);
@@ -494,10 +401,12 @@ public class RestService implements Rest {
     }
 
     @Override
-    public Response put(String methodPath, Map headers, Object object, int expStatusCode, String description)
+    public Response put(String methodPath,
+                        Map<String, String> headers,
+                        Object object,
+                        int expStatusCode,
+                        String description)
             throws JsonProcessingException {
-        // headers.putAll(ADDITIONAL_HEADERS);
-
         String bodyStr = mapper.writeValueAsString(object);
         Response response;
         try {
@@ -507,9 +416,9 @@ public class RestService implements Rest {
                     body(bodyStr).
                     put(methodPath);
         } catch (Exception e) {
-            // throw new Error(description + "\nPUT "+ basePath + methodPath + "\n" + e);
-            throw new Error(description +
-                            requestDescription("PUT " + basePath + methodPath, headers, null, bodyStr, 3) + "\n" + e);
+            throw new RuntimeException(
+                    description +
+                    requestDescription("PUT " + basePath + methodPath, headers, null, bodyStr, 3) + "\n" + e);
         }
 
         checkStatusCode("PUT " + basePath + methodPath, response, expStatusCode, headers, null, bodyStr, description);
@@ -518,9 +427,12 @@ public class RestService implements Rest {
     }
 
     @Override
-    public Response delete(String methodPath, Map headers, Object object, int expStatusCode, String description)
+    public Response delete(String methodPath,
+                           Map<String, String> headers,
+                           Object object,
+                           int expStatusCode,
+                           String description)
             throws JsonProcessingException {
-        // headers.putAll(ADDITIONAL_HEADERS);
 
         String bodyStr = null != object
                 ? mapper.writeValueAsString(object)
@@ -554,20 +466,24 @@ public class RestService implements Rest {
                 }
             }
         } catch (Exception e) {
-            // throw new Error(description + "\nDELETE "+ basePath + methodPath + "\n" + e);
-            throw new Error(description +
-                            requestDescription("DELETE " + basePath + methodPath, headers, null, bodyStr, 3) + "\n" + e);
+            throw new RuntimeException(
+                    description +
+                    requestDescription("DELETE " + basePath + methodPath, headers, null, bodyStr, 3) + "\n" + e);
         }
 
-        checkStatusCode("DELETE " + basePath + methodPath, response, expStatusCode, headers, null, bodyStr, description);
+        checkStatusCode(
+                "DELETE " + basePath + methodPath, response, expStatusCode, headers, null, bodyStr, description);
 
         return response;
     }
 
     @Override
-    public Response patch(String methodPath, Map headers, Object object, int expStatusCode, String description)
+    public Response patch(String methodPath,
+                          Map<String, String> headers,
+                          Object object,
+                          int expStatusCode,
+                          String description)
             throws JsonProcessingException {
-        // headers.putAll(ADDITIONAL_HEADERS);
 
         Response response;
         String bodyStr = object != null
@@ -600,9 +516,9 @@ public class RestService implements Rest {
                 }
             }
         } catch (Exception e) {
-            // throw new Error(description + "\nPOST "+ basePath + methodPath + "\n" + e);
-            throw new Error(description +
-                            requestDescription("PATCH " + basePath + methodPath, headers, null, bodyStr, 3) + "\n" + e);
+            throw new RuntimeException(
+                    description +
+                    requestDescription("PATCH " + basePath + methodPath, headers, null, bodyStr, 3) + "\n" + e);
         }
 
         checkStatusCode("PATCH " + basePath + methodPath, response, expStatusCode, headers, null, bodyStr, description);
@@ -622,8 +538,7 @@ public class RestService implements Rest {
                     when().
                     post(methodPath);
         } catch (Exception e) {
-            // throw new Error(description + "\nPUT "+ basePath + methodPath + "\n" + e);
-            throw new Error(description +
+            throw new RuntimeException(description +
                             requestDescription("POST " + basePath + methodPath, null, null, null, 3) + "\n" + e);
         }
 
@@ -632,69 +547,100 @@ public class RestService implements Rest {
         return response;
     }
 
-    @Override
-    public Map getStandardHeaders() {
-        return STANDARD_HEADERS;
+    private void checkStatusCode(String restMethodFullPath,
+                                 Response response,
+                                 int expectedStatusCode,
+                                 Map<String, String> reqHeaders,
+                                 Map<String, ?> reqParameters,
+                                 String reqBody,
+                                 String description) {
+        if (response.getStatusCode() == expectedStatusCode || expectedStatusCode < 0) {
+            return;
+        }
+
+        String respBodyPretty = response.getContentType().contains("json")
+                ? jsonStringPretty(response.asString())
+                : response.prettyPrint();
+
+        assert response.getStatusCode() == expectedStatusCode :
+                description + requestDescription(restMethodFullPath, reqHeaders, reqParameters, reqBody, 4) +
+                "\nExpected StatusCode:" + expectedStatusCode + ", but actual:" + response.getStatusCode() +
+                (respBodyPretty.equals("")
+                        ? "\nActual response body is empty"
+                        : "\nActual response:\n" + respBodyPretty) + "\n";
     }
 
-    @Override
-    public String getBaseUri() {
-        return baseUri;
-    }
+    private void checkStatusCode(Response response, int expectedStatusCode) {
+        if (response.getStatusCode() == expectedStatusCode)  {
+            return;
+        }
 
-    @Override
-    public String getBasePath() {
-        return basePath;
-    }
-
-    protected String jsonStringPretty(String jsonString) {
-        String retPretty = jsonString;
-        if (jsonString != null && !jsonString.equals("")) {
+        String respBodyPretty = response.asString();
+        if (response.getContentType().contains("json")) {
             try {
-                Object json = mapper.readValue(jsonString, Object.class);
-                retPretty = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
-            } catch (JsonParseException e) {
-                e.printStackTrace();
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
+                Object json = mapper.readValue(response.asString(), Object.class);
+                respBodyPretty = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
-        return retPretty;
+        assert response.getStatusCode() == expectedStatusCode :
+                "\nClass: " + Thread.currentThread().getStackTrace()[2].getClassName() +
+                "\nMethod: " + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                "\nExpected StatusCode:" + expectedStatusCode + ", but actual:" + response.getStatusCode() +
+                "\nActual Response:\n" + respBodyPretty;
     }
 
-    protected String mapToString(Map map) {
-        StringBuffer retStr = new StringBuffer();
-        for (Map.Entry<String, Object> entry : ((HashMap<String, Object>) map).entrySet()) {
+    private void checkStatusCode(String restMethodFullPath,
+                                 Response response,
+                                 int expectedStatusCode,
+                                 Map<String, String> reqHeaders,
+                                 Map<String, ?> reqParameters,
+                                 String reqBody) {
+        checkStatusCode(restMethodFullPath, response, expectedStatusCode, reqHeaders, reqParameters, reqBody, "");
+    }
+
+    private String requestDescription(String restMethodFullPath,
+                                      Map<String, String> reqHeaders,
+                                      Map<String, ?> reqParameters,
+                                      String reqBody,
+                                      int stackTraceDepth) {
+        return "\nClass: " + Thread.currentThread().getStackTrace()[stackTraceDepth].getClassName() +
+               "\nMethod: " + Thread.currentThread().getStackTrace()[stackTraceDepth].getMethodName() +
+               "\nBASE_URI: " + baseUri +
+               "\nREST method: " + restMethodFullPath +
+               ((reqHeaders != null)
+                       ? "\nRequest headers:\n" + mapToString(reqHeaders)
+                       : "") +
+               ((reqParameters != null) ?
+                       "\nRequest parameters:\n" + mapToString(reqParameters)
+                       : "") +
+               ((reqBody != null && !reqBody.equals(""))
+                       ? "\nRequest body:\n" + jsonStringPretty(reqBody)
+                       : "");
+    }
+
+    private String mapToString(Map<String, ?> map) {
+        StringBuilder retStr = new StringBuilder();
+        for (Map.Entry<String, ?> entry : map.entrySet()) {
             String key = entry.getKey();
             Object value = entry.getValue();
 
             String valueStr;
             if (value == null) {
                 valueStr = "null";
-            } else if (value instanceof String) {
-                valueStr = (String) value;
-            }
-            if (value instanceof Boolean) {
-                valueStr = ((Boolean) value).toString();
-            } else if (value instanceof Byte) {
-                valueStr = ((Byte) value).toString();
-            } else if (value instanceof Character) {
-                valueStr = ((Character) value).toString();
-            } else if (value instanceof Short) {
-                valueStr = ((Short) value).toString();
-            } else if (value instanceof Integer) {
-                valueStr = ((Integer) value).toString();
-            } else if (value instanceof Long) {
-                valueStr = ((Long) value).toString();
-            } else if (value instanceof Float) {
-                valueStr = ((Float) value).toString();
-            } else if (value instanceof Double) {
-                valueStr = ((Double) value).toString();
-            } else if (value instanceof BigDecimal) {
-                valueStr = ((BigDecimal) value).toString();
+            } else if (value instanceof String ||
+                       value instanceof Boolean ||
+                       value instanceof Byte ||
+                       value instanceof Character ||
+                       value instanceof Short ||
+                       value instanceof Integer ||
+                       value instanceof Long ||
+                       value instanceof Float ||
+                       value instanceof Double ||
+                       value instanceof BigDecimal) {
+                valueStr = value.toString();
             } else
                 try {
                     valueStr = mapper.writeValueAsString(value);
@@ -706,28 +652,36 @@ public class RestService implements Rest {
                 valueStr = jsonStringPretty(value.toString()).replaceAll("\r\n", "\r\n\t");
             }
 
-            retStr.append(key + "=" + valueStr + "\n");
-            if (key.equals("X-Filter")) try {
-                String valueStrDecode = null;
+            retStr.append(key)
+                    .append("=")
+                    .append(valueStr)
+                    .append("\n");
+
+            if (key.equals("X-Filter"))
                 try {
-                    valueStrDecode = URLDecoder.decode((String) engine.eval("escape('" + valueStr + "')"), "UTF-8");
-                } catch (ScriptException e) {
-                    e.printStackTrace();
+                    String valueStrDecode = null;
                     try {
-                        valueStrDecode = URLDecoder.decode(valueStr, "UTF-8");
-                    } catch (IllegalArgumentException e1) {
-                        e1.printStackTrace();
+                        valueStrDecode = URLDecoder.decode((String) engine.eval("escape('" + valueStr + "')"), "UTF-8");
+                    } catch (ScriptException e) {
+                        e.printStackTrace();
+                        try {
+                            valueStrDecode = URLDecoder.decode(valueStr, "UTF-8");
+                        } catch (IllegalArgumentException e1) {
+                            e1.printStackTrace();
+                        }
                     }
-                }
 
-                if (valueStrDecode != null) {
-                    retStr.append("decode " + key + "=" +
-                                  jsonStringPretty(valueStrDecode).replaceAll("\r\n", "\r\n\t") + "\n");
-                }
+                    if (valueStrDecode != null) {
+                        retStr.append("decode ")
+                                .append(key)
+                                .append("=")
+                                .append(jsonStringPretty(valueStrDecode).replaceAll("\r\n", "\r\n\t"))
+                                .append("\n");
+                    }
 
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
         }
 
         return retStr.toString();
