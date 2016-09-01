@@ -22,15 +22,15 @@ public class DdtDataProvider {
     public Object[][] ddtProvider(ITestContext context, String jsonFileParameterName, String ddtDataPath)
             throws IOException {
         String jsonDdtFile = context.getCurrentXmlTest().getParameter(jsonFileParameterName);
-        URL resourceUrl = getClass().getResource(ddtDataPath+jsonDdtFile);
+        URL resourceUrl = getClass().getResource(ddtDataPath + jsonDdtFile);
         ArrayList<LinkedHashMap> dataArrayList;
 
-        dataArrayList = mapper.readValue(new File(resourceUrl.getFile()),
-                                         new TypeReference<ArrayList<LinkedHashMap>>() {});
+        dataArrayList =
+                mapper.readValue(new File(resourceUrl.getFile()), new TypeReference<ArrayList<LinkedHashMap>>(){});
 
         Object[][] objectArray = new Object[dataArrayList.size()][];
-        for(int i=0; i<dataArrayList.size(); i++){
-            objectArray[i] = new Object[] {dataArrayList.get(i)};
+        for (int i = 0; i < dataArrayList.size(); i++) {
+            objectArray[i] = new Object[]{dataArrayList.get(i)};
         }
 
         return objectArray;
