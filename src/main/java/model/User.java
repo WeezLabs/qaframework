@@ -1,56 +1,52 @@
 package model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import db.DBDao;
 import model.dto.AuthenticatedResponseModel;
 import rest.RestService;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.io.IOException;
 
 /**
  * Class that hides the details of user creation.
  */
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class User {
-    @JsonIgnore
-    private Integer id;
+    private String id;
     private String login;
     private String password;
 
-    @JsonIgnore
     private AuthenticatedResponseModel tgt;
 
-    @JsonIgnore
-    private DBDao dbDao = new DBDao();
-
-    @JsonIgnore
-    public User(String login, String password, boolean needToLogin)
+    public User(String login, String password, boolean recreateIfExists, boolean needToLogin)
             throws IOException {
+        // Here we need to write user creation procedure for our project.
         this.login = login;
         this.password = password;
 
-        // Here we need to write user creation procedure for our project.
+        if (recreateIfExists) {
+            // Recreate user if needed.
+        }
+
         if (needToLogin) {
             RestService rest = new RestService(null);
             this.tgt = rest.postTickets(login, password);
         }
     }
 
-    public User() {
+    public User() throws IOException {
+        this(null, null, false, false);
     }
 
-    @JsonIgnore
+    public User(String login, String password) throws IOException {
+        this(login, password, true, false);
+    }
+
+    public User(String login, String password, boolean recreateIfExists) throws IOException {
+        this(login, password, recreateIfExists, false);
+    }
+
     public AuthenticatedResponseModel getTgt() {
         return tgt;
     }
 
-    @JsonIgnore
     public void setTgt(AuthenticatedResponseModel tgt) {
         this.tgt = tgt;
     }
@@ -71,13 +67,11 @@ public class User {
         this.password = password;
     }
 
-    @JsonIgnore
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    @JsonIgnore
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
