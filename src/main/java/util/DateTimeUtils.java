@@ -9,14 +9,16 @@ public class DateTimeUtils {
     }
 
     /**
-     * Compare two dates/times using accuracyInSeconds accuracy.
+     * Compare two dates/times using accuracy accuracy.
      *
      * @param lhs first date/time to compare.
      * @param rhs second date/time to compare.
-     * @param accuracyInSeconds maximum permissible difference in seconds between two objects.
-     * @return True if difference between two dates/times no more than accuracyInSeconds. False otherwise.
+     * @param chronoUnit a unit of measurement that is used to compare date/time, {@link ChronoUnit#SECONDS} for example.
+     * @param accuracy maximum permissible difference in between two objects.
+     * @return True if difference between two dates/times no more than accuracy. False otherwise.
      */
-    public static boolean compareWithAccuracy(Temporal lhs, Temporal rhs, long accuracyInSeconds) {
-        return Math.abs(ChronoUnit.SECONDS.between(lhs, rhs)) <= accuracyInSeconds;
+    public static boolean compareWithAccuracy(Temporal lhs, Temporal rhs, ChronoUnit chronoUnit, long accuracy) {
+        return Math.abs(chronoUnit.between(lhs, rhs)) <= accuracy;
     }
 }
+
