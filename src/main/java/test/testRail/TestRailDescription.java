@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
  * Annotation for TestRail description.
  */
 @Retention(value = RetentionPolicy.RUNTIME)
-@Target(value = {ElementType.FIELD,ElementType.METHOD})
+@Target(value = {ElementType.FIELD, ElementType.METHOD})
 public @interface TestRailDescription {
     String description() default "";
 }

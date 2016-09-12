@@ -11,19 +11,20 @@ import java.util.ResourceBundle;
  */
 public class JdbcTemplateUtils {
     private static ResourceBundle rbDB = ResourceBundle.getBundle("database");
+
+    protected JdbcTemplate jdbcTemplatePg;
+    protected ObjectMapper mapper = new ObjectMapper();
+
     private String SQL_URL;
     private String SQL_USER;
     private String SQL_PASSWORD;
-    protected JdbcTemplate jdbcTemplatePg;
-
-    protected ObjectMapper mapper = new ObjectMapper();
 
     public JdbcTemplateUtils() {
         SQL_URL = rbDB.getString("db.url")
-                .replaceAll("(.+?)(\\$\\{db-server})(.+)", "$1"+rbDB.getString("db.defaultServer")+"$3");
+                .replaceAll("(.+?)(\\$\\{db-server})(.+)", "$1" + rbDB.getString("db.defaultServer") + "$3");
         SQL_USER = rbDB.getString("db.username");
         SQL_PASSWORD = rbDB.getString("db.password");
-        jdbcTemplatePg  = jdbcTemplatePg();
+        jdbcTemplatePg = jdbcTemplatePg();
     }
 
     public BasicDataSource dataSourcePg() {

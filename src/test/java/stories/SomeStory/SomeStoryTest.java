@@ -52,7 +52,7 @@ public class SomeStoryTest extends BaseRestFulTest {
     }
 
     @BeforeMethod
-    public void beforeMethod() throws IOException{
+    public void beforeMethod() throws IOException {
         // Pre processing before each method call if needed.
 
         // For example you can create test user.

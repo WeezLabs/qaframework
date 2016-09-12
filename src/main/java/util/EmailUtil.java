@@ -34,11 +34,8 @@ public class EmailUtil {
     }
 
     private static boolean textIsHtml = false;
-
     private static Map<String, Store> storeMap = new HashMap<>();
-
     private static Map<String, Folder> folderMap = new HashMap<>();
-
     private static Properties props = new Properties();
 
     static {
@@ -63,7 +60,7 @@ public class EmailUtil {
             e.printStackTrace();
         }
 
-        if (store == null)  {
+        if (store == null) {
             return null;
         }
 
@@ -321,7 +318,7 @@ public class EmailUtil {
 
     // Reset password email parser
     public static String getResetPasswordKey(String resetPswEmail) {
-    //  return resetPswEmail==null ? "" :
+        //  return resetPswEmail==null ? "" :
         // resetPswEmail.replaceAll("(?s)(?:\\n*.*Код активации:\\s+)([\\w\\d]+)(?:\\n*.*)", "$1");
         return getActivationKey(resetPswEmail);
     }
@@ -411,8 +408,8 @@ public class EmailUtil {
         // Check activation URL address.
         sa.assertTrue(
                 activationUrl.contains(baseUri + "/#idm/activate?key="),
-                        sd + "activation URL must contain \"" +
-                        baseUri + "/#idm/activate?key=\"" + "\nactual activation URL: " + activationUrl);
+                sd + "activation URL must contain \"" +
+                baseUri + "/#idm/activate?key=\"" + "\nactual activation URL: " + activationUrl);
         String activationLogin = EmailUtil.getActivationLogin(emailStr);
         sa.assertTrue(
                 activationLogin.equals(managerEmail),

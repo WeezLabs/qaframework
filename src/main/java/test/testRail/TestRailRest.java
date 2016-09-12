@@ -29,16 +29,16 @@ public class TestRailRest {
     private static ResponseSpecBuilder responseTestRailSpecBuilder = new ResponseSpecBuilder();
     private static ResponseSpecification responseTestRailSpec = responseTestRailSpecBuilder.build();
 
-    public static void postTestResult(int runId, int caseId, int testResult, String comment){
+    public static void postTestResult(int runId, int caseId, int testResult, String comment) {
         HashMap params = new HashMap();
         params.put("status_id", testResult);
-        params.put("comment",comment);
+        params.put("comment", comment);
 
         APIClient client = new APIClient(TestRail_URI);
         client.setUser(TestRail_LOGIN);
         client.setPassword(TestRail_PASSWORD);
 
-        try{
+        try {
 //            if(cookies==null){
 //                cookies = RestAssured.given().
 //                        specification(requestTestRailSpec).
@@ -62,9 +62,9 @@ public class TestRailRest {
             client.sendPost("add_result_for_case/" + runId + "/" + caseId, params);
 
             //assert response.getBody().jsonPath().getBoolean("result") : "\nTestRail: sending results failed"+
-              //      "\nactual statusCode:"+response.getStatusCode()+
-                //    "\nactual response body:\n"+response.getBody().asString();
-        } catch (Throwable t){
+            //      "\nactual statusCode:"+response.getStatusCode()+
+            //    "\nactual response body:\n"+response.getBody().asString();
+        } catch (Throwable t) {
             // TODO Do we need processing?
             System.out.println("TestRail send:" + runId +
                                "/" + caseId +

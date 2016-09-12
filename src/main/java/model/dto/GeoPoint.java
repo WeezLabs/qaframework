@@ -15,13 +15,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 @JsonInclude(JsonInclude.Include.ALWAYS)
 public class GeoPoint {
-  private Number latitude;
+    private Number latitude;
     private Number longitude;
 
     @JsonIgnore
     public GeoPoint(Number latitude, Number longitude) {
-        this.latitude = (double)(int)(latitude.doubleValue() * 1000000) / 1000000;
-        this.longitude = (double)(int)(longitude.doubleValue() * 1000000) / 1000000;
+        this.latitude = (double) (int) (latitude.doubleValue() * 1000000) / 1000000;
+        this.longitude = (double) (int) (longitude.doubleValue() * 1000000) / 1000000;
     }
 
     public GeoPoint() {

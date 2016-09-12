@@ -28,12 +28,12 @@ public class DdtoSet<T> extends AbstractDdtoSet {
         this.statusCode = statusCode;
     }
 
-    public Object valueOf(Object o){
+    public Object valueOf(Object o) {
         if (o instanceof String && ((String) o).trim().equals("null")) {
             return null;
         }
 
-        if (o instanceof BigDecimal && o.equals(BigDecimal.ZERO) ){
+        if (o instanceof BigDecimal && o.equals(BigDecimal.ZERO)) {
             return null;
         }
 

@@ -13,8 +13,9 @@ import java.lang.annotation.Target;
  * To change this template use File | Settings | File Templates.
  */
 @Retention(value = RetentionPolicy.RUNTIME)
-@Target(value = {ElementType.FIELD,ElementType.METHOD})
+@Target(value = {ElementType.FIELD, ElementType.METHOD})
 public @interface TestRail {
     int runId() default 0;
+
     int caseId() default 0;
 }

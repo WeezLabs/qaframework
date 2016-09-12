@@ -40,11 +40,11 @@ public abstract class AbstractDdtoSet {
         return notRemoved;
     }
 
-    public boolean isRemoved() {
-        return !notRemoved;
-    }
-
     public void setNotRemoved(boolean notRemoved) {
         this.notRemoved = notRemoved;
+    }
+
+    public boolean isRemoved() {
+        return !notRemoved;
     }
 }

@@ -27,7 +27,7 @@ public class SoftAssert extends Assertion {
     public void executeAssert(IAssert a) {
         try {
             a.doAssert();
-        } catch(AssertionError ex) {
+        } catch (AssertionError ex) {
             onAssertFailure(a, ex);
             m_errors.put(ex, a);
         }
@@ -68,25 +68,25 @@ public class SoftAssert extends Assertion {
     }
 
     /**
+     * Append {@link SoftAssert} description.
+     *
+     * @param description description.
+     */
+    public void appendDescription(String description) {
+        this.description.append(description);
+    }
+
+    public String getDescription() {
+        return description.toString();
+    }
+
+    /**
      * Set {@link SoftAssert} description.
      *
      * @param description description.
      */
     public void setDescription(String description) {
         this.description = new StringBuilder(description);
-    }
-
-    /**
-     * Append {@link SoftAssert} description.
-     *
-     * @param description description.
-     */
-    public void appendDescription(String description){
-        this.description.append(description);
-    }
-
-    public String getDescription(){
-        return description.toString();
     }
 }
 

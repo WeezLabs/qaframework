@@ -65,7 +65,7 @@ public class RestService implements Rest {
     private String tgt;
 
     public RestService(String tgt) throws JsonProcessingException {
-        basePath = rb.getString( "_BASE_PATH");
+        basePath = rb.getString("_BASE_PATH");
 
         String sslStr = rb.getString("SSL").toLowerCase();
         String sslDefaultStr = rb.getString("SSL_DEFAULT").toLowerCase();
@@ -165,6 +165,10 @@ public class RestService implements Rest {
         }
     }
 
+    public String getTgt() {
+        return tgt;
+    }
+
     // It should be fixed for a specific project.
     private void setTgt(String tgt) {
         /*
@@ -184,10 +188,6 @@ public class RestService implements Rest {
             postSpecificationUnContent = postRequestUnContentSpecBuilder.build();
         }
         */
-    }
-
-    public String getTgt() {
-        return tgt;
     }
 
     public AuthenticatedResponseModel postTickets(String userName, String password)
@@ -572,7 +572,7 @@ public class RestService implements Rest {
     }
 
     private void checkStatusCode(Response response, int expectedStatusCode) {
-        if (response.getStatusCode() == expectedStatusCode)  {
+        if (response.getStatusCode() == expectedStatusCode) {
             return;
         }
 

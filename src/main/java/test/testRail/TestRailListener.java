@@ -22,21 +22,21 @@ public class TestRailListener extends TestListenerAdapter {
     private static final int SKIPPED = 6;
 
     @Override
-    public void onTestSuccess(ITestResult tr){
+    public void onTestSuccess(ITestResult tr) {
         resultProcessing(tr, PASSED);
     }
 
     @Override
-    public void onTestFailure(ITestResult tr){
+    public void onTestFailure(ITestResult tr) {
         resultProcessing(tr, FAILED);
     }
 
     @Override
-    public void onTestSkipped(ITestResult tr){
+    public void onTestSkipped(ITestResult tr) {
         resultProcessing(tr, BLOCKED);
     }
 
-    private void resultProcessing(ITestResult tr, int result){
+    private void resultProcessing(ITestResult tr, int result) {
         int fldRunId = 0;
         int fldCaseId = 0;
         int mtdRunId = 0;
@@ -52,8 +52,8 @@ public class TestRailListener extends TestListenerAdapter {
             mtdRunId = tr.getMethod().getMethod().getAnnotation(TestRail.class).runId();
             mtdCaseId = tr.getMethod().getMethod().getAnnotation(TestRail.class).caseId();
 
-            if (mtdCaseId > 0 && mtdRunId>0){
-                postTestResult(mtdRunId,mtdCaseId,result,comment);
+            if (mtdCaseId > 0 && mtdRunId > 0) {
+                postTestResult(mtdRunId, mtdCaseId, result, comment);
                 return;
             }
         } else if (tr.getMethod().getMethod().isAnnotationPresent(TestRailCaseId.class)) {
@@ -108,12 +108,12 @@ public class TestRailListener extends TestListenerAdapter {
                     }
                 } else if (fld.isAnnotationPresent(TestRailCaseId.class) &&
                            (fld.getType().equals(Integer.class) ||
-                            fld.getType().equals(int.class))){
+                            fld.getType().equals(int.class))) {
 
                     try {
                         fld.setAccessible(true);
                         int cId = (Integer) fld.get(tr.getInstance());
-                        if(cId > 0) {
+                        if (cId > 0) {
                             caseId = cId;
                         }
                     } catch (IllegalAccessException e) {
@@ -125,7 +125,7 @@ public class TestRailListener extends TestListenerAdapter {
 
         if (runId > 0 && caseId > 0) {
             postTestResult(runId, caseId, result, comment);
-        } else if (fldRunId > 0 && fldCaseId > 0){
+        } else if (fldRunId > 0 && fldCaseId > 0) {
             postTestResult(fldRunId, fldCaseId, result, comment);
         }
     }

@@ -18,7 +18,7 @@ public class AuthEndpoint extends AbstractEndpoint {
     /**
      * Sign in API.
      *
-     * @param email email of the user.
+     * @param email    email of the user.
      * @param password password of the user.
      * @return authentication data of the user.
      * @throws IOException in case of problems with sign in.
@@ -34,9 +34,9 @@ public class AuthEndpoint extends AbstractEndpoint {
     /**
      * Sign in API.
      *
-     * @param email email of the user.
-     * @param password password of the user.
-     * @param StatusCode expected status code.
+     * @param email       email of the user.
+     * @param password    password of the user.
+     * @param StatusCode  expected status code.
      * @param description description of your request.
      * @return authentication data of the user.
      * @throws IOException in case of problems with sign in.

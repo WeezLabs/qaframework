@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
  * Annotation for TestRail case id.
  */
 @Retention(value = RetentionPolicy.RUNTIME)
-@Target(value = {ElementType.FIELD,ElementType.METHOD})
+@Target(value = {ElementType.FIELD, ElementType.METHOD})
 public @interface TestRailCaseId {
     int caseId() default 0;
 }

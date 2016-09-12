@@ -13,7 +13,7 @@ public class RetryAnalyzer implements IRetryAnalyzer {
     @Override
     public boolean retry(ITestResult testResult) {
         boolean result = false;
-        String stackTrace=testResult.getThrowable().fillInStackTrace().toString();
+        String stackTrace = testResult.getThrowable().fillInStackTrace().toString();
         if (!testResult.isSuccess() && !stackTrace.contains("java.lang")) {
             System.out.println("retry count = " + retryCount + "\n max retry count = " + retryMaxCount);
 
@@ -21,7 +21,7 @@ public class RetryAnalyzer implements IRetryAnalyzer {
                 System.out.println("Retrying" + testResult.getName() +
                                    " with status " + testResult.getStatus() +
                                    " for the try " + (retryCount + 1) + " of " + retryMaxCount +
-                                   " max times, with stacktrace "+stackTrace);
+                                   " max times, with stacktrace " + stackTrace);
                 retryCount++;
                 result = true;
             }

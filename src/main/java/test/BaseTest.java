@@ -73,12 +73,12 @@ public abstract class BaseTest {
 
         testDescription =
                 "\n==================================================================" +
-                        "\nSuite file name: " + xmlFileName +
-                        "\nSuite: " + context.getSuite().getName() +
-                        suiteParamsStr +
-                        "\nTest:  " + context.getCurrentXmlTest().getName() +
-                        testParamsStr.toString() +
-                        "\n------------------------------------------------------------------\n";
+                "\nSuite file name: " + xmlFileName +
+                "\nSuite: " + context.getSuite().getName() +
+                suiteParamsStr +
+                "\nTest:  " + context.getCurrentXmlTest().getName() +
+                testParamsStr.toString() +
+                "\n------------------------------------------------------------------\n";
         System.out.println(testDescription);
     }
 
