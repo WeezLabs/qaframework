@@ -1,6 +1,6 @@
 package com.example.tests;
 
-public class GoToClass {
+public class GoToClass extends TestBase {
     private final String elementId;
 
     public GoToClass(String elementId) {

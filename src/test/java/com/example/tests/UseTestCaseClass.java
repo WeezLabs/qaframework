@@ -1,16 +1,17 @@
 package com.example.tests;
 
-public class UseTestCaseClass {
-    private final String labelTestCase;
+public class UseTestCaseClass extends TestBase {
+
+    private final String labelTextParagraph;
     private final String labelTestSelector;
 
-    public UseTestCaseClass(String labelTestCase, String labelTestSelector) {
-        this.labelTestCase = labelTestCase;
-        this.labelTestSelector = labelTestSelector;
+    public UseTestCaseClass(String labelTextParagraph, String labelTextParagraphSelector) {
+        this.labelTextParagraph = labelTextParagraph;
+        this.labelTestSelector = labelTextParagraphSelector;
     }
 
-    public String getLabelTestCase() {
-        return labelTestCase;
+    public String getLabelTextParagraph() {
+        return labelTextParagraph;
     }
 
     public String getLabelTestSelector() {
