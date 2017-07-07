@@ -31,7 +31,7 @@ public class TestBase {
         System.setProperty("webdriver.gecko.driver", "/Users/DISTILLERY/IdeaProjects/geckodriver");
 
         driver = new FirefoxDriver();
-        baseUrl = "https://distillery.com/";
+        baseUrl = "https://distillery.com";
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 
     }
@@ -48,6 +48,7 @@ public class TestBase {
 
     public void goToStart() throws InterruptedException {
 
+        useDelay();
         openMainPage();
         useDelay();
         goToMenu();
@@ -74,17 +75,14 @@ public class TestBase {
     }
 
     protected void useDelay() throws InterruptedException {
-        // delay 5 sec
-        Thread.sleep(5000);
+        Thread.sleep(5000); // delay 5 sec
     }
 
     protected void goToMenu() {
-        // go to Menu
         driver.findElement(By.cssSelector("span.icon-menu__state")).click();
     }
 
-    public void openMainPage() {
-        // open main page
+    public void openMainPage() throws InterruptedException {
         driver.get(baseUrl + "/");
     }
 

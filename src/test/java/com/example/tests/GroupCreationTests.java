@@ -14,7 +14,6 @@ public class GroupCreationTests extends TestBase {
     @Test
     public void testValidGroupCanBeCreated() throws Exception {
 
-//        TestBase myObject = new TestBase ();
         goToStart();
 //        TestBase myTestBase = new TestBase();
 //        myTestBase.goToStart();
