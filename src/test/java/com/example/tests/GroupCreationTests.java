@@ -1,12 +1,5 @@
 package com.example.tests;
 
-import java.util.concurrent.TimeUnit;
-
-
-
-
-import org.openqa.selenium.*;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.*;
 
 public class GroupCreationTests extends TestBase {
@@ -14,26 +7,24 @@ public class GroupCreationTests extends TestBase {
     @Test
     public void testValidGroupCanBeCreated() throws Exception {
 
-        goToStart();
+        app.goToStart();
 
-        useTestCase(new UseTestCaseClass("RAW\n INGREDIENTS", "div.project-description-item-block > div.title-text.project-description-item-block__title"));
-        useTestCase(new UseTestCaseClass("TRANSFORMATION", "div.project-description-item-block__transformation-block > div.title-text.project-description-item-block__title"));
-        useTestCase(new UseTestCaseClass("HIGHLIGHTS", "div.project-description-item-block__highlights-block > div.title-text.project-description-item-block__title"));
+        app.useTestCase(new UseTestCaseClass("RAW\n INGREDIENTS", "div.project-description-item-block > div.title-text.project-description-item-block__title"));
+        app.useTestCase(new UseTestCaseClass("TRANSFORMATION", "div.project-description-item-block__transformation-block > div.title-text.project-description-item-block__title"));
+        app.useTestCase(new UseTestCaseClass("HIGHLIGHTS", "div.project-description-item-block__highlights-block > div.title-text.project-description-item-block__title"));
 
     }
 
     @Test
     public void testValidGroupCanBeCreatedAgain() throws Exception {
 
-        goToStart();
+        app.goToStart();
 
-        useTestCase(new UseTestCaseClass("RAW\n INGREDIENTS", "div.project-description-item-block > div.title-text.project-description-item-block__title"));
-        useTestCase(new UseTestCaseClass("TRANSFORMATION", "div.project-description-item-block__transformation-block > div.title-text.project-description-item-block__title"));
-        useTestCase(new UseTestCaseClass("HIGHLIGHT", "div.project-description-item-block__highlights-block > div.title-text.project-description-item-block__title"));
+        app.useTestCase(new UseTestCaseClass("RAW\n INGREDIENTS", "div.project-description-item-block > div.title-text.project-description-item-block__title"));
+        app.useTestCase(new UseTestCaseClass("TRANSFORMATION", "div.project-description-item-block__transformation-block > div.title-text.project-description-item-block__title"));
+        app.useTestCase(new UseTestCaseClass("HIGHLIGHT", "div.project-description-item-block__highlights-block > div.title-text.project-description-item-block__title"));
 
     }
-
-
 
 }
 
