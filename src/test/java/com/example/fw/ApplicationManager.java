@@ -23,6 +23,15 @@ import org.junit.Assert.*;
 import org.testng.asserts.Assertion;
 
 
+import java.util.regex.Pattern;
+import java.util.concurrent.TimeUnit;
+import org.testng.annotations.*;
+import static org.testng.Assert.*;
+import org.openqa.selenium.*;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.Select;
+
+
 
 public class ApplicationManager {
 
@@ -65,6 +74,7 @@ public class ApplicationManager {
         goTo(new GoToClass("main-nav--work")); //our work
         useDelay();
         goTo(new GoToClass("link-overlay-cizo")); //cizo
+//        goTo(new GoToClass("bg-work-cizo"));
         useDelay();
     }
 
@@ -74,7 +84,7 @@ public class ApplicationManager {
 
     public void testCaseDoing(UseTestCaseClass useTestCaseClass) {
         try {
-            Assert.assertEquals(useTestCaseClass.getLabelTextParagraph(), driver.findElement(By.cssSelector(useTestCaseClass.getLabelTestSelector())).getText());
+            assertEquals(useTestCaseClass.getLabelTextParagraph(), driver.findElement(By.cssSelector(useTestCaseClass.getLabelTestSelector())).getText());
         } catch (Error e) {
             verificationErrors.append(e.toString());
         }
@@ -84,7 +94,7 @@ public class ApplicationManager {
         driver.findElement(By.id(goToClass.getElementId())).click();
     }
 
-    protected void useDelay() throws InterruptedException {
+    public void useDelay() throws InterruptedException {
         Thread.sleep(2000); // delay 5 sec
     }
 

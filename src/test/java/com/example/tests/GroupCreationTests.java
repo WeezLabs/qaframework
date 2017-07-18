@@ -4,8 +4,8 @@ import org.testng.annotations.*;
 
 public class GroupCreationTests extends TestBase {
 
-    @Test
-    public void testValidGroupCanBeCreated() throws Exception {
+   @Test
+   public void testValidGroupCanBeCreated() throws Exception {
 
         app.goToStart();
 
