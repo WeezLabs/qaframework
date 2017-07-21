@@ -1,6 +1,8 @@
 package com.example.tests;
 
-public class UseTestCaseClass extends TestBase {
+public class UseTestCaseClass extends TestBase
+
+{
 
     private final String labelTextParagraph;
     private final String labelTestSelector;

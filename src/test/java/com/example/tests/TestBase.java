@@ -1,15 +1,12 @@
 package com.example.tests;
 
 import com.example.fw.ApplicationManager;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.*;
 
 
 public class TestBase {
 
-    protected ApplicationManager app;
+    public ApplicationManager app;
 
     @BeforeClass
     public void setUp() throws Exception {
@@ -20,5 +17,6 @@ public class TestBase {
     public void tearDown() throws Exception {
         app.stop();
     }
+
 }
 
