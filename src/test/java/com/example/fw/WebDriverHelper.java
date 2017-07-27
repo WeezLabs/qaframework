@@ -13,18 +13,18 @@ import static org.junit.Assert.fail;
 public class WebDriverHelper {
 
     protected static WebDriver driver;
-    public String baseUrl;
+    private final ApplicationManager manager;
     public boolean acceptNextAlert = true;
     public static StringBuffer verificationErrors = new StringBuffer();
 
-    protected WebDriverHelper() {
-
+    public WebDriverHelper(ApplicationManager manager) {
+        this.manager = manager;
 
         System.setProperty("webdriver.gecko.driver", "/Users/DISTILLERY/IdeaProjects/geckodriver");
 
         driver = new FirefoxDriver();
-        baseUrl = "https://distillery.com";
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        driver.get("https://distillery.com");
 
     }
 

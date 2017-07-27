@@ -1,5 +1,6 @@
 package com.example.fw;
 
+import com.example.tests.GoToClass;
 import org.openqa.selenium.*;
 
 /**
@@ -31,6 +32,14 @@ public class HelperWithWebDriverBase {
         } catch (NoAlertPresentException e) {
             return false;
         }
+    }
+
+    protected WebElement findElement(GoToClass goToClass) {
+        return driver.findElement(By.id(goToClass.getElementId()));
+    }
+
+    protected void openUrl() {
+        driver.get("https://distillery.com");
     }
 
     /*

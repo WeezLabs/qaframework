@@ -18,7 +18,6 @@ public class GroupHelper extends HelperWithWebDriverBase {
     public void goToStart() throws InterruptedException {
 
         useDelay();
-        manager.getNavigetionHelper().openMainPage();
         useDelay();
         goToMenu();
         manager.getNavigetionHelper().goTo(new GoToClass("main-nav--work")); //our work
@@ -32,7 +31,7 @@ public class GroupHelper extends HelperWithWebDriverBase {
         testCaseDoing(useTestCaseClass);
     }
 
-    public void testCaseDoing(UseTestCaseClass useTestCaseClass) {
+    private void testCaseDoing(UseTestCaseClass useTestCaseClass) {
         try {
             assertEquals(useTestCaseClass.getLabelTextParagraph(), driver.findElement(By.cssSelector(useTestCaseClass.getLabelTestSelector())).getText());
         } catch (Error e) {
@@ -41,12 +40,32 @@ public class GroupHelper extends HelperWithWebDriverBase {
     }
 
 
-    public void useDelay() throws InterruptedException {
+    private void useDelay() throws InterruptedException {
         Thread.sleep(2000); // delay 5 sec
     }
 
-    protected void goToMenu() {
+    private void goToMenu() {
         driver.findElement(By.cssSelector("span.icon-menu__state")).click();
     }
 
+    public void tapOnButton() throws InterruptedException {
+
+        driver.findElement(By.id("email")).clear();
+        driver.findElement(By.id("email")).sendKeys("hithere");
+        driver.findElement(By.xpath("//input[@value='Subscribe']")).click();
+
+        verifyEmailError();
+
+        driver.findElement(By.id("email")).clear();
+        driver.findElement(By.id("email")).sendKeys("");
+
+    }
+
+    private void verifyEmailError() {
+        try {
+            assertEquals("Please enter a valid email address", driver.findElement(By.cssSelector("div.hs-error-msgs.js-errorMessage")).getText());
+        } catch (Error e) {
+            WebDriverHelper.verificationErrors.append(e.toString());
+        }
+    }
 }

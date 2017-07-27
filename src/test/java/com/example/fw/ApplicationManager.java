@@ -3,6 +3,8 @@ package com.example.fw;
 
 public class ApplicationManager {
 
+    private static ApplicationManager singleton;
+
     private WebDriverHelper webDriverHelper;
     private GroupHelper groupHelper;
     private NavigationHelper navigationHelper;
@@ -19,7 +21,7 @@ public class ApplicationManager {
 
     public WebDriverHelper getwebDriverHelper() {
         if (webDriverHelper == null) {
-            webDriverHelper = new WebDriverHelper();
+            webDriverHelper = new WebDriverHelper(this);
         }
         return webDriverHelper;
     }
@@ -37,6 +39,13 @@ public class ApplicationManager {
             navigationHelper = new NavigationHelper(this);
         }
         return navigationHelper;
+    }
+
+    public static ApplicationManager getInstance() {
+        if (singleton == null) {
+            singleton = new ApplicationManager();
+        }
+        return singleton;
     }
 }
 

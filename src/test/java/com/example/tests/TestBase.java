@@ -10,12 +10,14 @@ public class TestBase {
 
     @BeforeClass
     public void setUp() throws Exception {
-        app = new ApplicationManager();
+        app = ApplicationManager.getInstance();
+//        app = new ApplicationManager();
     }
 
-    @AfterClass
+    @AfterTest
     public void tearDown() throws Exception {
-        app.stop();
+        ApplicationManager.getInstance().stop();
+//        app.stop();
     }
 
 }

@@ -11,7 +11,7 @@ public class GroupCreationTests extends TestBase {
 
         app.getGroupHelper().useTestCase(new UseTestCaseClass("RAW\n INGREDIENTS", "div.project-description-item-block > div.title-text.project-description-item-block__title"));
         app.getGroupHelper().useTestCase(new UseTestCaseClass("TRANSFORMATION", "div.project-description-item-block__transformation-block > div.title-text.project-description-item-block__title"));
-        app.getGroupHelper().useTestCase(new UseTestCaseClass("HIGHLIGHT", "div.project-description-item-block__highlights-block > div.title-text.project-description-item-block__title"));
+        app.getGroupHelper().useTestCase(new UseTestCaseClass("HIGHLIGHTS", "div.project-description-item-block__highlights-block > div.title-text.project-description-item-block__title"));
 
     }
 

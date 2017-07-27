@@ -1,7 +1,6 @@
 package com.example.fw;
 
 import com.example.tests.GoToClass;
-import org.openqa.selenium.By;
 
 public class NavigationHelper extends HelperWithWebDriverBase{
 
@@ -11,10 +10,12 @@ public class NavigationHelper extends HelperWithWebDriverBase{
     }
 
     public void openMainPage() throws InterruptedException {
-        driver.get("https://distillery.com");
+        openUrl();
     }
 
     protected void goTo(GoToClass goToClass) {
-        driver.findElement(By.id(goToClass.getElementId())).click();
+//        if (findElement(By))
+        findElement(goToClass).click();
     }
+
 }
