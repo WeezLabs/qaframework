@@ -18,7 +18,7 @@ public class GroupCreationTests extends TestBase {
     }
 
     @Test
-    public void testThirdLesson() throws Exception {
+    public void testXThirdLesson() throws Exception {
 
 
         UseTestCaseClass newUseTestCaseClass = new UseTestCaseClass("RAW\n INGREDIENTS", "div.project-description-item-block > div.title-text.project-description-item-block__title");

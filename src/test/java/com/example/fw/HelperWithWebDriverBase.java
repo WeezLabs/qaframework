@@ -3,6 +3,8 @@ package com.example.fw;
 import com.example.tests.GoToClass;
 import org.openqa.selenium.*;
 
+import java.util.List;
+
 /**
  * Created by DISTILLERY on 20.07.17.
  */
@@ -38,9 +40,36 @@ public class HelperWithWebDriverBase {
         return driver.findElement(By.id(goToClass.getElementId()));
     }
 
-    protected void openUrl(String openUrl) {
-        String openUrlDistillery = "https://distillery.com";
-        driver.get(openUrlDistillery);
+    protected List<WebElement> findElementS(GoToClass goToClass) {
+//        return driver.findElement(By.id(goToClass.getElementId()));
+        return null;
+    }
+
+    protected void openUrl(Integer nubmerUrl) {
+
+        String openUrlVariable = "https://distillery.com";
+
+        switch (nubmerUrl) {
+
+            case 1:
+                openUrlVariable = "https://distillery.com";
+                System.out.println("Distillery site testing");
+                break;
+            case 2:
+                openUrlVariable = "http://energy-telecom.portnov.com/qa/";
+                System.out.println("Messi shoots to the right and misses the goal!");
+                break;
+            case 3: System.out.println("one another web site");
+                break;
+            default:
+                System.out.println("no one email is sending");
+
+        }
+
+
+
+
+        driver.get(openUrlVariable);
     }
 
     /*

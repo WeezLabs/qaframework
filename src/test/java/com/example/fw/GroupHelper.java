@@ -3,8 +3,10 @@ package com.example.fw;
 import com.example.tests.GoToClass;
 import com.example.tests.UseTestCaseClass;
 import org.openqa.selenium.*;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import static org.testng.Assert.assertEquals;
 
@@ -17,16 +19,20 @@ public class GroupHelper extends HelperWithWebDriverBase {
     }
 
 
+
+
     public Set<UseTestCaseClass> getGroups() {
 
         manager.getNavigetionHelper().goTo(new GoToClass("main-nav--work"));
+
+//        driver.findElement(By.id(goToClass.getElementId()));
+//        WebElement form =  driver.findElement(By.tagName("form")).get(0);
 
         return null;
     }
 
     public void goToStart() throws InterruptedException {
 
-        useDelay();
         useDelay();
         goToMenu();
         manager.getNavigetionHelper().goTo(new GoToClass("main-nav--work")); //our work
@@ -81,6 +87,8 @@ public class GroupHelper extends HelperWithWebDriverBase {
 
     public void fillAllFieldsWrongEmail(String writeWrongEmail) throws InterruptedException {
 
+        openUrl(1);
+
         driver.findElement(By.name("name")).clear();
         driver.findElement(By.name("name")).sendKeys("Testuser");
         driver.findElement(By.name("email")).clear();
@@ -116,8 +124,7 @@ public class GroupHelper extends HelperWithWebDriverBase {
 
 
     public void openPortnowLink(String wrongEmail) {
-        String urlPortnov = "http://energy-telecom.portnov.com/qa/";
-        openUrl(urlPortnov);
+        openUrl(2);
 
     }
 }
