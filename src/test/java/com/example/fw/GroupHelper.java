@@ -26,7 +26,7 @@ public class GroupHelper extends HelperWithWebDriverBase {
         manager.getNavigetionHelper().goTo(new GoToClass("main-nav--work"));
 
 //        driver.findElement(By.id(goToClass.getElementId()));
-//        WebElement form =  driver.findElement(By.tagName("form")).get(0);
+        WebElement form = driver.findElements(By.tagName("form")).get(0);
 
         return null;
     }
