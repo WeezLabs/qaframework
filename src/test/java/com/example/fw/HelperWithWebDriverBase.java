@@ -38,8 +38,9 @@ public class HelperWithWebDriverBase {
         return driver.findElement(By.id(goToClass.getElementId()));
     }
 
-    protected void openUrl() {
-        driver.get("https://distillery.com");
+    protected void openUrl(String openUrl) {
+        String openUrlDistillery = "https://distillery.com";
+        driver.get(openUrlDistillery);
     }
 
     /*

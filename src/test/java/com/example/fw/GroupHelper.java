@@ -4,6 +4,8 @@ import com.example.tests.GoToClass;
 import com.example.tests.UseTestCaseClass;
 import org.openqa.selenium.*;
 
+import java.util.Set;
+
 import static org.testng.Assert.assertEquals;
 
 
@@ -14,6 +16,13 @@ public class GroupHelper extends HelperWithWebDriverBase {
         super(manager);
     }
 
+
+    public Set<UseTestCaseClass> getGroups() {
+
+        manager.getNavigetionHelper().goTo(new GoToClass("main-nav--work"));
+
+        return null;
+    }
 
     public void goToStart() throws InterruptedException {
 
@@ -41,7 +50,7 @@ public class GroupHelper extends HelperWithWebDriverBase {
 
 
     private void useDelay() throws InterruptedException {
-        Thread.sleep(2000); // delay 5 sec
+        Thread.sleep(2000); // delay 2 sec
     }
 
     private void goToMenu() {
@@ -50,10 +59,11 @@ public class GroupHelper extends HelperWithWebDriverBase {
 
     public void tapOnButton() throws InterruptedException {
 
+        useDelay();
         driver.findElement(By.id("email")).clear();
         driver.findElement(By.id("email")).sendKeys("hithere");
         driver.findElement(By.xpath("//input[@value='Subscribe']")).click();
-
+        //       useDelay();
         verifyEmailError();
 
         driver.findElement(By.id("email")).clear();
@@ -67,5 +77,47 @@ public class GroupHelper extends HelperWithWebDriverBase {
         } catch (Error e) {
             WebDriverHelper.verificationErrors.append(e.toString());
         }
+    }
+
+    public void fillAllFieldsWrongEmail(String writeWrongEmail) throws InterruptedException {
+
+        driver.findElement(By.name("name")).clear();
+        driver.findElement(By.name("name")).sendKeys("Testuser");
+        driver.findElement(By.name("email")).clear();
+        driver.findElement(By.name("email")).sendKeys(writeWrongEmail);
+        driver.findElement(By.name("phone")).clear();
+        driver.findElement(By.name("phone")).sendKeys("wrong_phone");
+        driver.findElement(By.name("message")).clear();
+        driver.findElement(By.name("message")).sendKeys("wrong description");
+        useDelay();
+        driver.findElement(By.xpath("//form/a/div[7]")).click();
+        useDelay();
+        driver.findElement(By.xpath("//form/a/div[7]")).click();
+        driver.findElement(By.xpath("//div[2]/span")).click();
+        verifyEmailErrorMessageFooter();
+        verifyPhoneErrorMessageFooter();
+    }
+
+    private void verifyPhoneErrorMessageFooter() {
+        try {
+            assertEquals("Please enter a valid phone number", driver.findElement(By.xpath("//div[3]/span")).getText());
+        } catch (Error e) {
+            WebDriverHelper.verificationErrors.append(e.toString());
+        }
+    }
+
+    private void verifyEmailErrorMessageFooter() {
+        try {
+            assertEquals("Please enter a valid email address", driver.findElement(By.xpath("//div[2]/span")).getText());
+        } catch (Error e) {
+            WebDriverHelper.verificationErrors.append(e.toString());
+        }
+    }
+
+
+    public void openPortnowLink(String wrongEmail) {
+        String urlPortnov = "http://energy-telecom.portnov.com/qa/";
+        openUrl(urlPortnov);
+
     }
 }

@@ -10,7 +10,7 @@ public class NavigationHelper extends HelperWithWebDriverBase{
     }
 
     public void openMainPage() throws InterruptedException {
-        openUrl();
+        openUrl("https://distillery.com/");
     }
 
     protected void goTo(GoToClass goToClass) {
