@@ -5,6 +5,7 @@ import com.example.tests.UseTestCaseClass;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -27,6 +28,9 @@ public class GroupHelper extends HelperWithWebDriverBase {
 
 //        driver.findElement(By.id(goToClass.getElementId()));
         WebElement form = driver.findElements(By.tagName("form")).get(0);
+        List<WebElement> checkboxes = form.findElements(By.name("cellPhoneSatisfiedWithProvider[]"));
+//        Set<GroupObject>
+
 
         return null;
     }
