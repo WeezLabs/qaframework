@@ -57,7 +57,7 @@ public class HelperWithWebDriverBase {
                 break;
             case 2:
                 openUrlVariable = "http://energy-telecom.portnov.com/qa/";
-                System.out.println("Messi shoots to the right and misses the goal!");
+                System.out.println("Сайт Портнова для тестирования");
                 break;
             case 3: System.out.println("one another web site");
                 break;

@@ -7,6 +7,9 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.fail;
 
+//package com.closebrowser;
+
+
 /**
  * Created by DISTILLERY on 18.07.17.
  */
@@ -28,7 +31,13 @@ public class WebDriverHelper {
 
     }
 
+    public void WebDriverFactory() {
+
+    }
+
+
     public void stop() {
+
         driver.quit();
         String verificationErrorString = verificationErrors.toString();
         if (!"".equals(verificationErrorString)) {

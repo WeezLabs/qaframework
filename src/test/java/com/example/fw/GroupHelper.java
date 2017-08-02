@@ -1,10 +1,12 @@
 package com.example.fw;
 
 import com.example.tests.GoToClass;
+import com.example.tests.GroupObject;
 import com.example.tests.UseTestCaseClass;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -22,17 +24,29 @@ public class GroupHelper extends HelperWithWebDriverBase {
 
 
 
-    public Set<UseTestCaseClass> getGroups() {
+    public Set<GroupObject> getGroups() {
 
-        manager.getNavigetionHelper().goTo(new GoToClass("main-nav--work"));
 
-//        driver.findElement(By.id(goToClass.getElementId()));
+        manager.getNavigetionHelper().goToGroupListPage();
+
+//id name value type
         WebElement form = driver.findElements(By.tagName("form")).get(0);
-        List<WebElement> checkboxes = form.findElements(By.name("cellPhoneSatisfiedWithProvider[]"));
-//        Set<GroupObject>
+        List<WebElement> radios = form.findElements(By.name("internetTypeOfService"));
+        Set<GroupObject> groups = new HashSet<GroupObject>();
+        for (WebElement radiobutton : radios) {
+            String title = radiobutton.getAttribute("title");
+
+            title = title.substring("\"radio\"/>".length(), title.length());
+
+            GroupObject group = new GroupObject()
+                    .setName(title)
+                    .setId(radiobutton.getAttribute("value"));
+            groups.add(group);
+        }
 
 
-        return null;
+
+            return groups;
     }
 
     public void goToStart() throws InterruptedException {
