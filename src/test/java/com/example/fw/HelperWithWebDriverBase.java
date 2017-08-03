@@ -47,12 +47,12 @@ public class HelperWithWebDriverBase {
 
     protected void openUrl(Integer nubmerUrl) {
 
-        String openUrlVariable = "https://distillery.com";
+        String openUrlVariable = "http://energy-telecom.portnov.com/qa/";
 
         switch (nubmerUrl) {
 
             case 1:
-                openUrlVariable = "https://distillery.com";
+                openUrlVariable = "http://energy-telecom.portnov.com/qa/";
                 System.out.println("Distillery site testing");
                 break;
             case 2:

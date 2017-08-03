@@ -30,18 +30,20 @@ public class GroupHelper extends HelperWithWebDriverBase {
         manager.getNavigetionHelper().goToGroupListPage();
 
 //id name value type
-        WebElement form = driver.findElements(By.tagName("form")).get(0);
+        WebElement form = driver.findElements(By.tagName("fieldset")).get(3);
         List<WebElement> radios = form.findElements(By.name("internetTypeOfService"));
         Set<GroupObject> groups = new HashSet<GroupObject>();
         for (WebElement radiobutton : radios) {
-            String title = radiobutton.getAttribute("title");
+            String title = radiobutton.getAttribute("value");
 
-            title = title.substring("\"radio\"/>".length(), title.length());
+//            title = title.substring("".length(), title.length());
 
             GroupObject group = new GroupObject()
                     .setName(title)
-                    .setId(radiobutton.getAttribute("value"));
+                    .setId(radiobutton.getAttribute("id"));
             groups.add(group);
+
+            System.out.println("title = " + title);
         }
 
 

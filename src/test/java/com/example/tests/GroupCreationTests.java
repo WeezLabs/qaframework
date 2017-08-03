@@ -6,7 +6,7 @@ import java.util.Set;
 
 public class GroupCreationTests extends TestBase {
 
-    @Test
+/*    @Test
     public void testValidGroupCanBeCreated() throws Exception {
 
 //        app.getGroupHelper().goToStart();
@@ -15,25 +15,26 @@ public class GroupCreationTests extends TestBase {
         app.getGroupHelper().useTestCase(new UseTestCaseClass("TRANSFORMATION", "div.project-description-item-block__transformation-block > div.title-text.project-description-item-block__title"));
         app.getGroupHelper().useTestCase(new UseTestCaseClass("HIGHLIGHTS", "div.project-description-item-block__highlights-block > div.title-text.project-description-item-block__title"));
 
-    }
+    }*/
 
     @Test
-    public void testXThirdLesson() throws Exception {
+    public void testGroupObject() throws Exception {
 
 
-        UseTestCaseClass newUseTestCaseClass = new UseTestCaseClass("RAW\n INGREDIENTS", "div.project-description-item-block > div.title-text.project-description-item-block__title");
+        GroupObject validGroup = new GroupObject()
+                .setName("321").setHeader("312").setFooter("123");
 
-        Set<UseTestCaseClass> oldList = app.getGroupHelper().getGroups();
+        Set<GroupObject> oldList = app.getGroupHelper().getGroups();
 
         app.getGroupHelper().openPortnowLink("wrongEmail");
 
-        Set<UseTestCaseClass> newList = app.getGroupHelper().getGroups();
+        Set<GroupObject> newList = app.getGroupHelper().getGroups();
 
-        verifyGroupAdded(oldList, newUseTestCaseClass, newList);
+        verifyGroupAdded(oldList, validGroup, newList);
 
     }
 
-    private void verifyGroupAdded (Set<UseTestCaseClass> oldList, UseTestCaseClass newUseTestCaseClass, Set<UseTestCaseClass> newList) {
+    private void verifyGroupAdded (Set<GroupObject> oldList, GroupObject validGroup, Set<GroupObject> newList) {
 
     }
 

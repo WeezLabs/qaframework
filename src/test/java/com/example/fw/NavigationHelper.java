@@ -18,4 +18,6 @@ public class NavigationHelper extends HelperWithWebDriverBase{
         findElement(goToClass).click();
     }
 
+    public void goToGroupListPage() {
+    }
 }

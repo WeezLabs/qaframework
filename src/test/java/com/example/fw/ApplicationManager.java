@@ -1,6 +1,8 @@
 package com.example.fw;
 
 
+import com.example.tests.GroupObject;
+
 public class ApplicationManager {
 
     private static ApplicationManager singleton;
@@ -8,6 +10,7 @@ public class ApplicationManager {
     private WebDriverHelper webDriverHelper;
     private GroupHelper groupHelper;
     private NavigationHelper navigationHelper;
+    private GroupObject groupObject;
 
 
 
@@ -47,5 +50,13 @@ public class ApplicationManager {
         }
         return singleton;
     }
+
+    public GroupObject getGroupObject() {
+        if (groupObject == null) {
+            groupObject = new GroupObject();
+        }
+        return groupObject;
+    }
+
 }
 
