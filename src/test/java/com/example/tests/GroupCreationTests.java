@@ -1,5 +1,9 @@
 package com.example.tests;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
+
+import org.testng.Assert;
 import org.testng.annotations.*;
 
 import java.util.Set;
@@ -35,7 +39,8 @@ public class GroupCreationTests extends TestBase {
     }
 
     private void verifyGroupAdded (Set<GroupObject> oldList, GroupObject validGroup, Set<GroupObject> newList) {
-
+//        Assert.assertEquals(newList.size(), oldList.size() + 1);
+        assertThat(newList.size(), equalTo(oldList.size()+1));
     }
 
 }
