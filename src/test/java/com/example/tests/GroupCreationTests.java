@@ -40,7 +40,9 @@ public class GroupCreationTests extends TestBase {
 
     private void verifyGroupAdded (Set<GroupObject> oldList, GroupObject validGroup, Set<GroupObject> newList) {
 //        Assert.assertEquals(newList.size(), oldList.size() + 1);
-        assertThat(newList.size(), equalTo(oldList.size()+1));
+//        assertThat(newList.size(), equalTo(oldList.size()+1));
+        oldList.add(validGroup);
+        assertThat(newList, equalTo(oldList));
     }
 
 }
