@@ -26,13 +26,16 @@ public class GroupCreationTests extends TestBase {
 
 
         GroupObject validGroup = new GroupObject()
-                .setName("321").setHeader("312").setFooter("123");
+                .setName("321").setId("312");
+        GroupObject validGroupTwo = new GroupObject()
+                .setName("321").setId("");
 
         Set<GroupObject> oldList = app.getGroupHelper().getGroups();
 
-        app.getGroupHelper().openPortnowLink("wrongEmail");
+//        app.getGroupHelper().openPortnowLink("wrongEmail");
 
         Set<GroupObject> newList = app.getGroupHelper().getGroups();
+        newList.add(validGroupTwo);
 
         verifyGroupAdded(oldList, validGroup, newList);
 
@@ -40,7 +43,7 @@ public class GroupCreationTests extends TestBase {
 
     private void verifyGroupAdded (Set<GroupObject> oldList, GroupObject validGroup, Set<GroupObject> newList) {
 //        Assert.assertEquals(newList.size(), oldList.size() + 1);
-//        assertThat(newList.size(), equalTo(oldList.size()+1));
+        assertThat(newList.size(), equalTo(oldList.size()+1));
         oldList.add(validGroup);
         assertThat(newList, equalTo(oldList));
     }

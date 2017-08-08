@@ -31,10 +31,32 @@ public class GroupObject extends TestBase {
     }
 
     @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + id.hashCode();
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof GroupObject)) return false;
+
+        GroupObject that = (GroupObject) o;
+
+        if (!name.equals(that.name)) return false;
+        return id.equals(that.id);
+
+    }
+
+
+
+/*
+        @Override
     public String toString() {
         return "Group {" + name + id + '}';
     }
-
+*/
 /*    public GroupObject(ApplicationManager manager) {
         super();
     }*/
