@@ -32,31 +32,40 @@ public class GroupObject extends TestBase {
 
     @Override
     public int hashCode() {
-        int result = name.hashCode();
-        result = 31 * result + id.hashCode();
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((name == null) ? 0 : name.hashCode());//id.hashCode();
         return result;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
+        if (o == null) return false;
+
         if (!(o instanceof GroupObject)) return false;
 
         GroupObject that = (GroupObject) o;
 
-        if (!name.equals(that.name)) return false;
-        return id.equals(that.id);
+        if (name == null) {
+            if (that.name != null)
+                return false;
+        } else if (!name.equals(that.name)) return false;
+
+        if (id != null && that.id != null) {
+            return id.equals(that.id);
+        }
+
+    return true;
 
     }
 
 
 
-/*
-        @Override
+    @Override
     public String toString() {
         return "Group {" + name + id + '}';
     }
-*/
 /*    public GroupObject(ApplicationManager manager) {
         super();
     }*/

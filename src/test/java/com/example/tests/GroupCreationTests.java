@@ -21,14 +21,14 @@ public class GroupCreationTests extends TestBase {
 
     }*/
 
-    @Test
+    @Test()
     public void testGroupObject() throws Exception {
 
 
         GroupObject validGroup = new GroupObject()
                 .setName("321").setId("312");
         GroupObject validGroupTwo = new GroupObject()
-                .setName("321").setId("");
+                .setId("321");
 
         Set<GroupObject> oldList = app.getGroupHelper().getGroups();
 
@@ -36,7 +36,7 @@ public class GroupCreationTests extends TestBase {
 
         Set<GroupObject> newList = app.getGroupHelper().getGroups();
         newList.add(validGroupTwo);
-
+//        assertThat(newList, equalTo(oldList.withAdded(validGroup)));
         verifyGroupAdded(oldList, validGroup, newList);
 
     }
