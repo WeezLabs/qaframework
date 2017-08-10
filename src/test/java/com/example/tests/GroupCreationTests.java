@@ -6,7 +6,7 @@ import static org.hamcrest.CoreMatchers.*;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
-import java.util.Set;
+import java.util.*;
 
 public class GroupCreationTests extends TestBase {
 
@@ -21,14 +21,27 @@ public class GroupCreationTests extends TestBase {
 
     }*/
 
-    @Test()
-    public void testGroupObject() throws Exception {
+    Random rnd = new Random();
 
+    @DataProvider (name = "randomGroups")
+    public Iterator<Object[]> generateRandomGroups() {
+        List<Object[]> list = new ArrayList<Object[]>();
+        for (int i = 0; i < 5; i++) {
+            GroupObject group = new GroupObject()
+                    .setName("name" + rnd.nextInt())
+                    .setHeader("header" + rnd.nextInt())
+                    .setId("id" + rnd.nextInt());
 
-        GroupObject validGroup = new GroupObject()
-                .setName("321").setId("312");
-        GroupObject validGroupTwo = new GroupObject()
-                .setId("321");
+            Object arr[] = {group};
+            list.add(arr);
+        }
+        return list.iterator();
+    }
+
+    @Test(dataProvider = "randomGroups")
+    public void testGroupObject(GroupObject validGroup) throws Exception {
+
+        GroupObject validGroupTwo = new GroupObject().setId("321");
 
         Set<GroupObject> oldList = app.getGroupHelper().getGroups();
 
