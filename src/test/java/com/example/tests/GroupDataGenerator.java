@@ -47,7 +47,21 @@ public class GroupDataGenerator {
     }
 
     private void generateDataToFile(String file, int count) {
+        List<GroupObject> groups = generateRandomGroupList(int count);
+    }
 
+    private List<GroupObject> generateRandomGroupList(int count) {
+        List<GroupObject> list = new ArrayList<GroupObject>();
+        for (int i = 0; i < count; i++) {
+            GroupObject group = new GroupObject()
+                    .setName("name" + rnd.nextInt())
+                    .setHeader("header" + rnd.nextInt())
+                    .setId("id" + rnd.nextInt());
+            list.add(group);
+            //Object arr[] = {group};
+            //list.add(arr);
+        }
+        return list.;
     }
 
 }

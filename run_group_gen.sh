@@ -1,0 +1,1 @@
+$java -classpath bin:/Users/DISTILLERY/IdeaProjects/qaframework/src/test/java/com/example/tests/GroupDataGenerator.java
