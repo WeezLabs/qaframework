@@ -16,15 +16,16 @@ public class GroupDataGenerator {
 
     @DataProvider(name = "randomGroups")
     public static Iterator<Object[]> generateRandomGroups() {
+
+        List<GroupObject> groups = new GroupDataGenerator().generateRandomGroupList(5);
+
         List<Object[]> list = new ArrayList<Object[]>();
-        for (int i = 0; i < 5; i++) {
-            GroupObject group = new GroupObject()
-                    .setName("name" + rnd.nextInt())
-                    .setHeader("header" + rnd.nextInt())
-                    .setId("id" + rnd.nextInt());
+        for (GroupObject group : groups) {
 
             Object arr[] = {group};
             list.add(arr);
+
+            //list.add(new Object[](group));
         }
         return list.iterator();
     }
@@ -61,7 +62,7 @@ public class GroupDataGenerator {
             //Object arr[] = {group};
             //list.add(arr);
         }
-        return list.;
+        return list;
     }
 
 }
