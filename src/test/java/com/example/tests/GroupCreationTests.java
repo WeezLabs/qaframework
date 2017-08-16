@@ -3,7 +3,6 @@ package com.example.tests;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 
-import org.testng.Assert;
 import org.testng.annotations.*;
 
 import java.util.*;
@@ -21,24 +20,10 @@ public class GroupCreationTests extends TestBase {
 
     }*/
 
-    Random rnd = new Random();
 
-    @DataProvider (name = "randomGroups")
-    public Iterator<Object[]> generateRandomGroups() {
-        List<Object[]> list = new ArrayList<Object[]>();
-        for (int i = 0; i < 5; i++) {
-            GroupObject group = new GroupObject()
-                    .setName("name" + rnd.nextInt())
-                    .setHeader("header" + rnd.nextInt())
-                    .setId("id" + rnd.nextInt());
 
-            Object arr[] = {group};
-            list.add(arr);
-        }
-        return list.iterator();
-    }
+    @Test(dataProvider = "randomGroups", dataProviderClass = GroupDataGenerator.class)
 
-    @Test(dataProvider = "randomGroups")
     public void testGroupObject(GroupObject validGroup) throws Exception {
 
         GroupObject validGroupTwo = new GroupObject().setId("321");

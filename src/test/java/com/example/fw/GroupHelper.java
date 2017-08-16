@@ -3,6 +3,7 @@ package com.example.fw;
 import com.example.tests.GoToClass;
 import com.example.tests.GroupObject;
 import com.example.tests.UseTestCaseClass;
+import org.hamcrest.MatcherAssert;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
@@ -10,6 +11,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.testng.Assert.assertEquals;
 
@@ -33,11 +36,9 @@ public class GroupHelper extends HelperWithWebDriverBase {
         WebElement form = driver.findElements(By.tagName("fieldset")).get(3);
         List<WebElement> radios = form.findElements(By.name("internetTypeOfService"));
         Set<GroupObject> groups = new HashSet<GroupObject>();
+
         for (WebElement radiobutton : radios) {
             String title = radiobutton.getAttribute("value");
-
-//            title = title.substring("".length(), title.length());
-
             GroupObject group = new GroupObject()
                     .setName(title)
                     .setId(radiobutton.getAttribute("id"));
@@ -46,7 +47,17 @@ public class GroupHelper extends HelperWithWebDriverBase {
             System.out.println("title = " + title);
         }
 
+/*        for (WebElement radiobutton : radios) {
+            String title = radiobutton.getAttribute("value");
 
+//            int index = title.indexOf('l');
+//            title = title.substring(index, title.length());
+
+            Pattern p = Pattern.compile(".*");
+            Matcher m = p.matcher(title);
+            boolean b = m.matches();
+
+            System.out.println(m.group());*/
 
             return groups;
     }
