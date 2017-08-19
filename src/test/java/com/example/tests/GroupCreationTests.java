@@ -9,7 +9,7 @@ import java.util.*;
 
 public class GroupCreationTests extends TestBase {
 
-/*    @Test
+    @Test
     public void testValidGroupCanBeCreated() throws Exception {
 
 //        app.getGroupHelper().goToStart();
@@ -18,10 +18,10 @@ public class GroupCreationTests extends TestBase {
         app.getGroupHelper().useTestCase(new UseTestCaseClass("TRANSFORMATION", "div.project-description-item-block__transformation-block > div.title-text.project-description-item-block__title"));
         app.getGroupHelper().useTestCase(new UseTestCaseClass("HIGHLIGHTS", "div.project-description-item-block__highlights-block > div.title-text.project-description-item-block__title"));
 
-    }*/
+    }
 
 
-
+/*
     @Test(dataProvider = "randomGroups", dataProviderClass = GroupDataGenerator.class)
 
     public void testGroupObject(GroupObject validGroup) throws Exception {
@@ -45,7 +45,7 @@ public class GroupCreationTests extends TestBase {
         oldList.add(validGroup);
         assertThat(newList, equalTo(oldList));
     }
-
+*/
 }
 
 

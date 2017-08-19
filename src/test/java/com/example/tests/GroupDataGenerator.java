@@ -2,6 +2,9 @@ package com.example.tests;
 
 import org.testng.annotations.DataProvider;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -44,12 +47,31 @@ public class GroupDataGenerator {
         }
         String file = args[0];
         int count = Integer.parseInt(args[1]);
-        new GroupDataGenerator().generateDataToFile(file, count);
+        try {
+            new GroupDataGenerator().generateDataToFile(file, count);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void generateDataToFile(String file, int count) {
-        List<GroupObject> groups = generateRandomGroupList(int count);
+    private void generateDataToFile(String fileName, int count) throws IOException {
+
+        List<GroupObject> groups = generateRandomGroupList(count);
+        File file = new File(fileName);
+        if (file.exists()) {
+            System.out.println("File exists");
+            return;
+        }
+
+        FileWriter writer = new FileWriter(file);
+        for (GroupObject group : groups) {
+            writer.write("" + group + "\n");
+            writer.flush();
+        }
+        writer.close();
+
     }
+
 
     private List<GroupObject> generateRandomGroupList(int count) {
         List<GroupObject> list = new ArrayList<GroupObject>();

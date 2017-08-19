@@ -27,8 +27,8 @@ public class WebDriverHelper {
 
         driver = new FirefoxDriver();
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-//        driver.get("https://distillery.com");
-        driver.get("http://energy-telecom.portnov.com/qa/");
+        driver.get("https://distillery.com");
+//        driver.get("http://energy-telecom.portnov.com/qa/");
 
     }
 
