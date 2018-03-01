@@ -3,6 +3,7 @@ package util;
 import javax.annotation.Nonnull;
 import java.io.InputStream;
 import java.util.Properties;
+
 import io.qameta.allure.Attachment;
 
 public class PropertyUtils {
@@ -13,6 +14,7 @@ public class PropertyUtils {
 
     /**
      * Adds provided properties to Allure report attachments.
+     *
      * @return string with properties, will be handled by Allure automatically
      */
     @Attachment(value = "testProperties")
@@ -36,12 +38,10 @@ public class PropertyUtils {
         return testProperties.serverAPiBaseUrl;
     }
 
-    @Nonnull
     public static int getServerHostPort() {
         return testProperties.serverHostPort;
     }
 
-    @Nonnull
     public static boolean getSslEnabled() {
         return testProperties.sslEnabled;
     }
@@ -50,7 +50,7 @@ public class PropertyUtils {
     private static TestProperties loadProperties() {
         Properties properties = new Properties();
 
-        try(InputStream inputStream = PropertyUtils.class.getClassLoader().getResourceAsStream(TEST_PROPERTIES_FILE)) {
+        try (InputStream inputStream = PropertyUtils.class.getClassLoader().getResourceAsStream(TEST_PROPERTIES_FILE)) {
             properties.load(inputStream);
         } catch (Throwable thr) {
             throw new IllegalStateException("Failed to load properties", thr);

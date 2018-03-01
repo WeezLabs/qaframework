@@ -33,6 +33,11 @@ public class RestService {
     private static final Integer SOCKET_TIMEOUT_GET_REQUEST = 25000;
     private static final Integer CONNECTION_TIMEOUT_POST_REQUEST = 40000;
     private static final Integer SOCKET_TIMEOUT_POST_REQUEST = 40000;
+    private static final String METHOD_TYPE_GET = "GET ";
+    private static final String METHOD_TYPE_POST = "POST ";
+    private static final String METHOD_TYPE_DELETE = "DELETE ";
+    private static final String METHOD_TYPE_PUT = "PUT ";
+    private static final String METHOD_TYPE_PATCH = "PATCH ";
     private static final int STACK_TRACE_DEPTH = 3;
     private static ObjectMapper mapper = new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
@@ -40,7 +45,6 @@ public class RestService {
     private Map<String, String> standardHeaders = new HashMap<>();
     private RequestSpecification postSpecification;
     private RequestSpecification getSpecification;
-    private ResponseSpecification responseSpecification;
 
     public RestService(String userToken) {
         RestAssured.config =
@@ -70,7 +74,6 @@ public class RestService {
 
         getSpecification = setRequestSpecification(getHttpConfig);
         postSpecification = setRequestSpecification(postHttpConfig);
-        responseSpecification = new ResponseSpecBuilder().build();
 
         RestAssured.urlEncodingEnabled = false;
     }
@@ -134,7 +137,7 @@ public class RestService {
 
     }
 
-    public Response get(String methodPath, Map headers, int expStatusCode, String description) {
+    public Response get(String methodPath, Map<String, ?> headers, int expStatusCode, String description) {
         Response response;
         if (null == headers) {
             headers = new HashMap();
@@ -143,14 +146,14 @@ public class RestService {
             response = RestAssured.given().spec(getSpecification).headers(headers).get(methodPath);
         } catch (Exception exc) {
             throw new Error(description
-                    + requestDescription("GET " + methodPath, headers, "", STACK_TRACE_DEPTH)
+                    + requestDescription(METHOD_TYPE_GET + methodPath, headers, "", STACK_TRACE_DEPTH)
                     + "\n" + exc);
         }
-        checkStatusCode("GET " + methodPath, response, expStatusCode, headers, "", description);
+        checkStatusCode(METHOD_TYPE_GET + methodPath, response, expStatusCode, headers, "", description);
         return response;
     }
 
-    public Response post(String methodPath, Map headers, String requestBody, int expStatusCode, String description) {
+    public Response post(String methodPath, Map<String, ?> headers, String requestBody, int expStatusCode, String description) {
         Response response;
         if (null == headers) {
             headers = new HashMap();
@@ -162,27 +165,27 @@ public class RestService {
             response = RestAssured.given().spec(postSpecification).headers(headers).body(requestBody).post(methodPath);
         } catch (Exception exc) {
             throw new Error(description
-                    + requestDescription("POST " + methodPath, headers, requestBody, STACK_TRACE_DEPTH)
+                    + requestDescription(METHOD_TYPE_POST + methodPath, headers, requestBody, STACK_TRACE_DEPTH)
                     + "\n" + exc);
         }
-        checkStatusCode("POST " + methodPath, response, expStatusCode, headers, requestBody, description);
+        checkStatusCode(METHOD_TYPE_POST + methodPath, response, expStatusCode, headers, requestBody, description);
         return response;
     }
 
-    public Response put(String methodPath, Map headers, String requestBody, int expStatusCode, String description) {
+    public Response put(String methodPath, Map<String, ?> headers, String requestBody, int expStatusCode, String description) {
         Response response;
         try {
             response = RestAssured.given().spec(postSpecification).headers(headers).body(requestBody).put(methodPath);
         } catch (Exception exc) {
             throw new Error(description
-                    + requestDescription("PUT " + methodPath, headers, requestBody, STACK_TRACE_DEPTH)
+                    + requestDescription(METHOD_TYPE_PUT + methodPath, headers, requestBody, STACK_TRACE_DEPTH)
                     + "\n" + exc);
         }
-        checkStatusCode("PUT " + methodPath, response, expStatusCode, headers, requestBody, description);
+        checkStatusCode(METHOD_TYPE_PUT + methodPath, response, expStatusCode, headers, requestBody, description);
         return response;
     }
 
-    public Response delete(String methodPath, Map headers, String requestBody, int expStatusCode, String description) {
+    public Response delete(String methodPath, Map<String, ?> headers, String requestBody, int expStatusCode, String description) {
         Response response;
         if (null == headers) {
             headers = new HashMap();
@@ -194,14 +197,14 @@ public class RestService {
             response = RestAssured.given().spec(postSpecification).headers(headers).body(requestBody).delete(methodPath);
         } catch (Exception exc) {
             throw new Error(description
-                    + requestDescription("DELETE " + methodPath, headers, requestBody, STACK_TRACE_DEPTH)
+                    + requestDescription(METHOD_TYPE_DELETE + methodPath, headers, requestBody, STACK_TRACE_DEPTH)
                     + "\n" + exc);
         }
-        checkStatusCode("DELETE " + methodPath, response, expStatusCode, headers, requestBody, description);
+        checkStatusCode(METHOD_TYPE_DELETE + methodPath, response, expStatusCode, headers, requestBody, description);
         return response;
     }
 
-    public Response patch(String methodPath, Map headers, String requestBody, int expStatusCode, String description) {
+    public Response patch(String methodPath, Map<String, ?> headers, String requestBody, int expStatusCode, String description) {
         Response response;
         if (null == headers) {
             headers = new HashMap();
@@ -214,10 +217,10 @@ public class RestService {
 
         } catch (Exception exc) {
             throw new Error(description
-                    + requestDescription("PATCH " + methodPath, headers, requestBody, STACK_TRACE_DEPTH)
+                    + requestDescription(METHOD_TYPE_PATCH + methodPath, headers, requestBody, STACK_TRACE_DEPTH)
                     + "\n" + exc);
         }
-        checkStatusCode("PATCH " + methodPath, response, expStatusCode, headers, requestBody, description);
+        checkStatusCode(METHOD_TYPE_PATCH + methodPath, response, expStatusCode, headers, requestBody, description);
         return response;
     }
 
@@ -230,7 +233,7 @@ public class RestService {
         }
     }
 
-    private String mapToString(@Nonnull Map map) {
+    private String mapToString(@Nonnull Map<String, ?> map) {
         try {
             Object json = mapper.convertValue(map, Object.class);
             return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);

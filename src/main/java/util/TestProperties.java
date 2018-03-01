@@ -17,11 +17,9 @@ public class TestProperties {
 
     @Nonnull
     public final String serverHost;
-    @Nonnull
     public final int serverHostPort;
     @Nonnull
     public final String serverAPiBaseUrl;
-    @Nonnull
     public final boolean sslEnabled;
 
 

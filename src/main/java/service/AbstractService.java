@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.util.Map;
 
 public abstract class AbstractService  {
+    private final static int SUCCESS_STATUS_CODE = 200;
+
 
     private RestService rest;
     private String subPath;
@@ -27,14 +29,14 @@ public abstract class AbstractService  {
     }
 
     public Response get(String method, String description) {
-        return get(method, 200, description);
+        return get(method, SUCCESS_STATUS_CODE, description);
     }
 
-    public Response get(String method, Map<String, String> headers, String description) {
-        return get(method, headers, 200, description);
+    public Response get(String method, Map<String, ?> headers, String description) {
+        return get(method, headers, SUCCESS_STATUS_CODE, description);
     }
 
-    public Response get(String method, Map<String, String> headers, int expectedStatusCode, String description) {
+    public Response get(String method, Map<String, ?> headers, int expectedStatusCode, String description) {
         return rest.get(subPath + method, headers, expectedStatusCode, description);
     }
 
@@ -43,14 +45,14 @@ public abstract class AbstractService  {
     }
 
     public Response post(String method, String description) {
-        return post(method, 200, null, description);
+        return post(method, SUCCESS_STATUS_CODE, null, description);
     }
 
     public Response post(String method, int expectedStatusCode, String requestBody, String description) {
         return rest.post(subPath + method, null, requestBody, expectedStatusCode, description);
     }
 
-    public Response post(String method, Map headers, int expectedStatusCode, String requestBody, String description) {
+    public Response post(String method, Map<String, ?> headers, int expectedStatusCode, String requestBody, String description) {
         return rest.post(subPath + method, headers, requestBody, expectedStatusCode, description);
     }
 
@@ -58,7 +60,7 @@ public abstract class AbstractService  {
         return rest.patch(subPath + method, null, requestBody, expectedStatusCode, description);
     }
 
-    public Response delete(String method, Map headers, int expectedStatusCode, String requestBody, String description) {
+    public Response delete(String method, Map<String, ?> headers, int expectedStatusCode, String requestBody, String description) {
         return rest.delete(subPath + method, headers, requestBody, expectedStatusCode, description);
     }
 
@@ -70,7 +72,7 @@ public abstract class AbstractService  {
         return rest.put(subPath + method, null, requestBody, expectedStatusCode, description);
     }
 
-    public Response put(String method, Map headers, int expectedStatusCode, String requestBody, String description) {
+    public Response put(String method, Map<String, ?> headers, int expectedStatusCode, String requestBody, String description) {
         return rest.put(subPath + method, headers, requestBody, expectedStatusCode, description);
     }
 }
