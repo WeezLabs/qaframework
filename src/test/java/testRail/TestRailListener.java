@@ -41,16 +41,16 @@ public class TestRailListener extends TestListenerAdapter {
         String defects = "";
         String comment = tr.getThrowable() == null ? "" : tr.getThrowable().toString();
 
-        if (tr.getMethod().getMethod().isAnnotationPresent(TestRail.class)) {
-            mtdRunId = tr.getMethod().getMethod().getAnnotation(TestRail.class).runId();
-            mtdCaseId = tr.getMethod().getMethod().getAnnotation(TestRail.class).caseId();
-            mtdDefects = tr.getMethod().getMethod().getAnnotation(TestRail.class).defects();
+        if (tr.getMethod().getConstructorOrMethod().getMethod().isAnnotationPresent(TestRail.class)) {
+            mtdRunId = tr.getMethod().getConstructorOrMethod().getMethod().getAnnotation(TestRail.class).runId();
+            mtdCaseId = tr.getMethod().getConstructorOrMethod().getMethod().getAnnotation(TestRail.class).caseId();
+            mtdDefects = tr.getMethod().getConstructorOrMethod().getMethod().getAnnotation(TestRail.class).defects();
             if (mtdCaseId > 0 && mtdRunId > 0) {
                 postTestResult(mtdRunId, mtdCaseId, result, comment, mtdDefects);
                 return;
             }
-        } else if (tr.getMethod().getMethod().isAnnotationPresent(TestRailCaseId.class)) {
-            caseId = tr.getMethod().getMethod().getAnnotation(TestRailCaseId.class).caseId();
+        } else if (tr.getMethod().getConstructorOrMethod().getMethod().isAnnotationPresent(TestRailCaseId.class)) {
+            caseId = tr.getMethod().getConstructorOrMethod().getMethod().getAnnotation(TestRailCaseId.class).caseId();
         }
 
         if (tr.getInstance() != null) {
