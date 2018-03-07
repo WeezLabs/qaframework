@@ -38,12 +38,22 @@ public class PropertyUtils {
         return testProperties.serverAPiBaseUrl;
     }
 
-    public static int getServerHostPort() {
-        return testProperties.serverHostPort;
+    public static int getServerPort() {
+        return testProperties.serverPort;
     }
 
     public static boolean getSslEnabled() {
         return testProperties.sslEnabled;
+    }
+
+    @Nonnull
+    public static String getApplicationId() {
+        return testProperties.applicationId;
+    }
+
+    @Nonnull
+    public static String getTestingType() {
+        return testProperties.testingType;
     }
 
     @Nonnull

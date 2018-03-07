@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>Curago</groupId>
+    <groupId>RedBull</groupId>
     <artifactId>testapi</artifactId>
     <version>1.0-SNAPSHOT</version>
 
@@ -19,17 +19,32 @@
         <smokeSuiteFile>smoky.xml</smokeSuiteFile>
         <integrationSuiteFile>integration.xml</integrationSuiteFile>
 
-        <defaultSuiteFile>${integrationSuiteFile}</defaultSuiteFile>
+        <defaultSuiteFile>${smokeSuiteFile}</defaultSuiteFile>
         <!-- run suit -->
         <suiteFile>${defaultSuiteFile}</suiteFile>
         <suiteFilePath>${suiteDir}/${suiteFile}</suiteFilePath>
 
         <!-- test env -->
-        <targetServer>awseb-awseb-7xdfqkyollr-1324788817.us-east-1.elb.amazonaws.com</targetServer>
-        <targetPort>80</targetPort>
-        <targetDbServer>tristar.cqwbyncg8gie.us-east-1.rds.amazonaws.com</targetDbServer>
+        <buildPath>${basedir}</buildPath>
+        <server>awseb-awseb-7xdfqkyollr-1324788817.us-east-1.elb.amazonaws.com</server>
+        <serverPort>80</serverPort>
+        <serverAPiBaseUrl>api/v1</serverAPiBaseUrl>
+        <appiumHost>0.0.0.0</appiumHost>
+        <appiumPort>4723</appiumPort>
+        <device>C6CB04AD-B79A-4615-9628-F61B6E179EE6</device>
+        <deviceName>iPhone8</deviceName>
+        <screenRecording>true</screenRecording>
+        <excludedGroups/>
+        <appiumBootstrapPort>4724</appiumBootstrapPort>
+        <testingType>frontend</testingType>
+        <platformName>iOS</platformName>
+        <platformVersion>11</platformVersion>
+        <automationName>XCUITest</automationName>
+        <simulator>true</simulator>
+        <applicationFilePath/>
+        <applicationActivity>com.inventure.mkopoph.MainActivity</applicationActivity>
+        <applicationId/>
         <aspectj.version>1.8.10</aspectj.version>
-
     </properties>
     <dependencies>
         <dependency>
@@ -165,6 +180,31 @@
             <artifactId>slf4j-simple</artifactId>
             <version>1.7.18</version>
         </dependency>
+        <dependency>
+            <groupId>io.appium</groupId>
+            <artifactId>java-client</artifactId>
+            <version>4.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.3.5</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.jms</groupId>
+                    <artifactId>jms</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.jdmk</groupId>
+                    <artifactId>jmxtools</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
     <reporting>
         <plugins>
@@ -176,74 +216,68 @@
         </plugins>
     </reporting>
     <build>
-        <resources>
-            <resource>
-                <directory>${profile.specific.resource.directory}/main</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
         <testResources>
             <testResource>
-                <directory>${profile.specific.resource.directory}/test</directory>
+                <directory>src/test/resources</directory>
                 <filtering>true</filtering>
             </testResource>
             <testResource>
-                <directory>${basedir}/src/test/resources</directory>
-                <excludes>
-                    <exclude>*.properties</exclude>
-                </excludes>
+                <directory>src/profile</directory>
             </testResource>
         </testResources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19.1</version>
                 <configuration>
-                    <encoding>UTF-8</encoding>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <argLine>
+                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                    </argLine>
+                    <excludedGroups>${excludedGroups}</excludedGroups>
+                    <testFailureIgnore>true</testFailureIgnore>
+                    <suiteXmlFiles>${suiteFilePath}</suiteXmlFiles>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjweaver</artifactId>
+                        <version>${aspectj.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.6</version>
-                <configuration>
-                    <encoding>UTF-8</encoding>
-                </configuration>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0.0</version>
                 <executions>
                     <execution>
-                        <id>copy-profile-specific-resources</id>
-                        <phase>validate</phase>
+                        <phase>generate-resources</phase>
                         <goals>
-                            <goal>copy-resources</goal>
+                            <goal>write-project-properties</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/target/classes</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${profile.specific.resource.directory}/main</directory>
-                                    <filtering>true</filtering>
-                                </resource>
-                            </resources>
+                            <outputFile>src/profile/test.properties</outputFile>
                         </configuration>
                     </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.12</version>
+                <executions>
                     <execution>
-                        <id>copy-profile-specific-test-resources</id>
-                        <phase>validate</phase>
+                        <id>add-test-source</id>
+                        <phase>generate-test-sources</phase>
                         <goals>
-                            <goal>testResources</goal>
+                            <goal>add-test-source</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${testClassesDir}</outputDirectory>
-                            <!--<outputDirectory>${basedir}/target/test-classes</outputDirectory>-->
-                            <resources>
-                                <resource>
-                                    <directory>${profile.specific.resource.directory}/test</directory>
-                                    <filtering>true</filtering>
-                                </resource>
-                            </resources>
+                            <sources>
+                                <source>src/test</source>
+                                <source>src/profile</source>
+                            </sources>
                         </configuration>
                     </execution>
                 </executions>
@@ -251,75 +285,45 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.3</version>
+                <version>3.5.1</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
+                    <!-- Lint checks -->
+                    <compilerArgument>-Xlint:all</compilerArgument>
+                    <showWarnings>true</showWarnings>
+                    <showDeprecation>true</showDeprecation>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>2.17</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>7.6</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>verify-style</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>checkstyle</goal>
+                        </goals>
+                        <configuration>
+                            <configLocation>${project.basedir}/config/checkstyle/checkstyle.xml</configLocation>
+                            <sourceDirectory>${project.basedir}/src</sourceDirectory>
+                            <encoding>UTF-8</encoding>
+                            <consoleOutput>false</consoleOutput>
+                            <failsOnError>true</failsOnError>
+                            <linkXRef>false</linkXRef>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
-    <profiles>
-        <profile>
-            <id>ci-tst-integration</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <profile.specific.resource.directory>src/profile</profile.specific.resource.directory>
-            </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <version>2.18.1</version>
-                        <configuration>
-                            <argLine>
-                                -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
-                            </argLine>
-                            <properties>
-                                <property>
-                                    <name>listener</name>
-                                    <value>org.uncommons.reportng.HTMLReporter, org.uncommons.reportng.JUnitXMLReporter</value>
-                                </property>
-                            </properties>
-                            <suiteXmlFiles>
-                                <suiteXmlFile>${suiteDir}/integration.xml</suiteXmlFile>
-                            </suiteXmlFiles>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>ci-smoky</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <properties>
-                <profile.specific.resource.directory>src/profile</profile.specific.resource.directory>
-            </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <version>2.18.1</version>
-                        <configuration>
-                            <properties>
-                                <property>
-                                    <name>listener</name>
-                                    <value>org.uncommons.reportng.HTMLReporter, org.uncommons.reportng.JUnitXMLReporter</value>
-                                </property>
-                            </properties>
-                            <suiteXmlFiles>
-                                <suiteXmlFile>${suiteDir}/smoky.xml</suiteXmlFile>
-                            </suiteXmlFiles>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 </project>

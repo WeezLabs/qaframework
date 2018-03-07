@@ -82,7 +82,7 @@ public class RestService {
         RequestSpecBuilder getRequestSpecBuilder = new RequestSpecBuilder();
         String fullAPiUrl = PropertyUtils.getServerHost() + PropertyUtils.getServerApiBaseUrl();
         getRequestSpecBuilder.setBaseUri(fullAPiUrl);
-        getRequestSpecBuilder.setPort(PropertyUtils.getServerHostPort());
+        getRequestSpecBuilder.setPort(PropertyUtils.getServerPort());
         getRequestSpecBuilder.addHeaders(standardHeaders);
         getRequestSpecBuilder.setContentType(CONTENT_TYPE);
         getRequestSpecBuilder.setConfig(RestAssuredConfig.newConfig()
