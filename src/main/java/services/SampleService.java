@@ -15,7 +15,7 @@ import java.util.List;
 public class SampleService extends BaseService {
     private static final String SUB_PATH = "/sample/";
 
-    SampleService(RestMethods restMethods) {
+    public SampleService(RestMethods restMethods) {
         super(restMethods);
     }
 

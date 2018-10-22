@@ -3,10 +3,8 @@ package stories;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.apache.commons.collections.comparators.NullComparator;
 import org.testng.ITestContext;
 import org.testng.annotations.*;
-import org.testng.annotations.Optional;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -24,7 +22,6 @@ public abstract class AbstractTest {
     protected ObjectMapper mapper = new ObjectMapper().
             configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false).
             enable(SerializationFeature.INDENT_OUTPUT);
-    private NullComparator comparator = new NullComparator(true);
     protected String testDescription;
 
     // String constants
@@ -39,7 +36,7 @@ public abstract class AbstractTest {
     protected String mailbox_base;
 
     @BeforeTest
-    public void beforeTest(@Optional String runId) throws IOException, SQLException, InterruptedException {
+    public void beforeTest() throws IOException, SQLException, InterruptedException {
         // initialize password and username for mailbox access
         mailbox = rbServer.getString("_EMAIL_ADDRESS");
         mailboxPassword = rbServer.getString("_EMAIL_PASSWORD");
