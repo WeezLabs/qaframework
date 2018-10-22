@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="list story" parallel="tests" thread-count="12">
+
+    <test name="create list test">
+        <parameter name="jsonDdtFile" value="createList.json"/>
+        <classes>
+            <class name="stories.SampleStory.sampleTest"/>
+        </classes>
+    </test>
+</suite>
