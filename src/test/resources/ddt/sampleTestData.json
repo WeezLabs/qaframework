@@ -1,0 +1,22 @@
+[
+  {
+    "setId": 1,
+    "description": "case 1",
+    "statusCode": 200,
+    "error": {},
+    "dto": {
+      "some_field": "single"
+    }
+  },
+  {
+    "setId": 2,
+    "description": "case 2",
+    "statusCode": 400,
+    "error": {
+      "massage": "bad request"
+    },
+    "dto": {
+      "some_field": "single"
+    }
+  }
+]
