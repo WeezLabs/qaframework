@@ -32,7 +32,7 @@ public class SampleTest extends AbstractTest {
         // todo set up your test environment here
 
         /* it's better to create new user and then delete him, but in this example I'm using
-           existed one to prevent flooding of real production server. We don't have any way do delete users on it :)
+           existed one to prevent flooding of real production server. We don't have any way to delete users on it :)
          */
         User user = new User("vmarkov@distillery.com", "password");
         userActions = new Actions(user.getAccessToken());

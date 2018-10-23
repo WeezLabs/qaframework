@@ -6,8 +6,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import org.testng.ITestContext;
 import org.testng.annotations.*;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -15,19 +13,16 @@ import java.util.*;
 /**
  * Abstract class that describes base for any test. Contanins properties extraction and so on
  */
-@SuppressWarnings("ALL")
 public abstract class AbstractTest {
-    protected ResourceBundle rbServer = ResourceBundle.getBundle("server");
-    protected ObjectMapper mapper = new ObjectMapper().
-            configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false).
-            enable(SerializationFeature.INDENT_OUTPUT);
-    protected String testDescription;
-
     // String constants
     protected final String ASC = "asc";
     protected final String DESC = "desc";
     protected final String DDT_DATA_PATH = "/ddt/";
     protected final String PHOTO_DATA_PATH = "/photo/";
+
+    protected ObjectMapper mapper;
+    protected String testDescription;
+
     protected DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss'Z'");
 
     protected String mailbox;
@@ -35,7 +30,10 @@ public abstract class AbstractTest {
     protected String mailbox_base;
 
     @BeforeTest
-    public void beforeTest() throws IOException, SQLException, InterruptedException {
+    public void beforeTest() {
+        mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                .enable(SerializationFeature.INDENT_OUTPUT);
+
         // todo initialize password and username for mailbox access if your tests have these params
 /*        mailbox = rbServer.getString("_EMAIL_ADDRESS");
         mailboxPassword = rbServer.getString("_EMAIL_PASSWORD");

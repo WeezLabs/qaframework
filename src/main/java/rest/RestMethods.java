@@ -18,24 +18,21 @@ import java.util.ResourceBundle;
  */
 public class RestMethods {
 
+    private static final Integer CONNECTION_TIMEOUT = 25000;
+    private static final Integer SOCKET_TIMEOUT = 25000;
     private static final String CONTENT_TYPE = "application/json;charset=UTF-8";
-    private static ResourceBundle rb = ResourceBundle.getBundle("server");
+
+    private RequestSpecification postSpecification;
+    private RequestSpecification uploadSepcification;
+    private RequestSpecification getSpecification;
 
     private String basePath;
 
-    private Map<String, String> STANDARD_HEADERS = new HashMap<>();
-    private RequestSpecification postSpecification;
-    private RequestSpecification getSpecification;
-    private RequestSpecBuilder getRequestSpecBuilder = new RequestSpecBuilder();
-    private RequestSpecBuilder postRequestSpecBuilder = new RequestSpecBuilder();
-    private RequestSpecBuilder uploadRequestSpecBuilder = new RequestSpecBuilder();
-
     public RestMethods(String accessToken) {
-        String sslStr = rb.getString("SSL").toLowerCase();
-        String sslDefaultStr = rb.getString("SSL_DEFAULT").toLowerCase();
-        boolean ssl = sslStr.equals("${ssl}")
-                ? (sslDefaultStr.contains("true") || sslDefaultStr.contains("yes"))
-                : (sslStr.contains("true") || sslStr.contains("yes"));
+
+        // extract parameters from resource bundle
+        ResourceBundle rb = ResourceBundle.getBundle("server");
+        boolean ssl = Boolean.valueOf(rb.getString("SSL"));
 
         int port;
         if (ssl) {
@@ -46,8 +43,8 @@ public class RestMethods {
         }
 
         HttpClientConfig httpConfig = RestAssuredConfig.newConfig().getHttpClientConfig()
-                .setParam("http.connection.timeout", 25000)
-                .setParam("http.socket.timeout", 25000);
+                .setParam("http.connection.timeout", CONNECTION_TIMEOUT)
+                .setParam("http.socket.timeout", SOCKET_TIMEOUT);
 
         RestAssuredConfig restAssuredConfig = RestAssuredConfig.newConfig().
                 httpClient(httpConfig).
@@ -56,14 +53,16 @@ public class RestMethods {
                 encoderConfig(EncoderConfig.encoderConfig().defaultContentCharset("UTF-8"));
 
         // Add required headers
+        Map<String, String> STANDARD_HEADERS = new HashMap<>();
         STANDARD_HEADERS.put("Accept-Charset", "UTF-8");
         if (accessToken != null)
             STANDARD_HEADERS.put("Authorization", accessToken);
 
-        // Get base path
+        // Get the base path
         basePath = rb.getString("_SERVER");
 
         // GET specification
+        RequestSpecBuilder getRequestSpecBuilder = new RequestSpecBuilder();
         getRequestSpecBuilder.setPort(port);
         getRequestSpecBuilder.addHeaders(STANDARD_HEADERS);
         getRequestSpecBuilder.setContentType(CONTENT_TYPE);
@@ -71,6 +70,7 @@ public class RestMethods {
         getSpecification = getRequestSpecBuilder.build();
 
         // POST specification
+        RequestSpecBuilder postRequestSpecBuilder = new RequestSpecBuilder();
         postRequestSpecBuilder.setPort(port);
         postRequestSpecBuilder.addHeaders(STANDARD_HEADERS);
         postRequestSpecBuilder.setContentType(CONTENT_TYPE);
@@ -78,15 +78,12 @@ public class RestMethods {
         postSpecification = postRequestSpecBuilder.build();
 
         // file upload specification
-        uploadRequestSpecBuilder = new RequestSpecBuilder();
+        RequestSpecBuilder uploadRequestSpecBuilder = new RequestSpecBuilder();
         uploadRequestSpecBuilder.setPort(port);
         uploadRequestSpecBuilder.addHeaders(STANDARD_HEADERS);
         uploadRequestSpecBuilder.setContentType("multipart/form-data");
-        uploadRequestSpecBuilder.setConfig(RestAssuredConfig.newConfig().
-                httpClient(httpConfig).
-                sslConfig(SSLConfig.sslConfig().relaxedHTTPSValidation()).
-                decoderConfig(DecoderConfig.decoderConfig().defaultContentCharset("UTF-8")).
-                encoderConfig(EncoderConfig.encoderConfig().defaultContentCharset("UTF-8")));
+        uploadRequestSpecBuilder.setConfig(restAssuredConfig);
+        uploadSepcification = uploadRequestSpecBuilder.build();
     }
 
     /* Status code checker. It is custom instead of native RestAssured assertion,
@@ -129,14 +126,13 @@ public class RestMethods {
     // POST with file upload
     public Response post(String methodPath, List<File> files, int expStatusCode) {
         Response response;
-        RequestSpecification spec = uploadRequestSpecBuilder.build();
 
-        for(File file:files){
-            spec.multiPart("file", file, "image/jpg");
+        for (File file : files){
+            uploadSepcification.multiPart("file", file, "image/jpg");
         }
 
         response = RestAssured.given().
-                spec(spec).
+                spec(uploadSepcification).
                 post(basePath + methodPath);
         checkStatusCode(response, expStatusCode);
         return response;
