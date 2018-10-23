@@ -1,51 +1,38 @@
 package domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import rest.AuthRest;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.io.IOException;
-import java.sql.SQLException;
 
 /**
- * Created by Admin on 01.09.2015.
+ * Internal User class.
+ * Creates/logins user with given email/password and keeps user data (tokens, ids etc) for tests
  */
-@SuppressWarnings("ALL")
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class User {
-    @JsonIgnore
-    protected Integer id;
-    protected String email;
-    protected String password;
-    @JsonIgnore
-    protected LoginResponse tgt;
+    private Integer id;
+    private String email;
+    private String password;
+    private String accessToken;
+    private LoginResponse tgt;
 
-
-    @JsonIgnore
-    public User(String email, String password) throws IOException, SQLException, InterruptedException {
+    public User(String email, String password) throws IOException {
         this.email = email;
         this.password = password;
         AuthRest authRest = new AuthRest();
         this.tgt = authRest.postTickets(email, password);
         this.id = tgt.getUser_id();
+        this.accessToken = "Bearer " + tgt.getAccess_token();
     }
 
     public User() {
     }
 
-    @JsonIgnore
-    public LoginResponse getTgt() {
-        return tgt;
+    public Integer getId() {
+        return id;
     }
 
-    @JsonIgnore
-    public void setTgt(LoginResponse tgt) {
-        this.tgt = tgt;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -64,14 +51,19 @@ public class User {
         this.password = password;
     }
 
-    @JsonIgnore
-    public Integer getId() {
-        return id;
+    public String getAccessToken() {
+        return accessToken;
     }
 
-    @JsonIgnore
-    public void setId(Integer id) {
-        this.id = id;
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 
+    public LoginResponse getTgt() {
+        return tgt;
+    }
+
+    public void setTgt(LoginResponse tgt) {
+        this.tgt = tgt;
+    }
 }

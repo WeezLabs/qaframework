@@ -1,22 +1,50 @@
 [
   {
     "setId": 1,
-    "description": "case 1",
-    "statusCode": 200,
+    "description": "case 1 positive",
+    "statusCode": 201,
     "error": {},
     "dto": {
-      "some_field": "single"
+      "title": "some title",
+      "notes": "some notes",
+      "sort_type": 1
     }
   },
   {
     "setId": 2,
-    "description": "case 2",
+    "description": "case 2 null title",
     "statusCode": 400,
     "error": {
       "massage": "bad request"
     },
     "dto": {
-      "some_field": "single"
+      "title": null,
+      "notes": "some notes",
+      "sort_type": 1
+    }
+  },
+  {
+    "setId": 3,
+    "description": "case 3 empty title",
+    "statusCode": 400,
+    "error": {
+      "massage": "bad request"
+    },
+    "dto": {
+      "title": "",
+      "notes": "some notes",
+      "sort_type": 1
+    }
+  },
+  {
+    "setId": 4,
+    "description": "case 4 let's make it fail! Null title, but exp code 200",
+    "statusCode": 201,
+    "error": {},
+    "dto": {
+      "title": null,
+      "notes": "some notes",
+      "sort_type": 1
     }
   }
 ]

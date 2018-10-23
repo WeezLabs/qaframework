@@ -17,7 +17,6 @@ import java.util.*;
  */
 @SuppressWarnings("ALL")
 public abstract class AbstractTest {
-    protected ResourceBundle rbTest = ResourceBundle.getBundle("test");
     protected ResourceBundle rbServer = ResourceBundle.getBundle("server");
     protected ObjectMapper mapper = new ObjectMapper().
             configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false).
@@ -37,10 +36,10 @@ public abstract class AbstractTest {
 
     @BeforeTest
     public void beforeTest() throws IOException, SQLException, InterruptedException {
-        // initialize password and username for mailbox access
-        mailbox = rbServer.getString("_EMAIL_ADDRESS");
+        // todo initialize password and username for mailbox access if your tests have these params
+/*        mailbox = rbServer.getString("_EMAIL_ADDRESS");
         mailboxPassword = rbServer.getString("_EMAIL_PASSWORD");
-        mailbox_base = mailbox.substring(0, mailbox.indexOf("@")) + "+";
+        mailbox_base = mailbox.substring(0, mailbox.indexOf("@")) + "+";*/
     }
 
     @BeforeClass
@@ -56,9 +55,9 @@ public abstract class AbstractTest {
             }
         }
         StringBuffer testParamsStr = new StringBuffer("\n");
-        if (context.getCurrentXmlTest().getTestParameters() != null) {
+        if (context.getCurrentXmlTest().getLocalParameters() != null) {
             testParamsStr.append("Test parameters:\n");
-            Map<String, String> params = context.getCurrentXmlTest().getTestParameters();
+            Map<String, String> params = context.getCurrentXmlTest().getLocalParameters();
             for (Map.Entry<String, String> entry : params.entrySet()) {
                 testParamsStr.append("\t" + entry.getKey() + " : " + entry.getValue() + "\n");
             }

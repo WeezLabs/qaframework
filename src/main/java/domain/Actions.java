@@ -1,24 +1,25 @@
 package domain;
 
 import rest.RestMethods;
-import services.SampleService;
+import services.ListsService;
 
 /**
  * actions for api services
  */
 public class Actions {
     private RestMethods restMethods;
-    private SampleService sampleService;
+    private ListsService listsService;
 
     // constructs actions object that allows to access endpoints using given access token
     public Actions(String accessToken) {
         restMethods = new RestMethods(accessToken);
     }
 
-    // Just a sample of services object initialization. Replace it with something real
-    public SampleService sampleService() {
-        if (null == sampleService) sampleService = new SampleService(restMethods);
-        return sampleService;
+    // Just a sample of services object initialization. "Lists" service from Curago project
+    public ListsService listsService() {
+        if (listsService == null)
+            listsService = new ListsService(restMethods);
+        return listsService;
     }
 }
 

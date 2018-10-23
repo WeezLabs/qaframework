@@ -3,10 +3,10 @@
 
 <suite name="list story" parallel="tests" thread-count="12">
 
-    <test name="create list test">
-        <parameter name="jsonDdtFile" value="createList.json"/>
+    <test name="sample test with test data set">
+        <parameter name="jsonDdtFile" value="sampleTestData.json"/>
         <classes>
-            <class name="stories.SampleStory.sampleTest"/>
+            <class name="stories.SampleStory.SampleTest"/>
         </classes>
     </test>
 </suite>

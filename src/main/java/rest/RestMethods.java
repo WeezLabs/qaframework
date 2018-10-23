@@ -26,8 +26,6 @@ public class RestMethods {
     private Map<String, String> STANDARD_HEADERS = new HashMap<>();
     private RequestSpecification postSpecification;
     private RequestSpecification getSpecification;
-    private boolean ssl;
-    private int port;
     private RequestSpecBuilder getRequestSpecBuilder = new RequestSpecBuilder();
     private RequestSpecBuilder postRequestSpecBuilder = new RequestSpecBuilder();
     private RequestSpecBuilder uploadRequestSpecBuilder = new RequestSpecBuilder();
@@ -35,9 +33,17 @@ public class RestMethods {
     public RestMethods(String accessToken) {
         String sslStr = rb.getString("SSL").toLowerCase();
         String sslDefaultStr = rb.getString("SSL_DEFAULT").toLowerCase();
-        ssl = sslStr.equals("${ssl}")
+        boolean ssl = sslStr.equals("${ssl}")
                 ? (sslDefaultStr.contains("true") || sslDefaultStr.contains("yes"))
                 : (sslStr.contains("true") || sslStr.contains("yes"));
+
+        int port;
+        if (ssl) {
+            port = 443;
+        }
+        else {
+            port = Integer.valueOf(rb.getString("_SERVER_PORT"));
+        }
 
         HttpClientConfig httpConfig = RestAssuredConfig.newConfig().getHttpClientConfig()
                 .setParam("http.connection.timeout", 25000)
@@ -83,11 +89,18 @@ public class RestMethods {
                 encoderConfig(EncoderConfig.encoderConfig().defaultContentCharset("UTF-8")));
     }
 
-    // Status code checker
+    /* Status code checker. It is custom instead of native RestAssured assertion,
+       because I want to display actual response in case of fail. It speeds up testing and debugging
+     */
     private void checkStatusCode(Response response, int expectedStatusCode) {
         // -1 means that we don't care about status code
+        int statusCode = response.statusCode();
         if (expectedStatusCode != -1) {
-            response.then().statusCode(expectedStatusCode);
+            assert (statusCode == expectedStatusCode) :
+                "Wrong status code!" +
+                        "\nExpected " + expectedStatusCode + ", but actual is " + statusCode +
+                        "\nActual response:\n" + response.asString();
+
         }
     }
 
@@ -97,7 +110,6 @@ public class RestMethods {
     public Response get(String methodPath, int expStatusCode) {
         Response response = RestAssured.given().
                 spec(getSpecification).
-                headers(STANDARD_HEADERS).
                 get(basePath + methodPath);
         checkStatusCode(response, expStatusCode);
         return response;
@@ -108,13 +120,13 @@ public class RestMethods {
         Response response;
         response = RestAssured.given().
                 spec(postSpecification).
-                headers(STANDARD_HEADERS).
                 body(body).
                 post(basePath + methodPath);
         checkStatusCode(response, expStatusCode);
         return response;
     }
 
+    // POST with file upload
     public Response post(String methodPath, List<File> files, int expStatusCode) {
         Response response;
         RequestSpecification spec = uploadRequestSpecBuilder.build();
@@ -134,7 +146,6 @@ public class RestMethods {
     public Response delete(String methodPath, Object body, int expStatusCode) {
         Response response = RestAssured.given().
                 spec(postSpecification).
-                headers(STANDARD_HEADERS).
                 body(body).
                 delete(basePath + methodPath);
         checkStatusCode(response, expStatusCode);
@@ -146,7 +157,6 @@ public class RestMethods {
         Response response;
         response = RestAssured.given().
                 spec(postSpecification).
-                headers(STANDARD_HEADERS).
                 body(body).
                 put(basePath + methodPath);
         checkStatusCode(response, expStatusCode);
@@ -158,7 +168,6 @@ public class RestMethods {
         Response response;
         response = RestAssured.given().
                 spec(postSpecification).
-                headers(STANDARD_HEADERS).
                 body(body).
                 patch(basePath + methodPath);
         checkStatusCode(response, expStatusCode);

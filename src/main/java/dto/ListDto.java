@@ -1,9 +1,6 @@
 package dto;
 
-/**
- * Just a sample of DTO for input or output request body
- */
-public class SampleDto {
+public class ListDto extends ListInput {
     private Integer id;
 
     public Integer getId() {
