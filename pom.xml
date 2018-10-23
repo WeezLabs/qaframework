@@ -14,7 +14,7 @@
 
         <testClassesDir>${basedir}/target/test-classes</testClassesDir>
         <suiteDir>${testClassesDir}/suites</suiteDir>
-        <targetServer>https://api.curagoapp.com/api/v5</targetServer>
+        <targetServer>api.curagoapp.com/api/v5</targetServer>
 
         <aspectj.version>1.8.10</aspectj.version>
     </properties>

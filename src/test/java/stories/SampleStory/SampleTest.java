@@ -50,6 +50,7 @@ public class SampleTest extends AbstractTest {
             Response response = userActions.listsService().postList(ddtSet.getDto(), ddtSet.getStatusCode());
             ErrorDto error = mapper.readValue(response.asString(), ErrorDto.class);
             // todo check error response here!
+
         } else {
             ListDto list = userActions.listsService().postList(ddtSet.getDto());
             listId = list.getId();

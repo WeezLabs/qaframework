@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * Abstract class that describes base for any test. Contanins properties extraction and so on
+ * Abstract class that describes base for any test. Contains constants and some always required actions
  */
 public abstract class AbstractTest {
     // String constants
@@ -44,7 +44,7 @@ public abstract class AbstractTest {
     public void setTestDescription(ITestContext context) {
         String xmlFileName = context.getSuite().getXmlSuite().getFileName()
                 .replaceAll("(?i)(.*[\\\\/]?)([\\\\/])([a-z][a-z\\d_]+\\.xml)", "$3");
-        StringBuffer suiteParamsStr = new StringBuffer("\n");
+        StringBuilder suiteParamsStr = new StringBuilder("\n");
         if (context.getSuite().getXmlSuite().getParameters() != null) {
             suiteParamsStr.append("Suite parameters:\n");
             Map<String, String> params = context.getSuite().getXmlSuite().getParameters();
@@ -52,7 +52,7 @@ public abstract class AbstractTest {
                 suiteParamsStr.append("\t" + entry.getKey() + " : " + entry.getValue() + "\n");
             }
         }
-        StringBuffer testParamsStr = new StringBuffer("\n");
+        StringBuilder testParamsStr = new StringBuilder("\n");
         if (context.getCurrentXmlTest().getLocalParameters() != null) {
             testParamsStr.append("Test parameters:\n");
             Map<String, String> params = context.getCurrentXmlTest().getLocalParameters();
