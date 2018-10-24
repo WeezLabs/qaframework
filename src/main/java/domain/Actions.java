@@ -1,6 +1,7 @@
 package domain;
 
 import rest.RestMethods;
+import services.FilesService;
 import services.ListsService;
 
 /**
@@ -9,6 +10,7 @@ import services.ListsService;
 public class Actions {
     private RestMethods restMethods;
     private ListsService listsService;
+    private FilesService filesService;
 
     // constructs actions object that allows to access endpoints using given access token
     public Actions(String accessToken) {
@@ -20,6 +22,13 @@ public class Actions {
         if (listsService == null)
             listsService = new ListsService(restMethods);
         return listsService;
+    }
+
+    // service for file uploading example
+    public FilesService filesService() {
+        if (filesService == null)
+            filesService = new FilesService(restMethods);
+        return filesService;
     }
 }
 

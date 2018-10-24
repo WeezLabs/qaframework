@@ -49,7 +49,7 @@ public class SampleTest extends AbstractTest {
 
         // keep listId form current thread to be able to remove the list in postconditions
         long threadId = Thread.currentThread().getId();
-        listIds.put(Thread.currentThread().getId(), 0);
+        listIds.put(threadId, 0);
 
         if (ddtSet.getStatusCode() != 201) {
             Response response = userActions.listsService().postList(ddtSet.getDto(), ddtSet.getStatusCode());

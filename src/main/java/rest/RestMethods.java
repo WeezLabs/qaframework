@@ -23,10 +23,13 @@ public class RestMethods {
     private static final String CONTENT_TYPE = "application/json;charset=UTF-8";
 
     private RequestSpecification postSpecification;
-    private RequestSpecification uploadSpecification;
     private RequestSpecification getSpecification;
+    private Map<String, String> STANDARD_HEADERS;
+
+    private RestAssuredConfig restAssuredConfig;
 
     private String basePath;
+    private int port;
 
     public RestMethods(String accessToken) {
 
@@ -35,7 +38,6 @@ public class RestMethods {
         boolean ssl = Boolean.valueOf(rb.getString("SSL"));
         basePath = rb.getString("_SERVER");
 
-        int port;
         if (ssl) {
             port = 443;
             basePath = "https://" + basePath;
@@ -49,14 +51,14 @@ public class RestMethods {
                 .setParam("http.connection.timeout", CONNECTION_TIMEOUT)
                 .setParam("http.socket.timeout", SOCKET_TIMEOUT);
 
-        RestAssuredConfig restAssuredConfig = RestAssuredConfig.newConfig().
+        restAssuredConfig = RestAssuredConfig.newConfig().
                 httpClient(httpConfig).
                 sslConfig(SSLConfig.sslConfig().relaxedHTTPSValidation()).
                 decoderConfig(DecoderConfig.decoderConfig().defaultContentCharset("UTF-8")).
                 encoderConfig(EncoderConfig.encoderConfig().defaultContentCharset("UTF-8"));
 
         // Add required headers
-        Map<String, String> STANDARD_HEADERS = new HashMap<>();
+        STANDARD_HEADERS = new HashMap<>();
         STANDARD_HEADERS.put("Accept-Charset", "UTF-8");
         if (accessToken != null)
             STANDARD_HEADERS.put("Authorization", accessToken);
@@ -78,15 +80,6 @@ public class RestMethods {
                 CONTENT_TYPE,
                 restAssuredConfig);
         postSpecification = postRequestSpecBuilder.build();
-
-        // file upload specification
-        RequestSpecBuilder uploadRequestSpecBuilder = requestSpecConfigAssembler(
-                port,
-                basePath,
-                STANDARD_HEADERS,
-                "multipart/form-data",
-                restAssuredConfig);
-        uploadSpecification = uploadRequestSpecBuilder.build();
     }
 
     /**
@@ -143,6 +136,21 @@ public class RestMethods {
             spec.headers(headers);
     }
 
+    /**
+     * We need to build specification for file upload every time when
+     * we call post() to make parallel uploads possible.
+     * @return RequestSpecification
+     */
+    private RequestSpecification buildUploadSpecification() {
+        RequestSpecBuilder uploadRequestSpecBuilder = requestSpecConfigAssembler(
+                port,
+                basePath,
+                STANDARD_HEADERS,
+                "multipart/form-data",
+                restAssuredConfig);
+        return uploadRequestSpecBuilder.build();
+    }
+
     //------------------------------------------------------------------//
 
     //----- GET method -----//
@@ -179,17 +187,17 @@ public class RestMethods {
 
     // POST with file upload
     public Response post(String methodPath, List<File> files, Map<String, String> headers, int expStatusCode) {
-        RequestSpecification spec = RestAssured.given().spec(uploadSpecification);
+        // we have tp build this config fully internally, because we want to make parallel uploads possible
+        RequestSpecification spec = buildUploadSpecification();
 
         // add files as multipart
-        // todo add ability to customize controlName and mime type
         if (files != null) {
             for (File file : files) {
-                uploadSpecification.multiPart("file", file, "image/jpg");
+                spec.multiPart("file", file, "image/jpg");
             }
         }
-
         setBodyAndHeaders(spec, null, headers);
+        spec = RestAssured.given().spec(spec);
 
         Response response = spec.post(basePath + methodPath);
         checkStatusCode(response, expStatusCode);
@@ -199,7 +207,6 @@ public class RestMethods {
     public Response post(String methodPath, List<File> files, int expStatusCode) {
         return post(methodPath, files, null, expStatusCode);
     }
-
 
     //----- DELETE method -----//
     public Response delete(String methodPath, Object body, Map<String, String> headers, int expStatusCode) {

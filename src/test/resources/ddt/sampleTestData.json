@@ -15,7 +15,7 @@
     "description": "case 2 null title",
     "statusCode": 400,
     "error": {
-      "massage": "bad request"
+      "message": "bad request"
     },
     "dto": {
       "title": null,
