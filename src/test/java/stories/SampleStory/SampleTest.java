@@ -15,11 +15,12 @@ import stories.AbstractTest;
 import util.SoftAssert;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 public class SampleTest extends AbstractTest {
     private Actions userActions;
-    private int listId;
+    private Map<Long, Integer> listIds;
 
     @DataProvider(name = "ddtManager", parallel = true)
     public Object[][] ddtManager(ITestContext context) throws IOException {
@@ -30,6 +31,7 @@ public class SampleTest extends AbstractTest {
     @BeforeClass(dependsOnMethods = "setTestDescription")
     public void precondition() throws IOException {
         // todo set up your test environment here
+        listIds = new HashMap<>();
 
         /* it's better to create new user and then delete him, but in this example I'm using
            existed one to prevent flooding of real production server. We don't have any way to delete users on it :)
@@ -44,7 +46,10 @@ public class SampleTest extends AbstractTest {
         DdtoSet<ListInput> ddtSet = mapper.convertValue(ddtSetMap, new TypeReference<DdtoSet<ListInput>>() {
         });
         SoftAssert sa = new SoftAssert();
-        listId = 0;
+
+        // keep listId form current thread to be able to remove the list in postconditions
+        long threadId = Thread.currentThread().getId();
+        listIds.put(Thread.currentThread().getId(), 0);
 
         if (ddtSet.getStatusCode() != 201) {
             Response response = userActions.listsService().postList(ddtSet.getDto(), ddtSet.getStatusCode());
@@ -53,7 +58,8 @@ public class SampleTest extends AbstractTest {
 
         } else {
             ListDto list = userActions.listsService().postList(ddtSet.getDto());
-            listId = list.getId();
+            int listId = list.getId();
+            listIds.replace(threadId, listId);
             // todo check positive response here!
 
             // get created list by id and check that all data was really saved correctly
@@ -67,6 +73,10 @@ public class SampleTest extends AbstractTest {
     @AfterMethod()
     public void postConditionMethod() {
         // todo perform cleanup after each test method here here!
+
+        // remove the object that was created in current thread
+        long threadId = Thread.currentThread().getId();
+        int listId = listIds.get(threadId);
         if (listId != 0)
             userActions.listsService().deleteList(listId);
     }

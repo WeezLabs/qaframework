@@ -52,10 +52,10 @@ public class ListsService extends BaseService {
 
     //----- Delete list by id------//
     public Response deleteList(int listId, int statusCode) {
-        return restMethods.get(SUB_PATH + listId, statusCode);
+        return restMethods.delete(SUB_PATH + listId, statusCode);
     }
 
     public Response deleteList(int listId){
-        return restMethods.get(SUB_PATH + listId, 200);
+        return restMethods.delete(SUB_PATH + listId, 204);
     }
 }

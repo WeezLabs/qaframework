@@ -129,73 +129,114 @@ public class RestMethods {
         return requestSpecBuilder;
     }
 
+    /**
+     * Sets body and custom headers in the request specification
+     * @param spec RequestSpecification object to modify
+     * @param body request body
+     * @param headers request headers
+     */
+    private void setBodyAndHeaders(RequestSpecification spec, Object body,
+            Map<String, String> headers) {
+        if (body != null)
+            spec.body(body);
+        if (headers != null)
+            spec.headers(headers);
+    }
+
     //------------------------------------------------------------------//
 
-    /* GET method */
-    public Response get(String methodPath, int expStatusCode) {
-        Response response = RestAssured.given().
-                spec(getSpecification).
-                get(basePath + methodPath);
+    //----- GET method -----//
+    public Response get(String methodPath, Map<String, String> headers, int expStatusCode) {
+        RequestSpecification spec = RestAssured.given().spec(getSpecification);
+        setBodyAndHeaders(spec, null, headers);
+
+        Response response = spec.get(basePath + methodPath);
         checkStatusCode(response, expStatusCode);
         return response;
     }
 
-    /* POST method */
-    public Response post(String methodPath, Object body, int expStatusCode) {
-        Response response;
-        response = RestAssured.given().
-                spec(postSpecification).
-                body(body).
-                post(basePath + methodPath);
+    public Response get(String methodPath, int expStatusCode) {
+        return get(methodPath, null, expStatusCode);
+    }
+
+    //----- POST method -----/
+    public Response post(String methodPath, Object body, Map<String, String> headers, int expStatusCode) {
+        RequestSpecification spec = RestAssured.given().spec(postSpecification);
+        setBodyAndHeaders(spec, body, headers);
+
+        Response response = spec.post(basePath + methodPath);
         checkStatusCode(response, expStatusCode);
         return response;
+    }
+
+    public Response post(String methodPath, Object body, int expStatusCode) {
+        return post(methodPath, body, null, expStatusCode);
     }
 
     // POST with file upload
-    public Response post(String methodPath, List<File> files, int expStatusCode) {
-        Response response;
+    public Response post(String methodPath, List<File> files, Map<String, String> headers, int expStatusCode) {
+        RequestSpecification spec = RestAssured.given().spec(uploadSpecification);
 
         for (File file : files){
             uploadSpecification.multiPart("file", file, "image/jpg");
         }
 
-        response = RestAssured.given().
-                spec(uploadSpecification).
-                post(basePath + methodPath);
+        setBodyAndHeaders(spec, null, headers);
+
+        Response response = spec.post(basePath + methodPath);
         checkStatusCode(response, expStatusCode);
         return response;
     }
 
-    /* DELETE method */
+    public Response post(String methodPath, List<File> files, int expStatusCode) {
+        return post(methodPath, files, null, expStatusCode);
+    }
+
+
+    //----- DELETE method -----//
+    public Response delete(String methodPath, Object body, Map<String, String> headers, int expStatusCode) {
+        RequestSpecification spec = RestAssured.given().spec(postSpecification);
+        setBodyAndHeaders(spec, body, headers);
+
+        Response response = spec.delete(basePath + methodPath);
+        checkStatusCode(response, expStatusCode);
+        return response;
+    }
+
     public Response delete(String methodPath, Object body, int expStatusCode) {
-        Response response = RestAssured.given().
-                spec(postSpecification).
-                body(body).
-                delete(basePath + methodPath);
+        return delete(methodPath, body, null, expStatusCode);
+    }
+
+    public Response delete(String methodPath, int expStatusCode) {
+        return delete(methodPath, null, null, expStatusCode);
+    }
+
+    //----- PUT method -----//
+    public Response put(String methodPath, Object body, Map<String, String> headers, int expStatusCode) {
+        RequestSpecification spec = RestAssured.given().spec(postSpecification);
+        setBodyAndHeaders(spec, body, headers);
+
+        Response response = spec.put(basePath + methodPath);
         checkStatusCode(response, expStatusCode);
         return response;
     }
 
-    /* PUT method */
     public Response put(String methodPath, Object body, int expStatusCode) {
-        Response response;
-        response = RestAssured.given().
-                spec(postSpecification).
-                body(body).
-                put(basePath + methodPath);
+        return put(methodPath, body, null, expStatusCode);
+    }
+
+    //----- PATCH method -----//
+    public Response patch(String methodPath, Object body, Map<String, String> headers, int expStatusCode) {
+        RequestSpecification spec = RestAssured.given().spec(postSpecification);
+        setBodyAndHeaders(spec, body, headers);
+
+        Response response = spec.patch(basePath + methodPath);
         checkStatusCode(response, expStatusCode);
         return response;
     }
 
-    /* PATCH method */
     public Response patch(String methodPath, Object body, int expStatusCode) {
-        Response response;
-        response = RestAssured.given().
-                spec(postSpecification).
-                body(body).
-                patch(basePath + methodPath);
-        checkStatusCode(response, expStatusCode);
-        return response;
+        return patch(methodPath, body, null, expStatusCode);
     }
 }
 
