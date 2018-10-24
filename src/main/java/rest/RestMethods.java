@@ -173,12 +173,20 @@ public class RestMethods {
         return post(methodPath, body, null, expStatusCode);
     }
 
+    public Response post(String methodPath, int expStatusCode) {
+        return post(methodPath, null, null, expStatusCode);
+    }
+
     // POST with file upload
     public Response post(String methodPath, List<File> files, Map<String, String> headers, int expStatusCode) {
         RequestSpecification spec = RestAssured.given().spec(uploadSpecification);
 
-        for (File file : files){
-            uploadSpecification.multiPart("file", file, "image/jpg");
+        // add files as multipart
+        // todo add ability to customize controlName and mime type
+        if (files != null) {
+            for (File file : files) {
+                uploadSpecification.multiPart("file", file, "image/jpg");
+            }
         }
 
         setBodyAndHeaders(spec, null, headers);
