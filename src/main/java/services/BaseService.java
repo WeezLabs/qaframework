@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import rest.RestMethods;
 
-// Plot for any services. Provides mapper and
+// Plot for any services. Provides mapper and RestMethods object
 abstract class BaseService {
     ObjectMapper mapper;
     RestMethods restMethods;
