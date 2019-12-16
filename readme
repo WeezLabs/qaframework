@@ -1,0 +1,21 @@
+The first step is to install selenium. We can do this by running the following command on the terminal:
+pip install selenium
+
+Once we’ve installed selenium, it’s time to install the chromedriver using homebrew. We do this by executing
+he following command on the terminal:
+brew cask install chromedriver
+PS: Для проекта лучше скачивать вэбдрайверы и добавлять в проект
+
+Далее установите
+pip install pytest в консоле
+
+Отчетность:
+На выбор
+
+Запуск тестов можно осуществить написав в терминале
+pytest
+
+
+
+
+Если у вас проблемы с запуском, то поиграйте с настройками безомасности macOS

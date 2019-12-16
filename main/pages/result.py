@@ -1,0 +1,26 @@
+from selenium.webdriver.common.by import By
+
+
+class DuckDuckGoResultPage:
+    locator_link_divs = (By.CSS_SELECTOR, '#links > div')
+    locator_search_input = (By.ID, 'search_form_input')
+
+    @classmethod
+    def phrase_results(cls, phrase):
+        xpath = f"//div[@id='links']//*[contains(text(), '{phrase}')]"
+        return By.XPATH, xpath
+
+    def __init__(self, browser):
+        self.browser = browser
+
+    def link_div_count(self):
+        link_divs = self.browser.find_elements(*self.locator_link_divs)
+        return len(link_divs)
+
+    def phrase_result_count(self, phrase):
+        phrase_results = self.browser.find_elements(*self.phrase_results(phrase))
+        return len(phrase_results)
+
+    def search_input_value(self):
+        search_input = self.browser.find_element(*self.locator_search_input)
+        return search_input.get_attribute('value')
