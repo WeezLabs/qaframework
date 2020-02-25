@@ -1,10 +1,11 @@
 from flask import Response, request
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from database.models import User
 from flask_restful import Resource
 import datetime
 from mongoengine.errors import FieldDoesNotExist, NotUniqueError, DoesNotExist
-from resources.errors import SchemaValidationError, EmailAlreadyExistsError, UnauthorizedError, InternalServerError
+from resources.errors import SchemaValidationError, EmailAlreadyExistsError, UnauthorizedError, InternalServerError, \
+    DeletingMovieError, UsernamePasswordRequared
 
 
 class SignupApi(Resource):
@@ -20,6 +21,8 @@ class SignupApi(Resource):
             raise SchemaValidationError
         except NotUniqueError:
             raise EmailAlreadyExistsError
+        except ValueError:
+            raise UsernamePasswordRequared
         except Exception as e:
             raise InternalServerError
 
@@ -35,8 +38,22 @@ class LoginApi(Resource):
 
             expires = datetime.timedelta(days=7)
             access_token = create_access_token(identity=str(user.id), expires_delta=expires)
-            return {'token': access_token}, 200
+            return {'token': access_token, 'id': str(id)}, 200
         except (UnauthorizedError, DoesNotExist):
             raise UnauthorizedError
         except Exception as e:
+            raise InternalServerError
+
+
+class DeleteApi(Resource):
+    @jwt_required
+    def delete(self):
+        try:
+            user_id = get_jwt_identity()
+            user = User.objects.get(id=user_id)
+            user.delete()
+            return '', 200
+        except DoesNotExist:
+            raise DeletingMovieError
+        except Exception:
             raise InternalServerError

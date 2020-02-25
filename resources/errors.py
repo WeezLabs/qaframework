@@ -18,6 +18,10 @@ class DeletingMovieError(Exception):
     pass
 
 
+class DeletingUserError(Exception):
+    pass
+
+
 class MovieNotExistsError(Exception):
     pass
 
@@ -42,6 +46,14 @@ class NoAuthorizationError(Exception):
     pass
 
 
+class ExpiredTokenError(Exception):
+    pass
+
+
+class UsernamePasswordRequared(Exception):
+    pass
+
+
 errors = {
     "InternalServerError": {
         "message": "Something went wrong",
@@ -63,6 +75,10 @@ errors = {
          "message": "Deleting movie added by other is forbidden",
          "status": 403
      },
+    "DeletingUserError": {
+        "message": "Deleting guest user is forbidden",
+        "status": 401
+    },
      "MovieNotExistsError": {
          "message": "Movie with given id doesn't exists",
          "status": 400
@@ -86,5 +102,13 @@ errors = {
      "BadTokenError": {
          "message": "Invalid token",
          "status": 403
-     }
+     },
+    "ExpiredTokenError": {
+        "message": "Token has expired",
+        "status": 401
+    },
+    "UsernamePasswordRequared": {
+        "message": "Username or password requared",
+        "status": 400
+    }
 }
