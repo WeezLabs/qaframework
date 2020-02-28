@@ -44,9 +44,42 @@ class MovieApi(Resource):
             user_id = get_jwt_identity()
             movie = Movie.objects.get(id=id, added_by=user_id)
             body = request.get_json()
-            Movie.objects.get(id=id).update(**body)
+            if body["name"] == "" or body["name"] is None:
+                raise SchemaValidationError
+            if body["casts"] is None or len(body["casts"]) == 0:
+                raise SchemaValidationError
+            if body["genres"] is None or len(body["genres"]) == 0:
+                raise SchemaValidationError
+            movie.update(**body)
             return '', 200
         except InvalidQueryError:
+            raise SchemaValidationError
+        except DoesNotExist:
+            raise UpdatingMovieError
+        except NotUniqueError:
+            raise MovieAlreadyExistsError
+        except SchemaValidationError:
+            raise SchemaValidationError
+        except Exception:
+            raise InternalServerError
+
+    @jwt_required
+    def patch(self, id):
+        try:
+            user_id = get_jwt_identity()
+            movie = Movie.objects.get(id=id, added_by=user_id)
+            body = request.get_json()
+            if "name" in body and body["name"] == "":
+                raise SchemaValidationError
+            if "casts" in body and len(body["casts"]) == 0:
+                raise SchemaValidationError
+            if "genres" in body and len(body["genres"]) == 0:
+                raise SchemaValidationError
+            movie.update(**body)
+            return '', 200
+        except InvalidQueryError:
+            raise SchemaValidationError
+        except SchemaValidationError:
             raise SchemaValidationError
         except DoesNotExist:
             raise UpdatingMovieError

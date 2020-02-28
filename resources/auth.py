@@ -12,7 +12,7 @@ class SignupApi(Resource):
     def post(self):
         try:
             body = request.get_json()
-            user =  User(**body)
+            user = User(**body)
             user.hash_password()
             user.save()
             id = user.id
