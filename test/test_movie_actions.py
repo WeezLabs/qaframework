@@ -31,7 +31,7 @@ class TestUserAction:
     def test_create_movie_without_login(self):
         movie = MovieAPI({})
         status_code, movie_data = movie.create_movie()
-        is_equal(status_code, 403)
+        is_equal(status_code, 401)
         is_empty(movie_data.get("id"))
 
     @allure.title("Verify creating movie twice by one user")
@@ -55,11 +55,7 @@ class TestUserAction:
     @allure.title("Verify unsuccess create movie")
     @allure.severity(allure.severity_level.NORMAL)
     def test_unsuccess_create_movie(self, unsuccess_movie_data_provider, create_services):
-        name = unsuccess_movie_data_provider[constants.Indexes.MOVIE_NAME_INDEX]
-        genres = unsuccess_movie_data_provider[constants.Indexes.GENRES_INDEX]
-        casts = unsuccess_movie_data_provider[constants.Indexes.CASTS_INDEX]
-        movie = MovieData()
-        movie.builder(name, genres, casts)
+        movie = unsuccess_movie_data_provider
         status_code, movie_data = create_services.create_movie(movie)
         is_equal(status_code, 400)
         is_empty(movie_data.get("id"))
@@ -71,7 +67,7 @@ class TestUserAction:
 
         movie_updating_data = MovieData()
         movie_id = movie_ids[constants.Indexes.START_INDEX][constants.Indexes.ID_INDEX].get("id")
-        status_code, movie_data = movie.update_movie(movie_id, movie_updating_data)
+        status_code, movie_data = movie.update_movie(movie_id, movie_updating_data.__dict__)
         is_equal(status_code, 200)
         status_code, movie_actual_data = movie.get_movie(movie_id)
         is_equal(movie_actual_data["casts"], movie_updating_data.get_casts())
@@ -86,8 +82,8 @@ class TestUserAction:
 
         movie_updating_data = MovieData()
         movie_id = movie_ids[constants.Indexes.START_INDEX][constants.Indexes.ID_INDEX].get("id")
-        status_code, movie_data = movie.update_movie(movie_id, movie_updating_data)
-        is_equal(status_code, 400)
+        status_code, movie_data = movie.update_movie(movie_id, movie_updating_data.__dict__)
+        is_equal(status_code, 403)
 
     @allure.title("Verify unsuccessfully update movie creation by current user")
     @allure.severity(allure.severity_level.NORMAL)
@@ -112,10 +108,34 @@ class TestUserAction:
 
     @allure.title("Verify unsuccessfully update movie")
     @allure.severity(allure.severity_level.NORMAL)
-    def test_negative_updating_movie(self, create_movie_by_user, get_movie_data):
+    def test_negative_updating_movie(self, create_movie_by_user, unsuccess_movie_data_provider):
         movie_ids, movie_api, movie_creation_data = create_movie_by_user
-        movie = get_movie_data
+        movie = unsuccess_movie_data_provider
         movie_id = movie_ids[constants.Indexes.START_INDEX][constants.Indexes.ID_INDEX].get("id")
         status_code, movie_data = movie_api.update_movie(movie_id, movie)
         is_equal(status_code, 400)
+
+    @allure.title("Verify unsuccessfully path movie")
+    @allure.severity(allure.severity_level.NORMAL)
+    def test_negative_patching_movie(self, create_movie_by_user, unsuccess_movie_patch_data_provider):
+        movie_ids, movie_api, movie_creation_data = create_movie_by_user
+        movie = unsuccess_movie_patch_data_provider
+        movie_id = movie_ids[constants.Indexes.START_INDEX][constants.Indexes.ID_INDEX].get("id")
+        status_code, movie_data = movie_api.patch_movie(movie_id, movie)
+        is_equal(status_code, 400)
+   
+    @allure.title("Verify successfully path movie")
+    @allure.severity(allure.severity_level.NORMAL)
+    def test_patching_movie(self, create_movie_by_user, movie_patch_data_provider):
+        movie_ids, movie_api, movie_creation_data = create_movie_by_user
+        movie = movie_patch_data_provider
+        movie_id = movie_ids[constants.Indexes.START_INDEX][constants.Indexes.ID_INDEX].get("id")
+        movie_expected_data = movie_api.get_movie(movie_id)[constants.Indexes.ID_INDEX]
+        movie_expected_data["name"] = movie.get("name", movie_expected_data["name"])
+        movie_expected_data["casts"] = movie.get("casts", movie_expected_data["casts"])
+        movie_expected_data["genres"] = movie.get("genres", movie_expected_data["genres"])
+        status_code, movie_data = movie_api.patch_movie(movie_id, movie)
+        is_equal(status_code, 200)
+        status_code, movie_after_data = movie_api.get_movie(movie_id)
+        is_equal(movie_after_data, movie_expected_data)
 

@@ -132,16 +132,6 @@ def create_movie_by_user(request, login_specify_user):
     yield movie_ids, movie_api, movie
 
 
-@pytest.fixture()
-def get_movie_data(unsuccess_movie_data_provider):
-    movie_name = unsuccess_movie_data_provider[constants.Indexes.MOVIE_NAME_INDEX]
-    genres = unsuccess_movie_data_provider[constants.Indexes.GENRES_INDEX]
-    casts = unsuccess_movie_data_provider[constants.Indexes.CASTS_INDEX]
-    movie = MovieData()
-    movie.builder(movie_name, genres, casts)
-    yield movie
-
-
 def pytest_runtest_setup(item):
     is_needed = [mark.args[0] for mark in item.iter_markers(name="MOVIE_COUNT")]
     if len(is_needed) > 0:

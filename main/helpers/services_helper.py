@@ -35,6 +35,6 @@ def create_movie_by_user(user_api, movies_count=1):
     movie_data = []
     movie = []
     for index in range(movies_count):
-        movie.append(MovieData())
+        movie.append(MovieData().__dict__)
         movie_data.append(movie_api.create_movie(movie[constants.Indexes.LAST_INDEX]))
     return movie_api, movie_data, movie

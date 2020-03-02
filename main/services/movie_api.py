@@ -14,14 +14,20 @@ class MovieAPI(BaseApi):
     def create_movie(self, movie=None):
         movie_data = {}
         if movie is None:
-            movie = MovieData()
-        response = primitives.post(self.sub_path, self.token_header, movie.__dict__)
+            movie = MovieData().__dict__
+        response = primitives.post(self.sub_path, self.token_header, movie)
         if response.status_code == 200:
             movie_data = jsonpickle.decode(response.content)
         return response.status_code, movie_data
 
-    def update_movie(self, movie_id, movie: MovieData):
-        response = primitives.put(self.sub_path + "/" + movie_id, self.token_header, movie.__dict__)
+    def update_movie(self, movie_id, movie):
+        response = primitives.put(self.sub_path + "/" + movie_id, self.token_header, movie)
+        if response.status_code == 200:
+            movie = jsonpickle.decode(response.content)
+        return response.status_code, movie
+
+    def patch_movie(self, movie_id, movie):
+        response = primitives.patch(self.sub_path + "/" + movie_id, self.token_header, movie)
         if response.status_code == 200:
             movie = jsonpickle.decode(response.content)
         return response.status_code, movie
