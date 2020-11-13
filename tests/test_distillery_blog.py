@@ -1,8 +1,6 @@
 from pages.main_page import MainPage
-import pytest
 
 
-@pytest.mark.login_guest
 class TestBlogPage:
     def test_mouseflow_script_is_presented(self, driver):
         main_page = MainPage(driver)

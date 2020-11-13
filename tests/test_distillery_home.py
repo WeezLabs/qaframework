@@ -1,9 +1,7 @@
 from pages.main_page import MainPage
-import pytest
 
 
-@pytest.mark.login_guest
-class TestLoginFromMainPage:
+class TestMainPage:
     def test_main_page_header_is_correct(self, driver):
         main_page = MainPage(driver)
         main_page.open()
