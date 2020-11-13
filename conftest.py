@@ -71,4 +71,3 @@ def driver(request, config):
     request.addfinalizer(tear_down)
 
     yield driver
-    driver.quit()
