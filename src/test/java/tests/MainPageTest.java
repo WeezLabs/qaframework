@@ -14,7 +14,7 @@ public class MainPageTest {
     private WebDriver driver;
 
     @BeforeTest
-    public void beforeTest() throws Exception {
+    public void beforeTest() throws IllegalArgumentException {
         driver = WebDriverFactory.getWebDriver();
         driver.manage().window().maximize();
     }

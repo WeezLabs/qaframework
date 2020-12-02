@@ -21,17 +21,19 @@ public class BasePage {
         String by_type = exploded_locator[0];
         String locator = exploded_locator[1];
 
-        if (by_type.equals("xpath")) {
-            return By.xpath(locator);
-        } else if (by_type.equals("id")) {
-            return By.id(locator);
-        } else if (by_type.equals("css")) {
-            return By.cssSelector(locator);
-        } else if (by_type.equals("name")) {
-            return By.name(locator);
-        }
-        else {
-            throw new IllegalArgumentException("Cannot get type of locator. Locator: " + locator_with_type);
+        switch (by_type) {
+            case "id":
+                return By.id(locator);
+            case "xpath":
+                return By.xpath(locator);
+            case "css":
+                return By.cssSelector(locator);
+            case "name":
+                return By.name(locator);
+            case "link_text":
+                return By.linkText(locator);
+            default:
+                throw new IllegalArgumentException("Cannot get type of locator. Locator: " + locator_with_type);
         }
     }
 

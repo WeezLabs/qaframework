@@ -9,7 +9,7 @@ import java.util.ResourceBundle;
 
 public class WebDriverFactory {
 
-    public static WebDriver getWebDriver() throws Exception {
+    public static WebDriver getWebDriver() throws IllegalArgumentException {
         ResourceBundle rb = ResourceBundle.getBundle("test");
         String browserName = rb.getString("BROWSER").toLowerCase();
 
@@ -21,7 +21,7 @@ public class WebDriverFactory {
             case "safari":
                 return new SafariDriver();
             default:
-                throw new Exception("Given browser is not supported! " + browserName);
+                throw new IllegalArgumentException("Given browser is not supported! " + browserName);
         }
     }
 }
