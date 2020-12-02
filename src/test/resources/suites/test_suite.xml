@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="example test suite" parallel="tests" thread-count="1">
+    <test name="first test">
+        <classes>
+            <class name="tests.MainPageTest"/>
+        </classes>
+    </test>
+    <test name="UI test">
+        <classes>
+            <class name="tests.BlogPageTest"/>
+        </classes>
+    </test>
+</suite>
