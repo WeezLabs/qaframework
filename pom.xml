@@ -15,6 +15,9 @@
 
         <!-- path to test classes -->
         <testClassesDir>${basedir}/target/test-classes</testClassesDir>
+
+        <!-- browser to use -->
+        <browser>chrome</browser>
     </properties>
 
     <dependencies>

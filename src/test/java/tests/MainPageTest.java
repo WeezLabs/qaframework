@@ -1,6 +1,7 @@
 package tests;
 
-import org.openqa.selenium.chrome.ChromeDriver;
+import helpers.WebDriverFactory;
+import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -9,11 +10,11 @@ import pages.MainPage;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MainPageTest {
-    private ChromeDriver driver;
+    private WebDriver driver;
 
     @BeforeTest
-    public void beforeTest() {
-        driver = new ChromeDriver();
+    public void beforeTest() throws Exception {
+        driver = WebDriverFactory.getWebDriver();
     }
 
     @Test
