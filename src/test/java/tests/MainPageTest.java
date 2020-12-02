@@ -2,6 +2,7 @@ package tests;
 
 import helpers.WebDriverFactory;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -15,6 +16,7 @@ public class MainPageTest {
     @BeforeTest
     public void beforeTest() throws Exception {
         driver = WebDriverFactory.getWebDriver();
+        driver.manage().window().maximize();
     }
 
     @Test
@@ -23,6 +25,15 @@ public class MainPageTest {
         mainPage.openMainPage();
         String pageTitle = mainPage.getPageTitle();
         assertThat(pageTitle).isEqualTo("DISTILLERY IS A\nFULL−SERVICE SOFTWARE\nDESIGN AND DEVELOPMENT COMPANY");
+    }
+
+    @Test
+    public void checkLearAboutUsButton() {
+        MainPage mainPage = new MainPage(driver);
+        mainPage.openMainPage();
+        WebElement learnAboutUsButton = mainPage.getLearnAboutUsButton();
+        assertThat(learnAboutUsButton.isDisplayed())
+                .withFailMessage("Learn About Us button is not displayed!").isTrue();
     }
 
     @AfterTest
